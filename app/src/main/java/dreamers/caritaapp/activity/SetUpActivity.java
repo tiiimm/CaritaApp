@@ -3,12 +3,9 @@ package dreamers.caritaapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
 import dreamers.caritaapp.R;
-import dreamers.caritaapp.fragment.CharitySetUp1Fragment;
-import dreamers.caritaapp.fragment.PhilanthropistSetUp1Fragment;
+import dreamers.caritaapp.fragment.SetUpAsFragment;
 
 public class SetUpActivity extends AppCompatActivity {
 
@@ -16,5 +13,9 @@ public class SetUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

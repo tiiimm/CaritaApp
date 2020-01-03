@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     tools:context=".fragment.SetUpAsFragment">
 
     <LinearLayout
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginBottom="40sp"
-            android:textSize="30sp"
+            android:textSize="50sp"
             android:text="Register as:"/>
 
         <LinearLayout
@@ -26,9 +27,9 @@
             android:gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
+                android:layout_weight=".5"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="40sp"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -48,7 +49,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
+                android:layout_weight=".5"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center">
@@ -69,6 +71,15 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_switch_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="15sp"
+            android:textSize="18sp"
+            android:text="Switch Account? Click Here"/>
 
     </LinearLayout>
 

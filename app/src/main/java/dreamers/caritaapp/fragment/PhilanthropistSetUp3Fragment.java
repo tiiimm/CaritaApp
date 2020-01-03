@@ -28,13 +28,22 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_philanthropist_set_up3, container, false);
 
         Button btn_finish = root.findViewById(R.id.btn_finish);
+        Button btn_back = root.findViewById(R.id.btn_back);
 
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp2Fragment()).commit();
+                getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp3Fragment()).commit();
                 Intent i = new Intent(getActivity(), HomeActivity.class);
                 startActivity(i);
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp3Fragment()).commit();
+                getFragmentManager().beginTransaction().add(R.id.fragment,new PhilanthropistSetUp2Fragment()).addToBackStack(null).commit();
             }
         });
 
