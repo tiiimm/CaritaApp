@@ -1,4 +1,4 @@
-package dreamers.caritaapp;
+package dreamers.caritaapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import dreamers.caritaapp.R;
 
 public class SplashScreenActivity extends AppCompatActivity implements Animation.AnimationListener {
 
