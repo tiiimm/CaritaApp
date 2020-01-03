@@ -18,12 +18,14 @@ public class SessionHandler {
         this.mEditor = mPreferences.edit();
     }
 
-    public void set_current_user(Integer room_id, Integer id, String time_in, String time_out, Integer session_hours) {
-        mEditor.putInt("room_id", room_id);
+    public void set_current_user(Integer id, String name, String email, String username, Integer points, String photo, String role) {
         mEditor.putInt("id", id);
-        mEditor.putString("time_in", time_in);
-        mEditor.putString("time_out", time_out);
-        mEditor.putInt("session_hours", session_hours);
+        mEditor.putString("name", name);
+        mEditor.putString("email", email);
+        mEditor.putString("username", username);
+        mEditor.putInt("points", points);
+        mEditor.putString("photo", photo);
+        mEditor.putString("role", role);
 
         Date date = new Date();
         long millis = date.getTime() + (7 * 24 * 60 * 60 * 1000);
@@ -37,33 +39,35 @@ public class SessionHandler {
         }
         User user = new User();
         user.setID(mPreferences.getInt("id", 0));
-        user.setRoomID(mPreferences.getInt("room_id", 0));
-        user.setTimeIn(mPreferences.getString("time_in", ""));
-        user.setTimeOut(mPreferences.getString("time_out", ""));
-        user.setSessionHours(mPreferences.getInt("session_hours", 0));
+        user.setName(mPreferences.getString("name", ""));
+        user.setEmail(mPreferences.getString("email", ""));
+        user.setUsername(mPreferences.getString("username", ""));
+        user.setPoints(mPreferences.getInt("points", 0));
+        user.setPhoto(mPreferences.getString("photo", ""));
+        user.setRole(mPreferences.getString("role", ""));
         user.setSessionExpiryDate(new Date(mPreferences.getLong("expires", 0)));
 
         return user;
     }
 
-    public void add_to_cart(String cart) {
-        mEditor.putString("cart", cart);
-        mEditor.commit();
-    }
-
-    public void remove_from_cart(String cart) {
-        mEditor.putString("cart", cart);
-        mEditor.commit();
-    }
-
-    public void clear_cart() {
-        mEditor.putString("cart", "");
-        mEditor.commit();
-    }
-
-    public String get_cart() {
-        return mPreferences.getString("cart", "");
-    }
+//    public void add_to_cart(String cart) {
+//        mEditor.putString("cart", cart);
+//        mEditor.commit();
+//    }
+//
+//    public void remove_from_cart(String cart) {
+//        mEditor.putString("cart", cart);
+//        mEditor.commit();
+//    }
+//
+//    public void clear_cart() {
+//        mEditor.putString("cart", "");
+//        mEditor.commit();
+//    }
+//
+//    public String get_cart() {
+//        return mPreferences.getString("cart", "");
+//    }
 
     public boolean isLoggedIn() {
         Date currentDate = new Date();

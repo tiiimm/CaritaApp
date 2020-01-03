@@ -6,10 +6,12 @@ import java.util.Date;
 
 public class User {
     Integer id;
-    Integer room_id;
-    String time_in;
-    String time_out;
-    Integer session_hours;
+    String name;
+    String email;
+    String username;
+    Integer points;
+    String photo;
+    String role;
     Date sessionExpiryDate;
 
     public void setSessionExpiryDate(Date sessionExpiryDate) {
@@ -28,35 +30,51 @@ public class User {
         return id;
     }
 
-    public void setRoomID(Integer RoomID) {
-        this.room_id = RoomID;
+    public void setName(String Name) {
+        this.name = Name;
     }
 
-    public Integer getRoomID() {
-        return room_id;
+    public String getName() {
+        return name;
     }
 
-    public void setTimeIn(String TimeIn) {
-        this.time_in = TimeIn;
+    public void setEmail(String Email) {
+        this.email = Email;
     }
 
-    public String getTimeIn() {
-        return time_in;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTimeOut(String TimeOut) {
-        this.time_out = TimeOut;
+    public void setUsername(String Username) {
+        this.username = Username;
     }
 
-    public String getTimeOut() {
-        return time_out;
+    public String getUsername() {
+        return username;
     }
 
-    public void setSessionHours(Integer SessionHours) {
-        this.session_hours = SessionHours;
+    public void setPoints(Integer Points) {
+        this.points = Points;
     }
 
-    public Integer getSessionHours() {
-        return session_hours;
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPhoto(String Photo) {
+        this.photo = Photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setRole(String Role) {
+        this.role = Role;
+    }
+
+    public String getRole() {
+        return role;
     }
 }
