@@ -24,6 +24,8 @@ public class CharitySetUp2Fragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_charity_set_up2, container, false);
 
+        configure();
+
         Button btn_next = root.findViewById(R.id.btn_next);
         Button btn_back = root.findViewById(R.id.btn_back);
 
@@ -43,5 +45,13 @@ public class CharitySetUp2Fragment extends Fragment {
             }
         });
         return root;
+    }
+
+    public void configure() {
+        Bundle bundle = getArguments();
+
+        if(bundle != null){
+            System.out.println(bundle.getString("key"));
+        }
     }
 }

@@ -174,6 +174,7 @@
                 android:text="Set your charity's logo"/>
 
             <EditText
+                android:id="@+id/text_organization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
@@ -183,6 +184,7 @@
                 android:hint="Charity Name"/>
 
             <EditText
+                android:id="@+id/text_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
@@ -192,6 +194,7 @@
                 android:hint="Charity Address"/>
 
             <EditText
+                android:id="@+id/text_contact_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
