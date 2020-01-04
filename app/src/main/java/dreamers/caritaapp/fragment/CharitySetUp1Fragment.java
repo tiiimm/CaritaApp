@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import dreamers.caritaapp.activity.SetUpActivity;
 public class CharitySetUp1Fragment extends Fragment {
 
     View root;
+    Bundle bundle;
+    ImageView image_charity;
     EditText text_organization;
     EditText text_address;
     EditText text_contact_number;
@@ -38,6 +41,14 @@ public class CharitySetUp1Fragment extends Fragment {
         text_address = root.findViewById(R.id.text_address);
         text_contact_number = root.findViewById(R.id.text_contact_number);
 
+        bundle = getArguments();
+        if (bundle != null) {
+            System.out.println(bundle);
+            configure();
+        }
+        else
+            bundle = new Bundle();
+
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +56,6 @@ public class CharitySetUp1Fragment extends Fragment {
                 String address = text_address.getText().toString();
                 String contact_number = text_contact_number.getText().toString();
                 Boolean valid = true;
-                Bundle bundle = new Bundle();
                 CharitySetUp2Fragment charitySetUp2Fragment = new CharitySetUp2Fragment();
 
                 if (organization.matches("")) {
@@ -60,16 +70,20 @@ public class CharitySetUp1Fragment extends Fragment {
                     text_contact_number.setError("Required");
                     valid = false;
                 }
+                if (contact_number.length()<10) {
+                    text_contact_number.setError("Required");
+                    valid = false;
+                }
 
                 if (valid){
                     bundle.putString("organization", organization);
                     bundle.putString("address", address);
                     bundle.putString("contact_number", contact_number);
                     charitySetUp2Fragment.setArguments(bundle);
-                }
 
-                getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
+                    getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                }
             }
         });
 
@@ -82,5 +96,13 @@ public class CharitySetUp1Fragment extends Fragment {
         });
 
         return root;
+    }
+
+    public void configure() {
+        if(bundle.getString("organization") != null && bundle.getString("address") != null && bundle.getString("contact_number") != null){
+            text_organization.setText(bundle.getString("organization"));
+            text_address.setText(bundle.getString("address"));
+            text_contact_number.setText(bundle.getString("contact_number"));
+        }
     }
 }
