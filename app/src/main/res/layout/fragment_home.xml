@@ -46,6 +46,7 @@
                     android:layout_weight=".5"/>
 
                 <TextView
+                    android:id="@+id/nav_home_charities"
                     android:layout_width="100sp"
                     android:layout_height="60sp"
                     android:gravity="center"
@@ -60,6 +61,7 @@
                     android:layout_weight=".5"/>
 
                 <TextView
+                    android:id="@+id/nav_home_events"
                     android:layout_width="100sp"
                     android:layout_height="60sp"
                     android:gravity="center"
@@ -72,6 +74,7 @@
                     android:layout_weight=".5"/>
 
                 <TextView
+                    android:id="@+id/nav_home_achievements"
                     android:layout_width="140sp"
                     android:layout_height="60sp"
                     android:gravity="center"

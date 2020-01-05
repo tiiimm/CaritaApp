@@ -38,7 +38,7 @@
             android:id="@+id/nav_charities"
             android:layout_width="50sp"
             android:layout_height="50sp"
-            android:src="@drawable/drawable_charities_selected"/>
+            android:src="@drawable/drawable_charities"/>
 
         <View
             android:layout_width="0px"
@@ -60,7 +60,7 @@
             android:id="@+id/nav_home"
             android:layout_width="80sp"
             android:layout_height="80sp"
-            android:src="@drawable/drawable_home"/>
+            android:src="@drawable/drawable_home_selected"/>
 
         <View
             android:layout_width="0px"
