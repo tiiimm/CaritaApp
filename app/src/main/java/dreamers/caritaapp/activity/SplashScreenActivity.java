@@ -8,6 +8,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.cloudinary.android.MediaManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import dreamers.caritaapp.R;
 
 public class SplashScreenActivity extends AppCompatActivity implements Animation.AnimationListener {
@@ -16,7 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
 
     ImageView logo;
 
-    public String url = "http://192.168.42.224:8000/api/";
+    public String url = "http://192.168.1.7:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +38,14 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
         logo.startAnimation(animBlink);
 
 
-//        try {
-//            Map config = new HashMap();
-//            config.put("cloud_name", "tim0923");
-//            MediaManager.init(this, config);
-//        }
-//        catch (Exception e){
-//            System.out.println(e);
-//        }
+        try {
+            Map config = new HashMap();
+            config.put("cloud_name", "tim0923");
+            MediaManager.init(this, config);
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     @Override

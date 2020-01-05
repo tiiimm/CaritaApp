@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
-    tools:context=".fragment.CharitySetUp2Fragment">
+    tools:context=".fragment.set_up.CharitySetUp2Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -169,6 +169,7 @@
 
             <VideoView
                 android:id="@+id/video_charity_bio"
+                android:visibility="gone"
                 android:layout_width="260sp"
                 android:layout_height="130sp"
                 android:layout_marginTop="10sp"/>
@@ -178,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6sp"
                 android:gravity="center"
-                android:text="Set your charity's logo"/>
+                android:text="Select a photo or video to best present your charity"/>
 
             <EditText
                 android:id="@+id/text_description"
@@ -192,6 +193,13 @@
                 android:inputType="textMultiLine"
                 android:background="@drawable/background_textbox"
                 android:hint="Description"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6sp"
+                android:gravity="center"
+                android:text="Help people know more about your charity"/>
 
             <EditText
                 android:id="@+id/text_preference"

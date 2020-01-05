@@ -1,4 +1,4 @@
-package dreamers.caritaapp.fragment;
+package dreamers.caritaapp.fragment.set_up;
 
 
 import android.content.Intent;

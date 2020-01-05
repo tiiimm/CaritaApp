@@ -50,24 +50,10 @@ public class SessionHandler {
         return user;
     }
 
-//    public void add_to_cart(String cart) {
-//        mEditor.putString("cart", cart);
-//        mEditor.commit();
-//    }
-//
-//    public void remove_from_cart(String cart) {
-//        mEditor.putString("cart", cart);
-//        mEditor.commit();
-//    }
-//
-//    public void clear_cart() {
-//        mEditor.putString("cart", "");
-//        mEditor.commit();
-//    }
-//
-//    public String get_cart() {
-//        return mPreferences.getString("cart", "");
-//    }
+    public void set_up_charity() {
+        mEditor.putString("role", "Charity");
+        mEditor.commit();
+    }
 
     public boolean isLoggedIn() {
         Date currentDate = new Date();

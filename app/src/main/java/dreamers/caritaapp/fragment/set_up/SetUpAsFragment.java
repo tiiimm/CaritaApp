@@ -1,4 +1,4 @@
-package dreamers.caritaapp.fragment;
+package dreamers.caritaapp.fragment.set_up;
 
 
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.LoginActivity;
 import dreamers.caritaapp.database.SessionHandler;
-import dreamers.caritaapp.database.User;
 
 /**
  * A simple {@link Fragment} subclass.

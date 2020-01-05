@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import dreamers.caritaapp.R;
-import dreamers.caritaapp.fragment.SetUpAsFragment;
 
 public class SetUpActivity extends AppCompatActivity {
 
