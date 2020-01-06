@@ -37,6 +37,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/image_profile_picture"
                 android:layout_width="140sp"
                 android:layout_height="140sp"
                 android:layout_below="@+id/view_bio"

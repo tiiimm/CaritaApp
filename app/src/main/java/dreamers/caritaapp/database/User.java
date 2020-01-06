@@ -12,6 +12,7 @@ public class User {
     Integer points;
     String photo;
     String role;
+    String organization;
     Date sessionExpiryDate;
 
     public void setSessionExpiryDate(Date sessionExpiryDate) {
@@ -76,5 +77,13 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public void setOrganization(String Organization) {
+        this.organization = Organization;
+    }
+
+    public String getOrganization() {
+        return organization;
     }
 }

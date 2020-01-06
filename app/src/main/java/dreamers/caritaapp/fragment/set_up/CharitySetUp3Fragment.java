@@ -201,7 +201,7 @@ public class CharitySetUp3Fragment extends Fragment {
                         }
                     }
                     else {
-                        sessionHandler.set_up_charity();
+                        sessionHandler.set_up("Charity", bundle.getString("organization"));
                         Toast.makeText(getActivity(),
                                 "Successful!", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();

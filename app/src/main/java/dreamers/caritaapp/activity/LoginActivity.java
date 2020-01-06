@@ -98,7 +98,12 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, res.getString("error"), Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), res.getString("role"));
+                        String organization = "";
+                        if (res.has("charity")) {
+                            JSONObject charity = new JSONObject(res.getString("charity"));
+                            organization = charity.getString("organization");
+                        }
+                        session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), res.getString("role"), organization);
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();
                         if (res.getString("role") == "null") {

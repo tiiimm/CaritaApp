@@ -18,7 +18,7 @@ public class SessionHandler {
         this.mEditor = mPreferences.edit();
     }
 
-    public void set_current_user(Integer id, String name, String email, String username, Integer points, String photo, String role) {
+    public void set_current_user(Integer id, String name, String email, String username, Integer points, String photo, String role, String organization) {
         mEditor.putInt("id", id);
         mEditor.putString("name", name);
         mEditor.putString("email", email);
@@ -26,6 +26,7 @@ public class SessionHandler {
         mEditor.putInt("points", points);
         mEditor.putString("photo", photo);
         mEditor.putString("role", role);
+        mEditor.putString("organization", organization);
 
         Date date = new Date();
         long millis = date.getTime() + (7 * 24 * 60 * 60 * 1000);
@@ -45,13 +46,15 @@ public class SessionHandler {
         user.setPoints(mPreferences.getInt("points", 0));
         user.setPhoto(mPreferences.getString("photo", ""));
         user.setRole(mPreferences.getString("role", ""));
+        user.setOrganization(mPreferences.getString("organization", ""));
         user.setSessionExpiryDate(new Date(mPreferences.getLong("expires", 0)));
 
         return user;
     }
 
-    public void set_up_charity() {
-        mEditor.putString("role", "Charity");
+    public void set_up(String role, String organization) {
+        mEditor.putString("role", role);
+        mEditor.putString("organization", organization);
         mEditor.commit();
     }
 

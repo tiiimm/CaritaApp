@@ -1,7 +1,9 @@
 package dreamers.caritaapp.fragment.home.settings;
 
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,8 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.SplashScreenActivity;
+import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
 import dreamers.caritaapp.fragment.home.SettingsFragment;
@@ -28,6 +44,9 @@ public class ProfileFragment extends Fragment {
     View root;
     SessionHandler sessionHandler;
     User user;
+    ImageView image_bio;
+    ImageView image_profile;
+    VideoView video_bio;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -47,9 +66,20 @@ public class ProfileFragment extends Fragment {
         final TextView nav_profile_about = root.findViewById(R.id.nav_profile_about);
         final TextView nav_profile_achievements = root.findViewById(R.id.nav_profile_achievements);
         final TextView nav_profile_events = root.findViewById(R.id.nav_profile_events);
+        image_bio = root.findViewById(R.id.image_charity_bio);
+        image_profile = root.findViewById(R.id.image_profile_picture);
+        video_bio = root.findViewById(R.id.video_charity_bio);
 
-        text_name.setText(user.getName());
-        text_username.setText("@"+user.getUsername());
+        if (user.getRole().matches("Philanthropist")) {
+            text_name.setText(user.getName());
+            text_username.setText("@"+user.getUsername());
+        }
+        else if (user.getRole().matches("Charity")) {
+            text_name.setText(user.getOrganization());
+            text_username.setText("");
+        }
+
+        configure();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,4 +122,39 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    public void configure() {
+        String request = "get_profile?user_id="+ user.getID();
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    if (res.getString("bio_path_type").matches("image")) {
+                        Glide.with(getActivity())
+                            .asBitmap()
+                            .load(MediaManager.get().url().generate(res.getString("bio_path")))
+                            .into(image_bio);
+                    }
+                    else if (res.getString("bio_path_type").matches("video")) {
+                        video_bio.setVideoURI(Uri.parse(MediaManager.get().url().resourceType("video").generate(res.getString("bio_path"))));
+                    }
+                    Glide.with(getActivity())
+                        .asBitmap()
+                        .load(MediaManager.get().url().generate(res.getString("photo")))
+                        .into(image_profile);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
 }

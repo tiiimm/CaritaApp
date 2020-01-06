@@ -122,7 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             }
                             else {
-                                session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), "");
+                                session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), "", "");
                                 Toast.makeText(SignupActivity.this,
                                         "Successful!", Toast.LENGTH_LONG).show();
                                 Intent i = new Intent(SignupActivity.this, SetUpActivity.class);
