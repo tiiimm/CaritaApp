@@ -21,7 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
 
     ImageView logo;
 
-    public String url = "http://192.168.1.7:8000/api/";
+    public String url = "http://192.168.42.224:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,8 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
         try {
             Map config = new HashMap();
             config.put("cloud_name", "tim0923");
+            config.put("api_key", "654321224285841");
+            config.put("api_secret", "8-rsCikyiUiLlD82_wTF6cyoYYo");
             MediaManager.init(this, config);
         }
         catch (Exception e){
