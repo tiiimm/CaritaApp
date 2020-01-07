@@ -16,9 +16,6 @@ import dreamers.caritaapp.fragment.home.home.HomeAchievementsFragment;
 import dreamers.caritaapp.fragment.home.home.HomeCharitiesFragment;
 import dreamers.caritaapp.fragment.home.home.HomeEventsFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HomeFragment extends Fragment {
 
     View root;
@@ -26,7 +23,6 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +33,8 @@ public class HomeFragment extends Fragment {
         final TextView nav_events = root.findViewById(R.id.nav_home_events);
         final TextView nav_achievements = root.findViewById(R.id.nav_home_achievements);
 
+        getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeCharitiesFragment()).commit();
+
         nav_charities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +44,7 @@ public class HomeFragment extends Fragment {
                 nav_events.setTextColor(Color.BLACK);
                 nav_achievements.setBackgroundResource(0);
                 nav_achievements.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeCharitiesFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeCharitiesFragment()).commit();
             }
         });
         nav_events.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +56,7 @@ public class HomeFragment extends Fragment {
                 nav_charities.setTextColor(Color.BLACK);
                 nav_achievements.setBackgroundResource(0);
                 nav_achievements.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeEventsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeEventsFragment()).commit();
             }
         });
         nav_achievements.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +68,10 @@ public class HomeFragment extends Fragment {
                 nav_charities.setTextColor(Color.BLACK);
                 nav_events.setBackgroundResource(0);
                 nav_events.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeAchievementsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeAchievementsFragment()).commit();
             }
         });
 
         return root;
     }
-
 }

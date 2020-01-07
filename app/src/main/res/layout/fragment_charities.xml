@@ -6,10 +6,12 @@
     android:background="#FFF"
     tools:context=".fragment.home.CharitiesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_charities"
+        android:layout_marginStart="50sp"
+        android:layout_marginEnd="50sp"
+        android:layout_marginBottom="50sp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

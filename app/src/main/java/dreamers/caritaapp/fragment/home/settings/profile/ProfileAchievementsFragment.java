@@ -76,7 +76,7 @@ public class ProfileAchievementsFragment extends Fragment {
                         if (achievement.getString("held_on_from").matches(achievement.getString("held_on_to")))
                             achievement_dates.add(achievement.getString("held_on_from"));
                         else
-                            achievement_dates.add(achievement.getString("held_on_from")+"-"+achievement.getString("held_on_to"));
+                            achievement_dates.add(achievement.getString("held_on_from")+" to "+achievement.getString("held_on_to"));
                         achievement_venues.add(achievement.getString("venue"));
                     }
                     initRecyclerView();

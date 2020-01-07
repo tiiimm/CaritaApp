@@ -110,7 +110,7 @@ public class CharitySetUp3Fragment extends Fragment {
                 charitySetUp2Fragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).commit();
             }
         });
         return root;

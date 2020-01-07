@@ -100,7 +100,7 @@ public class CharitySetUp2Fragment extends Fragment {
                     charitySetUp3Fragment.setArguments(bundle);
 
                     getFragmentManager().beginTransaction().remove(new CharitySetUp2Fragment()).commit();
-                    getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp3Fragment).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp3Fragment).commit();
                 }
             }
         });
@@ -122,7 +122,7 @@ public class CharitySetUp2Fragment extends Fragment {
                 charitySetUp1Fragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction().remove(new CharitySetUp2Fragment()).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp1Fragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp1Fragment).commit();
             }
         });
         return root;

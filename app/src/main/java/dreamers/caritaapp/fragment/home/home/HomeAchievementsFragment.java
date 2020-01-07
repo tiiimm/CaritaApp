@@ -4,7 +4,7 @@ package dreamers.caritaapp.fragment.home.home;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -76,7 +76,7 @@ public class HomeAchievementsFragment extends Fragment {
                         if (achievement.getString("held_on_from").matches(achievement.getString("held_on_to")))
                             achievement_dates.add(achievement.getString("held_on_from"));
                         else
-                            achievement_dates.add(achievement.getString("held_on_from")+"-"+achievement.getString("held_on_to"));
+                            achievement_dates.add(achievement.getString("held_on_from")+" to "+achievement.getString("held_on_to"));
                         achievement_venues.add(achievement.getString("venue"));
                     }
                     initRecyclerView();
@@ -94,10 +94,12 @@ public class HomeAchievementsFragment extends Fragment {
         });
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     private void initRecyclerView(){
+        System.out.println("hoy");
         RecyclerView recyclerView = root.findViewById(R.id.list_achievements);
         AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), achievement_titles, achievement_dates, achievement_venues, achievement_ids, achievement_photos);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

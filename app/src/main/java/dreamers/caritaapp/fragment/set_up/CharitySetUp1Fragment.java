@@ -128,7 +128,7 @@ public class CharitySetUp1Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fragment,new SetUpAsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new SetUpAsFragment()).commit();
             }
         });
 
@@ -203,7 +203,7 @@ public class CharitySetUp1Fragment extends Fragment {
                         charitySetUp2Fragment.setArguments(bundle);
 
                         getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
-                        getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).commit();
                     }
                 }
                 catch (JSONException e) {

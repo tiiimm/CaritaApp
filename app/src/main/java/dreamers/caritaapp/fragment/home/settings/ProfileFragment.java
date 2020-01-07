@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
                 nav_profile_achievements.setTextColor(Color.GRAY);
                 nav_profile_events.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAboutFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAboutFragment()).commit();
             }
         });
         nav_profile_achievements.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
                 nav_profile_about.setTextColor(Color.GRAY);
                 nav_profile_events.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAchievementsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAchievementsFragment()).commit();
             }
         });
         nav_profile_events.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class ProfileFragment extends Fragment {
                 nav_profile_about.setTextColor(Color.GRAY);
                 nav_profile_achievements.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileEventsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileEventsFragment()).commit();
             }
         });
 

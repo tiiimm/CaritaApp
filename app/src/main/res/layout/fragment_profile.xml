@@ -186,7 +186,7 @@
             android:id="@+id/fragment4"
             android:name="dreamers.caritaapp.fragment.home.settings.profile.ProfileAboutFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />]
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
