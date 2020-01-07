@@ -100,7 +100,7 @@ public class CharitySetUp2Fragment extends Fragment {
                     charitySetUp3Fragment.setArguments(bundle);
 
                     getFragmentManager().beginTransaction().remove(new CharitySetUp2Fragment()).commit();
-                    getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp3Fragment).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp3Fragment).addToBackStack(null).commit();
                 }
             }
         });
@@ -122,13 +122,13 @@ public class CharitySetUp2Fragment extends Fragment {
                 charitySetUp1Fragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction().remove(new CharitySetUp2Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp1Fragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp1Fragment).addToBackStack(null).commit();
             }
         });
         return root;
     }
 
-    public void configure() {
+    private void configure() {
         if(bundle.getString("description") != null && bundle.getString("preference") != null && bundle.getString("type") != null && bundle.getString("charity_bio") != null){
             text_description.setText(bundle.getString("description"));
             text_preference.setText(bundle.getString("preference"));
@@ -151,7 +151,7 @@ public class CharitySetUp2Fragment extends Fragment {
         }
     }
 
-    public void pick_bio() {
+    private void pick_bio() {
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {

@@ -11,8 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.database.SessionHandler;
+import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.home.settings.OwnAchievementsFragment;
 import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
+import dreamers.caritaapp.fragment.home.settings.OwnEventsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +28,8 @@ import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
 public class SettingsFragment extends Fragment {
 
     View root;
+    SessionHandler sessionHandler;
+    User user;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -30,13 +40,42 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_settings, container, false);
+        sessionHandler = new SessionHandler(getActivity());
+        user = sessionHandler.getUserDetails();
 
+        CircleImageView image_profile_picture = root.findViewById(R.id.image_profile_picture);
+        TextView text_username = root.findViewById(R.id.text_username);
         TextView btn_to_profile = root.findViewById(R.id.btn_to_profile);
+        ImageView btn_achievements = root.findViewById(R.id.btn_achievements);
+        ImageView btn_events = root.findViewById(R.id.btn_events);
+
+        Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(user.getPhoto())).into(image_profile_picture);
+        if (user.getRole().matches("Charity")) {
+            text_username.setText(user.getOrganization());
+        }
+        else if (user.getRole().matches("Philanthropist")) {
+            text_username.setText("@"+user.getUsername());
+        }
+
         btn_to_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
                 getFragmentManager().beginTransaction().replace(R.id.fragment2, new ProfileFragment()).commit();
+            }
+        });
+        btn_achievements.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, new OwnAchievementsFragment()).commit();
+            }
+        });
+        btn_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, new OwnEventsFragment()).commit();
             }
         });
 

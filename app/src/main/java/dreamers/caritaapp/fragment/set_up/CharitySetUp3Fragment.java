@@ -110,13 +110,13 @@ public class CharitySetUp3Fragment extends Fragment {
                 charitySetUp2Fragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
             }
         });
         return root;
     }
 
-    public void configure() {
+    private void configure() {
         if(bundle.getString("account_name") != null && bundle.getString("account_number") != null && bundle.getString("bank") != null){
             text_account_name.setText(bundle.getString("account_name"));
             text_account_number.setText(bundle.getString("account_number"));
@@ -124,7 +124,7 @@ public class CharitySetUp3Fragment extends Fragment {
         }
     }
 
-    public void set_up() {
+    private void set_up() {
         String image_charity = "";
         String charity_bio = "";
         String type = "";
@@ -169,7 +169,7 @@ public class CharitySetUp3Fragment extends Fragment {
         }
     }
 
-    public void save_to_database(String image_charity, String charity_bio, String type) {
+    private void save_to_database(final String image_charity, String charity_bio, String type) {
 
         String request = "set_up?user_id="+ user.getID() +"&role=Charity&contact_number="+ bundle.getString("contact_number") +
                 "&organization="+ bundle.getString("organization") +"&account_name="+ bundle.getString("account_name") +
@@ -201,7 +201,7 @@ public class CharitySetUp3Fragment extends Fragment {
                         }
                     }
                     else {
-                        sessionHandler.set_up("Charity", bundle.getString("organization"));
+                        sessionHandler.set_up("Charity", bundle.getString("organization"), image_charity);
                         Toast.makeText(getActivity(),
                                 "Successful!", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();

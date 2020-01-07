@@ -70,6 +70,11 @@ public class ProfileFragment extends Fragment {
         image_profile = root.findViewById(R.id.image_profile_picture);
         video_bio = root.findViewById(R.id.video_charity_bio);
 
+        Glide.with(getActivity())
+                .asBitmap()
+                .load(MediaManager.get().url().generate(user.getPhoto()))
+                .into(image_profile);
+
         if (user.getRole().matches("Philanthropist")) {
             text_name.setText(user.getName());
             text_username.setText("@"+user.getUsername());
@@ -122,7 +127,7 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    public void configure() {
+    private void configure() {
         String request = "get_profile?user_id="+ user.getID();
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
@@ -135,14 +140,14 @@ public class ProfileFragment extends Fragment {
                             .asBitmap()
                             .load(MediaManager.get().url().generate(res.getString("bio_path")))
                             .into(image_bio);
+                        image_bio.setVisibility(View.VISIBLE);
+                        video_bio.setVisibility(View.GONE);
                     }
                     else if (res.getString("bio_path_type").matches("video")) {
                         video_bio.setVideoURI(Uri.parse(MediaManager.get().url().resourceType("video").generate(res.getString("bio_path"))));
+                        video_bio.setVisibility(View.VISIBLE);
+                        image_bio.setVisibility(View.GONE);
                     }
-                    Glide.with(getActivity())
-                        .asBitmap()
-                        .load(MediaManager.get().url().generate(res.getString("photo")))
-                        .into(image_profile);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

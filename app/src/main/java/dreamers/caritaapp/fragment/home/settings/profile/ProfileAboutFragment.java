@@ -63,7 +63,7 @@ public class ProfileAboutFragment extends Fragment {
         return root;
     }
 
-    public void configure() {
+    private void configure() {
         String request = "get_profile?user_id="+ user.getID();
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {

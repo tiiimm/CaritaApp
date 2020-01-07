@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
                 nav_events.setTextColor(Color.BLACK);
                 nav_achievements.setBackgroundResource(0);
                 nav_achievements.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeCharitiesFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeCharitiesFragment()).addToBackStack(null).commit();
             }
         });
         nav_events.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
                 nav_charities.setTextColor(Color.BLACK);
                 nav_achievements.setBackgroundResource(0);
                 nav_achievements.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeEventsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeEventsFragment()).addToBackStack(null).commit();
             }
         });
         nav_achievements.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
                 nav_charities.setTextColor(Color.BLACK);
                 nav_events.setBackgroundResource(0);
                 nav_events.setTextColor(Color.BLACK);
-                getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeAchievementsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment3,new HomeAchievementsFragment()).addToBackStack(null).commit();
             }
         });
 

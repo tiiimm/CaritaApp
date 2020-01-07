@@ -32,7 +32,7 @@ public class PhilanthropistSetUp2Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp2Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment,new PhilanthropistSetUp3Fragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new PhilanthropistSetUp3Fragment()).addToBackStack(null).commit();
             }
         });
 
@@ -40,7 +40,7 @@ public class PhilanthropistSetUp2Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp2Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment,new PhilanthropistSetUp1Fragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new PhilanthropistSetUp1Fragment()).addToBackStack(null).commit();
             }
         });
 

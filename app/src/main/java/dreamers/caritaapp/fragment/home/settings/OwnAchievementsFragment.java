@@ -1,5 +1,4 @@
-package dreamers.caritaapp.fragment.home.settings.profile;
-
+package dreamers.caritaapp.fragment.home.settings;
 
 import android.os.Bundle;
 
@@ -10,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,11 +30,13 @@ import dreamers.caritaapp.adapter.AchievementsAdapter;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.home.SettingsFragment;
+import dreamers.caritaapp.fragment.home.settings.achievement.UploadAchievementFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileAchievementsFragment extends Fragment {
+public class OwnAchievementsFragment extends Fragment {
 
     View root;
     SessionHandler sessionHandler;
@@ -45,18 +48,37 @@ public class ProfileAchievementsFragment extends Fragment {
     private ArrayList<String> achievement_venues = new ArrayList<>();
     private ArrayList<String> achievement_dates = new ArrayList<>();
 
-    public ProfileAchievementsFragment() {
+    public OwnAchievementsFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_profile_achievements, container, false);
+        root = inflater.inflate(R.layout.fragment_own_achievements, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
 
         load_achievements();
+
+        FloatingActionButton btn_add = root.findViewById(R.id.btn_add);
+        ImageView btn_back = root.findViewById(R.id.arrow_back);
+
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new OwnAchievementsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, new UploadAchievementFragment()).commit();
+            }
+        });
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new OwnAchievementsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, new SettingsFragment()).commit();
+            }
+        });
 
         return root;
     }

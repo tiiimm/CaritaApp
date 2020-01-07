@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
                 nav_points.setImageResource(R.drawable.drawable_points);
                 nav_home.setImageResource(R.drawable.drawable_home);
                 nav_settings.setImageResource(R.drawable.drawable_settings);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment2,new CharitiesFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment2,new CharitiesFragment()).addToBackStack(null).commit();
             }
         });
         nav_points.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                 nav_charities.setImageResource(R.drawable.drawable_charities);
                 nav_home.setImageResource(R.drawable.drawable_home);
                 nav_settings.setImageResource(R.drawable.drawable_settings);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment2,new PointsFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment2,new PointsFragment()).addToBackStack(null).commit();
             }
         });
         nav_home.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                 nav_charities.setImageResource(R.drawable.drawable_charities);
                 nav_points.setImageResource(R.drawable.drawable_points);
                 nav_settings.setImageResource(R.drawable.drawable_settings);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment2,new HomeFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment2,new HomeFragment()).addToBackStack(null).commit();
             }
         });
         nav_settings.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 nav_charities.setImageResource(R.drawable.drawable_charities);
                 nav_points.setImageResource(R.drawable.drawable_points);
                 nav_home.setImageResource(R.drawable.drawable_home);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment2,new SettingsFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment2,new SettingsFragment()).addToBackStack(null).commit();
             }
         });
         nav_logout.setOnClickListener(new View.OnClickListener() {

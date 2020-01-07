@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    tools:context=".fragment.home.settings.achievement.UploadAchievementFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ACHIEVEMENT DETAILS"
+            android:layout_marginTop="50sp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/image_achievement"
+            android:layout_width="160sp"
+            android:layout_height="100sp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/background_card_display"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:gravity="center"
+            android:text="Upload a shot of your achievement"/>
+
+        <EditText
+            android:id="@+id/text_achievement_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
+            android:inputType="textPersonName"
+            android:background="@drawable/background_textbox"
+            android:hint="Title"/>
+
+        <EditText
+            android:id="@+id/text_achievement_venue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
+            android:inputType="textPersonName"
+            android:background="@drawable/background_textbox"
+            android:hint="Venue"/>
+
+        <EditText
+            android:id="@+id/text_achievement_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/background_textbox"
+            android:hint="Description"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/text_achievement_date_from"
+                android:layout_width="0px"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10sp"
+                android:paddingStart="20sp"
+                android:paddingEnd="20sp"
+                android:inputType="textPersonName"
+                android:background="@drawable/background_textbox"
+                android:hint="From"/>
+
+            <EditText
+                android:id="@+id/text_achievement_date_to"
+                android:layout_width="0px"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:paddingStart="20sp"
+                android:paddingEnd="20sp"
+                android:inputType="textPersonName"
+                android:background="@drawable/background_textbox"
+                android:hint="To"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:background="@drawable/background_button"
+            android:text="UPLOAD"
+            android:textColor="#FFF"/>
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:background="@drawable/background_button_back"
+            android:text="BACK"
+            android:textColor="#FFF"/>
+
+    </LinearLayout>
+
+</FrameLayout>

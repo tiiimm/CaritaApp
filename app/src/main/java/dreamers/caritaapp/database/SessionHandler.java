@@ -52,9 +52,10 @@ public class SessionHandler {
         return user;
     }
 
-    public void set_up(String role, String organization) {
+    public void set_up(String role, String organization, String photo) {
         mEditor.putString("role", role);
         mEditor.putString("organization", organization);
+        mEditor.putString("photo", photo);
         mEditor.commit();
     }
 

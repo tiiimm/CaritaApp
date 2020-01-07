@@ -128,14 +128,14 @@ public class CharitySetUp1Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
-                getFragmentManager().beginTransaction().add(R.id.fragment,new SetUpAsFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new SetUpAsFragment()).addToBackStack(null).commit();
             }
         });
 
         return root;
     }
 
-    public void configure() {
+    private void configure() {
         if(bundle.getString("organization") != null && bundle.getString("address") != null && bundle.getString("contact_number") != null && bundle.getString("image_charity") != null){
             text_organization.setText(bundle.getString("organization"));
             text_address.setText(bundle.getString("address"));
@@ -163,7 +163,7 @@ public class CharitySetUp1Fragment extends Fragment {
             image_path = "";
     }
 
-    public void validate(final String organization, final String contact_number, final String address) {
+    private void validate(final String organization, final String contact_number, final String address) {
         String request = "validate_charity?user_id="+ user.getID() +"&organization="+ organization +"&contact_number="+ contact_number;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
@@ -203,7 +203,7 @@ public class CharitySetUp1Fragment extends Fragment {
                         charitySetUp2Fragment.setArguments(bundle);
 
                         getFragmentManager().beginTransaction().remove(new CharitySetUp1Fragment()).commit();
-                        getFragmentManager().beginTransaction().add(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fragment, charitySetUp2Fragment).addToBackStack(null).commit();
                     }
                 }
                 catch (JSONException e) {

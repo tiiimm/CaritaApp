@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login(String email, String password) {
+    private void login(String email, String password) {
         String request = "login?email="+ email +"&password="+ password;
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
@@ -99,11 +99,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else {
                         String organization = "";
+                        String photo = res.getString("photo");
                         if (res.has("charity")) {
                             JSONObject charity = new JSONObject(res.getString("charity"));
                             organization = charity.getString("organization");
+                            photo = charity.getString("photo");
                         }
-                        session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), res.getString("role"), organization);
+                        session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization);
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();
                         if (res.getString("role") == "null") {
