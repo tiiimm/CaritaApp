@@ -40,6 +40,7 @@ public class HomeCharitiesFragment extends Fragment {
     User user;
 
     private ArrayList<Integer> charity_ids = new ArrayList<>();
+    private ArrayList<Integer> charity_user_ids = new ArrayList<>();
     private ArrayList<String> charity_names = new ArrayList<>();
     private ArrayList<String> charity_photos = new ArrayList<>();
     private ArrayList<String> charity_addresses = new ArrayList<>();
@@ -72,6 +73,7 @@ public class HomeCharitiesFragment extends Fragment {
                     for (int i = 0; i<res.length(); i++) {
                         JSONObject charity = res.getJSONObject(i);
                         charity_ids.add(charity.getInt("id"));
+                        charity_user_ids.add(charity.getInt("user_id"));
                         charity_photos.add(charity.getString("photo"));
                         charity_names.add(charity.getString("organization"));
                         charity_addresses.add(charity.getString("address"));
@@ -95,7 +97,7 @@ public class HomeCharitiesFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
-        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

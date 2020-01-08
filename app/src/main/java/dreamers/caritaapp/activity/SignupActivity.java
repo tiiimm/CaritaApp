@@ -19,8 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;

@@ -13,8 +13,4 @@ public class SetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
     }
-
-    @Override
-    public void onBackPressed() {
-    }
 }

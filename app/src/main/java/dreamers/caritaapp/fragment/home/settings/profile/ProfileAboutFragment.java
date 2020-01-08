@@ -25,6 +25,7 @@ import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,8 +33,7 @@ import dreamers.caritaapp.database.User;
 public class ProfileAboutFragment extends Fragment {
 
     View root;
-    SessionHandler sessionHandler;
-    User user;
+    Bundle bundle;
     TextView text_description;
     TextView text_address;
     TextView text_contact_number;
@@ -49,8 +49,6 @@ public class ProfileAboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root =inflater.inflate(R.layout.fragment_profile_about, container, false);
-        sessionHandler = new SessionHandler(getActivity());
-        user = sessionHandler.getUserDetails();
 
         text_description = root.findViewById(R.id.text_description);
         text_address = root.findViewById(R.id.text_address);
@@ -58,14 +56,19 @@ public class ProfileAboutFragment extends Fragment {
         text_bank_account = root.findViewById(R.id.text_bank_account);
         text_bank = root.findViewById(R.id.text_bank);
 
-        configure();
+        bundle = getArguments();
+
+        if (bundle.getString("role").matches("Charity")) {
+            System.out.println("MATECHES");
+            configure();
+        }
 
         return root;
     }
 
     private void configure() {
-        String request = "get_profile?user_id="+ user.getID();
-        System.out.println(request);
+        String request = "get_profile?user_id="+ bundle.getInt("user_id");
+        System.out.println("about"+request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

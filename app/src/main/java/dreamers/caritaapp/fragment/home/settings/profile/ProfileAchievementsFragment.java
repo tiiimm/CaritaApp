@@ -36,8 +36,7 @@ import dreamers.caritaapp.database.User;
 public class ProfileAchievementsFragment extends Fragment {
 
     View root;
-    SessionHandler sessionHandler;
-    User user;
+    Bundle bundle;
 
     private ArrayList<Integer> achievement_ids = new ArrayList<>();
     private ArrayList<String> achievement_titles = new ArrayList<>();
@@ -53,16 +52,19 @@ public class ProfileAchievementsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile_achievements, container, false);
-        sessionHandler = new SessionHandler(getActivity());
-        user = sessionHandler.getUserDetails();
 
-        load_achievements();
+        bundle = getArguments();
+        System.out.println(bundle);
+
+        if (bundle.getString("role").matches("Charity")) {
+            load_achievements();
+        }
 
         return root;
     }
 
     private void load_achievements() {
-        String request = "get_own_achievements?user_id="+ user.getID();
+        String request = "get_own_achievements?user_id="+ bundle.getInt("user_id");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

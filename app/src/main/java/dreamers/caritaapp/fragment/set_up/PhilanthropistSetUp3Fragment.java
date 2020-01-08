@@ -10,13 +10,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.cloudinary.android.MediaManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.HomeActivity;
+import dreamers.caritaapp.activity.SplashScreenActivity;
+import dreamers.caritaapp.database.MySingleton;
+import dreamers.caritaapp.database.SessionHandler;
+import dreamers.caritaapp.database.User;
 
 public class PhilanthropistSetUp3Fragment extends Fragment {
 
     View root;
+    SessionHandler sessionHandler;
+    User user;
+    Bundle bundle;
 
     public PhilanthropistSetUp3Fragment() {
         // Required empty public constructor
@@ -26,27 +44,86 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_philanthropist_set_up3, container, false);
+        sessionHandler = new SessionHandler(getActivity());
+        user = sessionHandler.getUserDetails();
 
         Button btn_finish = root.findViewById(R.id.btn_finish);
         Button btn_back = root.findViewById(R.id.btn_back);
 
+        bundle = getArguments();
+
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp3Fragment()).commit();
-                Intent i = new Intent(getActivity(), HomeActivity.class);
-                startActivity(i);
+                String image_philanthropist = "";
+                String timestamp = String.valueOf(System.currentTimeMillis());
+                if (!bundle.getString("image_philanthropist").matches("")) {
+                    MediaManager.get().upload(bundle.getString("image_philanthropist"))
+                            .option("resource_type", "image")
+                            .option("folder", "carita/")
+                            .option("public_id", timestamp)
+                            .option("overwrite", true)
+                            .dispatch();
+
+                    image_philanthropist = timestamp + bundle.getString("image_philanthropist").substring(bundle.getString("image_philanthropist").lastIndexOf("."));
+                    image_philanthropist = "carita/" + image_philanthropist;
+                }
+
+                if (image_philanthropist.matches(""))
+                    image_philanthropist = "carita/profile_picture.png";
+
+                set_up(image_philanthropist);
             }
         });
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PhilanthropistSetUp2Fragment philanthropistSetUp2Fragment = new PhilanthropistSetUp2Fragment();
+
+                philanthropistSetUp2Fragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp3Fragment()).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fragment,new PhilanthropistSetUp2Fragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, philanthropistSetUp2Fragment).commit();
             }
         });
 
         return root;
+    }
+
+    private void set_up(final String photo) {
+        String request = "set_up?user_id="+ user.getID() +"&contact_number="+ bundle.getString("contact_number") +"&photo="+ photo +"&role=Philanthropist&birthday=&sex=";
+        System.out.println(request);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    if (res.has("errors")){
+                    }
+                    else {
+                        sessionHandler.set_up("Philanthropist", "", photo);
+                        Toast.makeText(getActivity(),
+                                "Successful!", Toast.LENGTH_LONG).show();
+                        getFragmentManager().beginTransaction().remove(new PhilanthropistSetUp3Fragment()).commit();
+                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(),
+                            "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 }

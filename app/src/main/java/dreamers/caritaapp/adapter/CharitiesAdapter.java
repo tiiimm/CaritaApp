@@ -1,6 +1,7 @@
 package dreamers.caritaapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,10 +19,12 @@ import com.cloudinary.android.MediaManager;
 import java.util.ArrayList;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
 
 public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.ViewHolder> {
 
     private ArrayList<Integer> charity_ids;
+    private ArrayList<Integer> charity_user_ids;
     private ArrayList<String> charity_names;
     private ArrayList<String> charity_photos;
     private ArrayList<String> charity_addresss;
@@ -27,8 +32,9 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
 
     private Context mContext;
 
-    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos) {
+    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids) {
         charity_ids = ids;
+        charity_user_ids = user_ids;
         charity_names = names;
         charity_photos = photos;
         charity_addresss = addresss;
@@ -53,6 +59,25 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         holder.text_charity_name.setText(charity_names.get(position));
         holder.text_charity_address.setText(charity_addresss.get(position));
         holder.text_charity_contact.setText(charity_contacts.get(position));
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                ProfileFragment profileFragment = new ProfileFragment();
+
+                bundle.putInt("user_id", charity_user_ids.get(position));
+                bundle.putString("name", charity_names.get(position));
+                bundle.putString("username", "");
+                bundle.putString("photo", charity_photos.get(position));
+                bundle.putString("role", "Charity");
+                profileFragment.setArguments(bundle);
+
+                AppCompatActivity appCompatActivity = (AppCompatActivity) mContext;
+                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment2, profileFragment).commit();
+            }
+        });
 
 //        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override

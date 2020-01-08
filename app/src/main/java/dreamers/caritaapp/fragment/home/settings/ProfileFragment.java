@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -44,6 +46,7 @@ public class ProfileFragment extends Fragment {
     View root;
     SessionHandler sessionHandler;
     User user;
+    Bundle bundle;
     ImageView image_bio;
     ImageView image_profile;
     VideoView video_bio;
@@ -51,7 +54,6 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,22 +71,38 @@ public class ProfileFragment extends Fragment {
         image_bio = root.findViewById(R.id.image_charity_bio);
         image_profile = root.findViewById(R.id.image_profile_picture);
         video_bio = root.findViewById(R.id.video_charity_bio);
+        Button btn_donate = root.findViewById(R.id.btn_donate);
+        LinearLayout view_charity = root.findViewById(R.id.view_charity);
+        final ProfileAboutFragment profileAboutFragment = new ProfileAboutFragment();
+
+        bundle = getArguments();
+        if (user.getID() != bundle.getInt("user_id")) {
+            btn_donate.setVisibility(View.VISIBLE);
+        }
+
+        text_name.setText(bundle.getString("name"));
+        text_username.setText(bundle.getString("username"));
+
+        if (bundle.getString("role").matches("Charity")) {
+            profileAboutFragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction().replace(R.id.fragment4, profileAboutFragment).commit();
+            configure();
+        }
+        else {
+            view_charity.setVisibility(View.GONE);
+            Glide.with(getActivity())
+                    .asBitmap()
+                    .load(MediaManager.get().url().generate("carita/default_bio"))
+                    .into(image_bio);
+            image_bio.setVisibility(View.VISIBLE);
+            video_bio.setVisibility(View.GONE);
+        }
 
         Glide.with(getActivity())
                 .asBitmap()
-                .load(MediaManager.get().url().generate(user.getPhoto()))
+                .load(MediaManager.get().url().generate(bundle.getString("photo")))
                 .into(image_profile);
-
-        if (user.getRole().matches("Philanthropist")) {
-            text_name.setText(user.getName());
-            text_username.setText("@"+user.getUsername());
-        }
-        else if (user.getRole().matches("Charity")) {
-            text_name.setText(user.getOrganization());
-            text_username.setText("");
-        }
-
-        configure();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +118,9 @@ public class ProfileFragment extends Fragment {
                 nav_profile_achievements.setTextColor(Color.GRAY);
                 nav_profile_events.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAboutFragment()).commit();
+                profileAboutFragment.setArguments(bundle);
+
+                getFragmentManager().beginTransaction().replace(R.id.fragment4, profileAboutFragment).commit();
             }
         });
         nav_profile_achievements.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +130,10 @@ public class ProfileFragment extends Fragment {
                 nav_profile_about.setTextColor(Color.GRAY);
                 nav_profile_events.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileAchievementsFragment()).commit();
+                ProfileAchievementsFragment profileAchievementsFragment = new ProfileAchievementsFragment();
+                profileAchievementsFragment.setArguments(bundle);
+
+                getFragmentManager().beginTransaction().replace(R.id.fragment4, profileAchievementsFragment).commit();
             }
         });
         nav_profile_events.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +143,10 @@ public class ProfileFragment extends Fragment {
                 nav_profile_about.setTextColor(Color.GRAY);
                 nav_profile_achievements.setTextColor(Color.GRAY);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment4,new ProfileEventsFragment()).commit();
+                ProfileEventsFragment profileEventsFragment = new ProfileEventsFragment();
+                profileEventsFragment.setArguments(bundle);
+
+                getFragmentManager().beginTransaction().replace(R.id.fragment4, profileEventsFragment).commit();
             }
         });
 
@@ -128,7 +154,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void configure() {
-        String request = "get_profile?user_id="+ user.getID();
+        String request = "get_profile?user_id="+ bundle.getInt("user_id");
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override

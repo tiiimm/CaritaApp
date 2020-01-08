@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +49,7 @@ public class SettingsFragment extends Fragment {
         TextView btn_to_profile = root.findViewById(R.id.btn_to_profile);
         ImageView btn_achievements = root.findViewById(R.id.btn_achievements);
         ImageView btn_events = root.findViewById(R.id.btn_events);
+        LinearLayout view_charity = root.findViewById(R.id.view_charity);
 
         Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(user.getPhoto())).into(image_profile_picture);
         if (user.getRole().matches("Charity")) {
@@ -55,13 +57,29 @@ public class SettingsFragment extends Fragment {
         }
         else if (user.getRole().matches("Philanthropist")) {
             text_username.setText("@"+user.getUsername());
+            view_charity.setVisibility(View.GONE);
         }
 
         btn_to_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                ProfileFragment profileFragment = new ProfileFragment();
+
+                bundle.putInt("user_id", user.getID());
+                if (user.getRole().matches("Charity")) {
+                    bundle.putString("name", user.getOrganization());
+                }
+                else {
+                    bundle.putString("name", user.getName());
+                }
+                bundle.putString("username", "@"+user.getUsername());
+                bundle.putString("photo", user.getPhoto());
+                bundle.putString("role", user.getRole());
+                profileFragment.setArguments(bundle);
+
                 getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
-                getFragmentManager().beginTransaction().replace(R.id.fragment2, new ProfileFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, profileFragment).commit();
             }
         });
         btn_achievements.setOnClickListener(new View.OnClickListener() {

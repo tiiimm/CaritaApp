@@ -73,6 +73,17 @@
             android:textSize="18sp"
             android:text="username"/>
 
+        <Button
+            android:id="@+id/btn_donate"
+            android:layout_width="80sp"
+            android:layout_height="40sp"
+            android:layout_marginTop="10sp"
+            android:visibility="gone"
+            android:background="@drawable/background_selected"
+            android:text="Donate"
+            android:layout_gravity="center"
+            android:textColor="#FFF"/>
+
         <LinearLayout
             android:id="@+id/view_details"
             android:layout_width="match_parent"
@@ -123,70 +134,77 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_marginTop="10sp"
-            android:layout_width="match_parent"
-            android:layout_height="5sp"
-            android:src="@drawable/drawable_long_line"/>
-
         <LinearLayout
+            android:id="@+id/view_charity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <TextView
-                android:id="@+id/nav_profile_about"
-                android:textColor="#FF00"
-                android:layout_width="0px"
-                android:layout_weight=".5"
+            <ImageView
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="5sp"
+                android:src="@drawable/drawable_long_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:text="About"/>
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="5sp"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
+                <TextView
+                    android:id="@+id/nav_profile_about"
+                    android:textColor="#FF00"
+                    android:layout_width="0px"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="About"/>
 
-            <TextView
-                android:id="@+id/nav_profile_achievements"
-                android:layout_width="0px"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:text="Achievements"/>
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="5sp"
-                android:layout_height="match_parent"
-                android:background="?android:attr/listDivider" />
+                <TextView
+                    android:id="@+id/nav_profile_achievements"
+                    android:layout_width="0px"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="Achievements"/>
 
-            <TextView
-                android:id="@+id/nav_profile_events"
-                android:layout_width="0px"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:text="Events"/>
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="5sp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
 
+                <TextView
+                    android:id="@+id/nav_profile_events"
+                    android:layout_width="0px"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="Events"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5sp"
+                android:src="@drawable/drawable_long_line"/>
+
+            <FrameLayout
+                android:id="@+id/fragment4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="5sp"
-            android:src="@drawable/drawable_long_line"/>
-
-        <fragment
-            android:id="@+id/fragment4"
-            android:name="dreamers.caritaapp.fragment.home.settings.profile.ProfileAboutFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 
