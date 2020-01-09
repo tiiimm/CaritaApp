@@ -49,20 +49,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        try {
-            if (user.getRole().matches("")) {
-                Intent i = new Intent(LoginActivity.this, SetUpActivity.class);
-                startActivity(i);
-            }
-            else {
-                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(i);
-            }
-        }
-        catch (Exception e) {
-
-        }
-
         TextView btn_signup = findViewById(R.id.btn_signup);
 
         final EditText text_email = findViewById(R.id.text_email);

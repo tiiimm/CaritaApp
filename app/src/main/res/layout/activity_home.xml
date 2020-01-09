@@ -9,7 +9,7 @@
     android:background="#FFF"
     tools:context=".activity.HomeActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment2"
         android:name="dreamers.caritaapp.fragment.home.HomeFragment"
         android:layout_width="match_parent"
@@ -35,10 +35,10 @@
             android:layout_weight="1"/>
 
         <ImageView
-            android:id="@+id/nav_charities"
+            android:id="@+id/nav_home"
             android:layout_width="50sp"
             android:layout_height="50sp"
-            android:src="@drawable/drawable_charities"/>
+            android:src="@drawable/drawable_charities_selected"/>
 
         <View
             android:layout_width="0px"
@@ -57,10 +57,9 @@
             android:layout_weight="1"/>
 
         <ImageView
-            android:id="@+id/nav_home"
             android:layout_width="80sp"
             android:layout_height="80sp"
-            android:src="@drawable/drawable_home_selected"/>
+            android:src="@drawable/drawable_home"/>
 
         <View
             android:layout_width="0px"

@@ -8,9 +8,8 @@
     android:gravity="center_horizontal"
     tools:context=".activity.SetUpActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
-        android:name="dreamers.caritaapp.fragment.set_up.SetUpAsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

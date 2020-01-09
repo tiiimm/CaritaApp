@@ -24,6 +24,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,11 +46,12 @@ import dreamers.caritaapp.fragment.home.settings.profile.ProfileEventsFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements RewardedVideoAdListener {
 
     View root;
     SessionHandler sessionHandler;
     User user;
+    RewardedVideoAd mRewardedVideoAd;
     Bundle bundle;
     ImageView image_bio;
     ImageView image_profile;
@@ -61,6 +67,11 @@ public class ProfileFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+
+        loadRewardedVideoAd();
 
         ImageView btn_back = root.findViewById(R.id.arrow_back);
         TextView text_name = root.findViewById(R.id.text_name);
@@ -149,6 +160,14 @@ public class ProfileFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fragment4, profileEventsFragment).commit();
             }
         });
+        btn_donate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
+                }
+            }
+        });
 
         return root;
     }
@@ -187,5 +206,50 @@ public class ProfileFragment extends Fragment {
             }
         });
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+                new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        loadRewardedVideoAd();
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
     }
 }
