@@ -2,26 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dreamers.caritaapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.SetUpActivity"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".activity.HomeActivity"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".activity.SignupActivity"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".activity.LoginActivity"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".activity.SplashScreenActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.CompanyActivity"></activity>
+        <activity
+            android:name=".activity.SetUpActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.SignupActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.SplashScreenActivity"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

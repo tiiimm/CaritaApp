@@ -36,6 +36,7 @@ public class SetUpAsFragment extends Fragment {
 
         ImageView image_charity = root.findViewById(R.id.image_charity);
         ImageView image_philanthropist = root.findViewById(R.id.image_philanthropist);
+        ImageView image_company = root.findViewById(R.id.image_company);
         TextView btn_switch_account = root.findViewById(R.id.btn_switch_account);
 
         image_charity.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +52,14 @@ public class SetUpAsFragment extends Fragment {
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new SetUpAsFragment()).commit();
                 getFragmentManager().beginTransaction().replace(R.id.fragment,new PhilanthropistSetUp1Fragment()).commit();
+            }
+        });
+
+        image_company.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new SetUpAsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new CompanySetUp1Fragment()).commit();
             }
         });
 
