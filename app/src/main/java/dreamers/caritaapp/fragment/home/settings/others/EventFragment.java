@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
@@ -33,11 +34,11 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     RewardedVideoAd mRewardedVideoAd;
 
     ImageView image_event;
-    EditText text_title;
-    EditText text_description;
-    EditText text_date;
-    EditText text_venue;
-    EditText text_open_until;
+    TextView text_title;
+    TextView text_description;
+    TextView text_date;
+    TextView text_venue;
+    TextView text_open_until;
 
     public EventFragment() {
         // Required empty public constructor
@@ -58,8 +59,6 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
         bundle = getArguments();
 
-        configure();
-
         Button btn_donate = root.findViewById(R.id.btn_donate);
 
         btn_donate.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +76,8 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
         text_date = root.findViewById(R.id.text_date);
         text_venue = root.findViewById(R.id.text_venue);
         text_open_until = root.findViewById(R.id.text_open_until);
+
+        configure();
 
         return root;
     }

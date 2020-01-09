@@ -1,6 +1,7 @@
 package dreamers.caritaapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +18,7 @@ import com.cloudinary.android.MediaManager;
 import java.util.ArrayList;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.fragment.home.settings.others.EventFragment;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
 
@@ -53,6 +56,28 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         holder.text_event_title.setText(event_titles.get(position));
         holder.text_event_date.setText(event_dates.get(position));
         holder.text_event_venue.setText(event_venues.get(position));
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                EventFragment eventFragment = new EventFragment();
+
+                bundle.putString("event_id", event_ids.get(position).toString());
+                bundle.putString("title", event_titles.get(position));
+                bundle.putString("description", "");
+                bundle.putString("photo", event_photos.get(position));
+                bundle.putString("venue", event_venues.get(position));
+                bundle.putString("date", event_dates.get(position));
+                bundle.putString("open_until", event_dates.get(position));
+                eventFragment.setArguments(bundle);
+
+                System.out.println(bundle);
+
+                AppCompatActivity appCompatActivity = (AppCompatActivity) mContext;
+                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment2, eventFragment).commit();
+            }
+        });
 
 //        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
