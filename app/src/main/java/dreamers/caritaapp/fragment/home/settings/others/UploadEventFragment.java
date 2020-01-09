@@ -1,4 +1,4 @@
-package dreamers.caritaapp.fragment.home.settings.achievement;
+package dreamers.caritaapp.fragment.home.settings.others;
 
 
 import android.Manifest;

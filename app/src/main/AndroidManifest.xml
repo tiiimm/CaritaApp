@@ -13,11 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.SetUpActivity"></activity>
-        <activity android:name=".activity.HomeActivity" />
-        <activity android:name=".activity.SignupActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.SplashScreenActivity">
+        <activity android:name=".activity.SetUpActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".activity.HomeActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".activity.SignupActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".activity.SplashScreenActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

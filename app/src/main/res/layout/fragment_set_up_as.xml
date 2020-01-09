@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
+    android:fillViewport="true"
     tools:context=".fragment.set_up.SetUpAsFragment">
 
     <LinearLayout
@@ -21,54 +22,67 @@
             android:text="Register as:"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_weight=".5"
+            <ImageView
+                android:id="@+id/image_charity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/image_charity"/>
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:text="Charity"
+                android:gravity="center"
+                android:textSize="25sp"/>
 
-                <ImageView
-                    android:id="@+id/image_charity"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/image_charity"/>
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Charity"
-                    android:gravity="center"
-                    android:textSize="25sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:orientation="vertical"
+            android:gravity="center">
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/image_philanthropist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/image_philanthropist"/>
 
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_weight=".5"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:text="Philanthropist"
+                android:gravity="center"
+                android:textSize="25sp"/>
 
-                <ImageView
-                    android:id="@+id/image_philanthropist"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/image_philanthropist"/>
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Philanthropist"
-                    android:gravity="center"
-                    android:textSize="25sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:orientation="vertical"
+            android:gravity="center">
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/image_company"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/image_philanthropist"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Company"
+                android:gravity="center"
+                android:textSize="25sp"/>
 
         </LinearLayout>
 
@@ -83,4 +97,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

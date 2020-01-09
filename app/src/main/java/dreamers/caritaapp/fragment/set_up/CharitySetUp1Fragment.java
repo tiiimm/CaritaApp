@@ -101,6 +101,7 @@ public class CharitySetUp1Fragment extends Fragment {
                 String organization = text_organization.getText().toString();
                 String address = text_address.getText().toString();
                 String contact_number = text_contact_number.getText().toString();
+                valid = true;
 
                 if (organization.matches("")) {
                     text_organization.setError("Required");

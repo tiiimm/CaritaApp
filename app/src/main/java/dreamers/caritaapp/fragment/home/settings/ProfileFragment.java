@@ -33,6 +33,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
@@ -54,7 +55,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     RewardedVideoAd mRewardedVideoAd;
     Bundle bundle;
     ImageView image_bio;
-    ImageView image_profile;
+    CircleImageView image_profile;
     VideoView video_bio;
 
     public ProfileFragment() {

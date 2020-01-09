@@ -32,7 +32,7 @@ import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
 import dreamers.caritaapp.fragment.home.SettingsFragment;
-import dreamers.caritaapp.fragment.home.settings.achievement.UploadEventFragment;
+import dreamers.caritaapp.fragment.home.settings.others.UploadEventFragment;
 
 /**
  * A simple {@link Fragment} subclass.

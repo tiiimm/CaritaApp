@@ -83,6 +83,7 @@ public class CharitySetUp2Fragment extends Fragment {
                 String preference = text_preference.getText().toString();
                 Boolean valid = true;
                 CharitySetUp3Fragment charitySetUp3Fragment = new CharitySetUp3Fragment();
+
                 if (description.matches("")) {
                     text_description.setError("Required");
                     valid = false;

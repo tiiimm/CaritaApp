@@ -1,4 +1,4 @@
-package dreamers.caritaapp.fragment.home.settings.achievement;
+package dreamers.caritaapp.fragment.home.settings.others;
 
 
 import android.Manifest;
@@ -29,7 +29,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.payload.FileNotFoundException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
