@@ -18,10 +18,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.HomeActivity;
@@ -39,6 +43,10 @@ public class CharitySetUp3Fragment extends Fragment {
     EditText text_account_name;
     EditText text_account_number;
     EditText text_bank;
+
+    String image_charity;
+    String charity_bio;
+    String type;
 
     public CharitySetUp3Fragment() {
         // Required empty public constructor
@@ -91,7 +99,11 @@ public class CharitySetUp3Fragment extends Fragment {
                     bundle.putString("account_number", account_number);
                     bundle.putString("bank", bank);
 
-                    set_up();
+                    image_charity = "carita/profile_picture.png";
+                    charity_bio = "carita/profile_picture.png";
+                    type = "image";
+
+                    upload_profile();
                 }
             }
         });
@@ -124,54 +136,95 @@ public class CharitySetUp3Fragment extends Fragment {
         }
     }
 
-    private void set_up() {
-        String image_charity = "";
-        String charity_bio = "";
-        String type = "";
-
+    private void upload_profile() {
         try {
-            String charity_timestamp = String.valueOf(System.currentTimeMillis());
+            final String charity_timestamp = String.valueOf(System.currentTimeMillis());
             if (!bundle.getString("image_charity").matches("")) {
                 MediaManager.get().upload(bundle.getString("image_charity"))
-                        .option("resource_type", "image")
-                        .option("folder", "carita/")
-                        .option("public_id", charity_timestamp)
-                        .option("overwrite", true)
-                        .dispatch();
-
-                image_charity = charity_timestamp + bundle.getString("image_charity").substring(bundle.getString("image_charity").lastIndexOf("."));
-                image_charity = "carita/" + image_charity;
+                .option("resource_type", "image")
+                .option("folder", "carita/")
+                .option("public_id", charity_timestamp)
+                .option("overwrite", true)
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                    }
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                        // example code starts here
+                        Double progress = (double) bytes/totalBytes;
+                    }
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+//                        image_charity = charity_timestamp + bundle.getString("image_charity").substring(bundle.getString("image_charity").lastIndexOf("."));
+//                        image_charity = "carita/" + image_charity;
+                        image_charity = resultData.get("public_id").toString() + "." + resultData.get("format").toString();
+//
+                        upload_bio();
+                    }
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        return;
+                    }
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+                        return;
+                    }})
+                .dispatch();
             }
-            String bio_timestamp = String.valueOf(System.currentTimeMillis());
-            if (!bundle.getString("charity_bio").matches("")) {
-                MediaManager.get().upload(bundle.getString("charity_bio"))
-                        .option("resource_type", bundle.getString("type"))
-                        .option("folder", "carita/")
-                        .option("public_id", bio_timestamp)
-                        .option("overwrite", true)
-                        .dispatch();
-
-                charity_bio = bio_timestamp + bundle.getString("charity_bio").substring(bundle.getString("charity_bio").lastIndexOf("."));
-                charity_bio = "carita/" + charity_bio;
-                type = bundle.getString("type");
-            }
-
-            if (image_charity.matches(""))
-                image_charity = "carita/profile_picture.png";
-            if (charity_bio.matches("")) {
-                charity_bio = "carita/profile_picture.png";
-                type = "image";
-            }
-
-            save_to_database(image_charity, charity_bio, type);
         }
         catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
+    private void upload_bio() {
+        try {
+            final String bio_timestamp = String.valueOf(System.currentTimeMillis());
+            if (!bundle.getString("charity_bio").matches("")) {
+                MediaManager.get().upload(bundle.getString("charity_bio"))
+                .option("resource_type", bundle.getString("type"))
+                .option("folder", "carita/")
+                .option("public_id", bio_timestamp)
+                .option("overwrite", true)
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        // your code here
+                    }
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                        // example code starts here
+                        Double progress = (double) bytes/totalBytes;
+                        // post progress to app UI (e.g. progress bar, notification)
+                        // example code ends here
+                    }
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+//                        charity_bio = bio_timestamp + bundle.getString("charity_bio").substring(bundle.getString("charity_bio").lastIndexOf("."));
+//                        charity_bio = "carita/" + charity_bio;
+                        charity_bio = resultData.get("public_id").toString() + "." + resultData.get("format").toString();
+                        type = resultData.get("resource_type").toString();
+
+                        save_to_database(image_charity, charity_bio, type);
+                    }
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        return;
+                    }
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+                        return;
+                    }})
+                .dispatch();
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
         }
     }
 
     private void save_to_database(final String image_charity, String charity_bio, String type) {
-
         String request = "set_up?user_id="+ user.getID() +"&role=Charity&contact_number="+ bundle.getString("contact_number") +
                 "&organization="+ bundle.getString("organization") +"&account_name="+ bundle.getString("account_name") +
                 "&account_number="+ bundle.getString("account_number") +"&bank="+ bundle.getString("bank") +

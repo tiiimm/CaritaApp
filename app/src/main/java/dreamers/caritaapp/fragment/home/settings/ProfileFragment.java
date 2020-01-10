@@ -193,6 +193,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
                         video_bio.setVideoURI(Uri.parse(MediaManager.get().url().resourceType("video").generate(res.getString("bio_path"))));
                         video_bio.setVisibility(View.VISIBLE);
                         image_bio.setVisibility(View.GONE);
+                        video_bio.start();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

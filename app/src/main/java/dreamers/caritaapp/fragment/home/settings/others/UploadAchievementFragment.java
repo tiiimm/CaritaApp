@@ -29,11 +29,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.SplashScreenActivity;
@@ -148,11 +151,11 @@ public class UploadAchievementFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
-                String title = text_achievement_title.getText().toString();
-                String venue = text_achievement_venue.getText().toString();
-                String description = text_achievement_description.getText().toString();
-                String date_from = text_achievement_date_from.getText().toString();
-                String date_to = text_achievement_date_to.getText().toString();
+                final String title = text_achievement_title.getText().toString();
+                final String venue = text_achievement_venue.getText().toString();
+                final String description = text_achievement_description.getText().toString();
+                final String date_from = text_achievement_date_from.getText().toString();
+                final String date_to = text_achievement_date_to.getText().toString();
                 Boolean valid = true;
 
                 if (title.matches("")){
@@ -178,16 +181,34 @@ public class UploadAchievementFragment extends Fragment {
 
                 if (valid) {
                     MediaManager.get().upload(image_path)
-                        .option("resource_type", "image")
-                        .option("folder", "carita/")
-                        .option("public_id", timestamp)
-                        .option("overwrite", true)
-                        .dispatch();
+                    .option("resource_type", "image")
+                    .option("folder", "carita/")
+                    .option("public_id", timestamp)
+                    .option("overwrite", true)
+                    .callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
+                        }
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+                            // example code starts here
+                            Double progress = (double) bytes/totalBytes;
+                        }
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            image_path = resultData.get("public_id").toString() + "." + resultData.get("format").toString();
 
-                    image_path = timestamp + image_path.substring(image_path.lastIndexOf("."));
-                    image_path = "carita/" + image_path;
-
-                    upload(title, venue, description, date_from, date_to, image_path);
+                            upload(title, venue, description, date_from, date_to, image_path);
+                        }
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+                            return;
+                        }
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+                            return;
+                        }})
+                    .dispatch();
                 }
             }
         });
