@@ -168,6 +168,7 @@
                 android:layout_marginTop="60sp"
                 android:layout_marginStart="40sp"
                 android:layout_marginEnd="40sp"
+                android:inputType="textPersonName"
                 android:background="@drawable/background_textbox"
                 android:hint="Address"/>
 
@@ -178,6 +179,7 @@
                 android:layout_marginTop="20sp"
                 android:layout_marginStart="40sp"
                 android:layout_marginEnd="40sp"
+                android:inputType="number"
                 android:background="@drawable/background_textbox"
                 android:hint="Contact Number"/>
 

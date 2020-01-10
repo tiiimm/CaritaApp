@@ -69,11 +69,12 @@ public class SettingsFragment extends Fragment {
                 bundle.putInt("user_id", user.getID());
                 if (user.getRole().matches("Charity")) {
                     bundle.putString("name", user.getOrganization());
+                    bundle.putString("username", "");
                 }
                 else {
                     bundle.putString("name", user.getName());
+                    bundle.putString("username", "@"+user.getUsername());
                 }
-                bundle.putString("username", "@"+user.getUsername());
                 bundle.putString("photo", user.getPhoto());
                 bundle.putString("role", user.getRole());
                 profileFragment.setArguments(bundle);

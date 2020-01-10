@@ -68,6 +68,7 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
             public void onClick(View v) {
                 String address = text_address.getText().toString();
                 String contact_number = text_contact_number.getText().toString();
+                valid = true;
 
                 if (address.matches("")) {
                     text_address.setError("Required");

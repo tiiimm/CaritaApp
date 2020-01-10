@@ -130,27 +130,28 @@ public class CharitySetUp3Fragment extends Fragment {
         String type = "";
 
         try {
-            String timestamp = String.valueOf(System.currentTimeMillis());
+            String charity_timestamp = String.valueOf(System.currentTimeMillis());
             if (!bundle.getString("image_charity").matches("")) {
                 MediaManager.get().upload(bundle.getString("image_charity"))
                         .option("resource_type", "image")
                         .option("folder", "carita/")
-                        .option("public_id", timestamp)
+                        .option("public_id", charity_timestamp)
                         .option("overwrite", true)
                         .dispatch();
 
-                image_charity = timestamp + bundle.getString("image_charity").substring(bundle.getString("image_charity").lastIndexOf("."));
+                image_charity = charity_timestamp + bundle.getString("image_charity").substring(bundle.getString("image_charity").lastIndexOf("."));
                 image_charity = "carita/" + image_charity;
             }
+            String bio_timestamp = String.valueOf(System.currentTimeMillis());
             if (!bundle.getString("charity_bio").matches("")) {
                 MediaManager.get().upload(bundle.getString("charity_bio"))
                         .option("resource_type", bundle.getString("type"))
                         .option("folder", "carita/")
-                        .option("public_id", timestamp)
+                        .option("public_id", bio_timestamp)
                         .option("overwrite", true)
                         .dispatch();
 
-                charity_bio = timestamp + bundle.getString("charity_bio").substring(bundle.getString("charity_bio").lastIndexOf("."));
+                charity_bio = bio_timestamp + bundle.getString("charity_bio").substring(bundle.getString("charity_bio").lastIndexOf("."));
                 charity_bio = "carita/" + charity_bio;
                 type = bundle.getString("type");
             }
