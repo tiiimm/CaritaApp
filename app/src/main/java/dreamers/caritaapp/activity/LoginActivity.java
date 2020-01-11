@@ -138,8 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                         session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization);
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();
-                        if (res.getString("role") == "null") {
+                        if (res.getString("role").matches("null") || res.getString("role").matches("")) {
                             Intent i = new Intent(LoginActivity.this, SetUpActivity.class);
+                            startActivity(i);
+                        }
+                        else if (res.getString("role").matches("Company")) {
+                            Intent i = new Intent(LoginActivity.this, CompanyActivity.class);
                             startActivity(i);
                         }
                         else {
