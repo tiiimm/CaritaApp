@@ -57,7 +57,7 @@ public class UploadAchievementFragment extends Fragment {
     User user;
 
     ImageView image_achievement;
-    String image_path;
+    String image_path = "";
 
     public UploadAchievementFragment() {
         // Required empty public constructor
@@ -79,7 +79,7 @@ public class UploadAchievementFragment extends Fragment {
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
 
-        DatePickerDialog.OnDateSetListener event_from_listener = new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener achievement_from_listener = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++;
                 text_achievement_date_from.setText(year+"-"+month+"-"+dayOfMonth);
@@ -87,41 +87,41 @@ public class UploadAchievementFragment extends Fragment {
             }
         };
 
-        DatePickerDialog.OnDateSetListener event_to_listener = new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener achievement_to_listener = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++;
                 text_achievement_date_to.setText(year+"-"+month+"-"+dayOfMonth);
             }
         };
 
-        final DatePickerDialog event_from_dialog = new DatePickerDialog(getActivity(), event_from_listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        final DatePickerDialog event_to_dialog = new DatePickerDialog(getActivity(), event_to_listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        final DatePickerDialog achievement_from_dialog = new DatePickerDialog(getActivity(), achievement_from_listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        final DatePickerDialog achievement_to_dialog = new DatePickerDialog(getActivity(), achievement_to_listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
         text_achievement_date_from.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) event_from_dialog.show();
+                if (hasFocus) achievement_from_dialog.show();
             }
         });
 
         text_achievement_date_to.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) event_to_dialog.show();
+                if (hasFocus) achievement_to_dialog.show();
             }
         });
 
         text_achievement_date_from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event_from_dialog.show();
+                achievement_from_dialog.show();
             }
         });
 
         text_achievement_date_to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event_to_dialog.show();
+                achievement_to_dialog.show();
             }
         });
 
@@ -176,6 +176,10 @@ public class UploadAchievementFragment extends Fragment {
                 }
                 if (date_to.matches("")){
                     text_achievement_date_to.setError("Required");
+                    valid = false;
+                }
+                if (image_path.matches("")) {
+                    Toast.makeText(getActivity(), "Set photo!", Toast.LENGTH_SHORT).show();
                     valid = false;
                 }
 

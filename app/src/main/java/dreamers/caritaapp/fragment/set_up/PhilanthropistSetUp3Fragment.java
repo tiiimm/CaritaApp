@@ -40,7 +40,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
     User user;
     Bundle bundle;
 
-    String image_philanthropist = "carita/profile_picture.png";
+    String image_philanthropist;
 
     public PhilanthropistSetUp3Fragment() {
         // Required empty public constructor
@@ -61,6 +61,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                image_philanthropist = "carita/profile_picture.png";
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 if (!bundle.getString("image_philanthropist").matches("")) {
                     MediaManager.get().upload(bundle.getString("image_philanthropist"))

@@ -29,7 +29,7 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
 
     ImageView logo;
 
-    public String url = "http://192.168.42.224:8000/api/";
+    public String url = "http://192.168.1.5:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,10 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
                     System.out.println(user.getRole());
                     if (user.getRole().matches("") || user.getRole().matches("null")) {
                         Intent i = new Intent(SplashScreenActivity.this, SetUpActivity.class);
+                        startActivity(i);
+                    }
+                    else if (user.getRole().matches("Company")){
+                        Intent i = new Intent(SplashScreenActivity.this, CompanyActivity.class);
                         startActivity(i);
                     }
                     else {

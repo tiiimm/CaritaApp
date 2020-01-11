@@ -37,6 +37,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.CompanyActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
@@ -51,6 +52,7 @@ public class CompanySetUp1Fragment extends Fragment {
     User user;
     String image_path;
     CircleImageView circleImageView;
+    EditText text_name;
 
     public CompanySetUp1Fragment() {
         // Required empty public constructor
@@ -59,10 +61,12 @@ public class CompanySetUp1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       root = inflater.inflate(R.layout.fragment_company_set_up1, container, false);
+        root = inflater.inflate(R.layout.fragment_company_set_up1, container, false);
+        sessionHandler = new SessionHandler(getActivity());
+        user = sessionHandler.getUserDetails();
 
         circleImageView = root.findViewById(R.id.image_company);
-        final EditText text_name = root.findViewById(R.id.text_company);
+        text_name = root.findViewById(R.id.text_company);
         Button btn_finish = root.findViewById(R.id.btn_finish);
         Button btn_back = root.findViewById(R.id.btn_back);
 
@@ -84,6 +88,7 @@ public class CompanySetUp1Fragment extends Fragment {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("clicked");
                 String name = text_name.getText().toString();
 
                 if (name.matches("")) {
@@ -91,7 +96,19 @@ public class CompanySetUp1Fragment extends Fragment {
                     return;
                 }
 
-                upload_profile();
+                if (!image_path.matches(""))
+                    upload_profile(name);
+                else {
+                    image_path = "carita/profile_picture.png";
+                    set_up(name, image_path);
+                }
+            }
+        });
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new CompanySetUp1Fragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment,new SetUpAsFragment()).commit();
             }
         });
 
@@ -114,94 +131,81 @@ public class CompanySetUp1Fragment extends Fragment {
             image_path = "";
     }
 
-    private void upload_profile() {
-        try {
-            final String charity_timestamp = String.valueOf(System.currentTimeMillis());
-            if (!image_path.matches("")) {
-                MediaManager.get().upload(image_path)
-                        .option("resource_type", "image")
-                        .option("folder", "carita/")
-                        .option("public_id", charity_timestamp)
-                        .option("overwrite", true)
-                        .callback(new UploadCallback() {
-                            @Override
-                            public void onStart(String requestId) {
-                            }
-                            @Override
-                            public void onProgress(String requestId, long bytes, long totalBytes) {
-                                Double progress = (double) bytes/totalBytes;
-                            }
-                            @Override
-                            public void onSuccess(String requestId, Map resultData) {
-                                image_path = resultData.get("public_id").toString() + "." + resultData.get("format").toString();
-
-//                                set_up();
-                            }
-                            @Override
-                            public void onError(String requestId, ErrorInfo error) {
-                                return;
-                            }
-                            @Override
-                            public void onReschedule(String requestId, ErrorInfo error) {
-                                return;
-                            }})
-                        .dispatch();
+    private void upload_profile(final String name) {
+        final String charity_timestamp = String.valueOf(System.currentTimeMillis());
+        MediaManager.get().upload(image_path)
+        .option("resource_type", "image")
+        .option("folder", "carita/")
+        .option("public_id", charity_timestamp)
+        .option("overwrite", true)
+        .callback(new UploadCallback() {
+            @Override
+            public void onStart(String requestId) {
             }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
+            @Override
+            public void onProgress(String requestId, long bytes, long totalBytes) {
+                Double progress = (double) bytes/totalBytes;
+            }
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                image_path = resultData.get("public_id").toString() + "." + resultData.get("format").toString();
+
+                set_up(name, image_path);
+            }
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                return;
+            }
+            @Override
+            public void onReschedule(String requestId, ErrorInfo error) {
+                return;
+            }})
+        .dispatch();
     }
 
-//    private void set_up() {
-//        String request = "set_up?user_id="+ user.getID() +"&role=Charity&contact_number="+ bundle.getString("contact_number") +
-//                "&organization="+ bundle.getString("organization") +"&account_name="+ bundle.getString("account_name")
-//
-//        System.out.println(request);
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                System.out.println(response);
-//                try {
-//                    JSONObject res = new JSONObject(response);
-//                    if (res.has("errors")){
-//                        JSONArray errors = new JSONArray(res.getString("errors"));
-//                        for (int i = 0; i < errors.length(); i++) {
-//                            switch (errors.get(i).toString().split(" ")[2]) {
-//                                case "name":
-//                                    text_account_name.setError(errors.get(i).toString());
-//                                    break;
-//                                case "number":
-//                                    text_account_number.setError(errors.get(i).toString());
-//                                    break;
-//                                default:
-//                                    break;
-//                            }
-//                        }
-//                    }
-//                    else {
-//                        sessionHandler.set_up("Charity", bundle.getString("organization"), image_charity);
-//                        Toast.makeText(getActivity(),
-//                                "Successful!", Toast.LENGTH_LONG).show();
-//                        getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
-//                        Intent i = new Intent(getActivity(), HomeActivity.class);
-//                        startActivity(i);
-//                    }
-//                } catch (JSONException e) {
-//                    Toast.makeText(getActivity(),
-//                            "Something went wrong", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                System.out.println(error);
-//                Toast.makeText(getActivity(),
-//                        "Something went wrong", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
-//    }
+    private void set_up(String name, String photo) {
+        String request = "set_up_company?user_id="+ user.getID() +"&name="+ name +"&photo="+ photo;
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    if (res.has("errors")){
+                        JSONArray errors = new JSONArray(res.getString("errors"));
+                        for (int i = 0; i < errors.length(); i++) {
+                            switch (errors.get(i).toString().split(" ")[2]) {
+                                case "name":
+                                    text_name.setError(errors.get(i).toString());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    else {
+                        sessionHandler.set_up("Company", res.getString("name"), res.getString("photo"));
+                        Toast.makeText(getActivity(),
+                                "Successful!", Toast.LENGTH_LONG).show();
+                        getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
+                        Intent i = new Intent(getActivity(), CompanyActivity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(),
+                            "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
 }

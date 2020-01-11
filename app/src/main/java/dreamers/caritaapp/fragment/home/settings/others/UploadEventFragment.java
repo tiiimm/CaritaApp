@@ -208,7 +208,7 @@ public class UploadEventFragment extends Fragment {
                     valid = false;
                 }
                 if (image_path.matches("")) {
-                    Toast.makeText(getActivity(), "Set photo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Set photo!", Toast.LENGTH_SHORT).show();
                 }
 
                 if (valid) {
