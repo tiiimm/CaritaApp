@@ -29,7 +29,7 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
 
     ImageView logo;
 
-    public String url = "http://192.168.1.5:8000/api/";
+    public String url = "http://192.168.1.9:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

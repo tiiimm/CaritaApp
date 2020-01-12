@@ -172,6 +172,9 @@ public class CharitySetUp3Fragment extends Fragment {
                     }})
                 .dispatch();
             }
+            else {
+                upload_bio();
+            }
         }
         catch (Exception e) {
             System.out.println(e);
@@ -217,6 +220,9 @@ public class CharitySetUp3Fragment extends Fragment {
                         return;
                     }})
                 .dispatch();
+            }
+            else {
+                save_to_database(image_charity, charity_bio, type);
             }
         }
         catch (Exception e) {

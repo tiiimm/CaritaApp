@@ -101,8 +101,8 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         image_advertisement = root.findViewById(R.id.image_advertisement);
         Button btn_donate = root.findViewById(R.id.btn_donate);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
-        final RelativeLayout layout_advertisement = root.findViewById(R.id.layout_advertisement);
-        final LinearLayout layout_profile = root.findViewById(R.id.layout_profile);
+        layout_advertisement = root.findViewById(R.id.layout_advertisement);
+        layout_profile = root.findViewById(R.id.layout_profile);
         final ProfileAboutFragment profileAboutFragment = new ProfileAboutFragment();
 
         ads.add(0);
@@ -196,6 +196,8 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
                 else {
                     layout_profile.setVisibility(View.GONE);
                     layout_advertisement.setVisibility(View.VISIBLE);
+
+                    donate("App\\Charity", "Company", ads.get(position));
                     if (ads_type.get(position).matches("video")) {
                         video_advertisement.start();
                     }
@@ -303,6 +305,25 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
+    private void donate(String type, String ad_type, Integer ad_id) {
+        String request = "donate?user_id="+ user.getID() +"&type="+ type +"&watch_id="+ bundle.getInt("user_id") +"&ad_id="+ ad_id +"&ad_type="+ ad_type;
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
+
     private void loadRewardedVideoAd() {
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
@@ -330,7 +351,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-
+        donate("App\\Charity", "Google", 0);
     }
 
     @Override
