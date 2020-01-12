@@ -11,7 +11,7 @@
         android:gravity="center_horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_philanthropist"
+            android:id="@+id/image_company"
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:paddingEnd="20sp"
@@ -25,28 +25,13 @@
             android:gravity="start|center">
 
             <TextView
-                android:id="@+id/text_philanthropist_name"
+                android:id="@+id/text_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="NAME"
                 android:layout_marginTop="10sp"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/text_philanthropist_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
-                android:text="Address"/>
-
-            <TextView
-                android:id="@+id/text_philanthropist_point"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
-                android:layout_marginBottom="10sp"
-                android:text="Points"/>
 
         </LinearLayout>
 

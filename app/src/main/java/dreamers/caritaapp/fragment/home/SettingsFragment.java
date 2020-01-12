@@ -19,6 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.admin.CompaniesFragment;
 import dreamers.caritaapp.fragment.admin.PhilanthropistsFragment;
 import dreamers.caritaapp.fragment.home.settings.OwnAchievementsFragment;
 import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
@@ -53,6 +54,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         LinearLayout layout_admin = root.findViewById(R.id.layout_admin);
         TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
+        TextView nav_companies = root.findViewById(R.id.nav_companies);
 
         Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(user.getPhoto())).into(image_profile_picture);
 
@@ -72,6 +74,13 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
                 getFragmentManager().beginTransaction().replace(R.id.fragment2, new PhilanthropistsFragment()).commit();
+            }
+        });
+        nav_companies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().remove(new SettingsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, new CompaniesFragment()).commit();
             }
         });
         btn_to_profile.setOnClickListener(new View.OnClickListener() {

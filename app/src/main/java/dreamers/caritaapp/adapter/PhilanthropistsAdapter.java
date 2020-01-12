@@ -27,10 +27,10 @@ public class PhilanthropistsAdapter extends RecyclerView.Adapter<Philanthropists
 
     private Context mContext;
 
-    public PhilanthropistsAdapter(Context context, ArrayList<String> names, ArrayList<String> usernamees, ArrayList<String> points, ArrayList<Integer> ids, ArrayList<String> photos) {
+    public PhilanthropistsAdapter(Context context, ArrayList<String> names, ArrayList<String> usernames, ArrayList<String> points, ArrayList<Integer> ids, ArrayList<String> photos) {
         philanthropist_ids = ids;
         philanthropist_names = names;
-        philanthropist_usernames = usernamees;
+        philanthropist_usernames = usernames;
         philanthropist_points = points;
         philanthropist_photos = photos;
         mContext = context;
