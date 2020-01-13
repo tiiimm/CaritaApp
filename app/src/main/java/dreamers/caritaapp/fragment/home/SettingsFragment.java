@@ -74,6 +74,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         LinearLayout layout_admin = root.findViewById(R.id.layout_admin);
         LinearLayout layout_philanthropist = root.findViewById(R.id.layout_philanthropist);
+        LinearLayout layout_charity_details = root.findViewById(R.id.layout_charity_details);
         TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
         TextView nav_companies = root.findViewById(R.id.nav_companies);
         TextView nav_change_password = root.findViewById(R.id.nav_change_password);
@@ -104,6 +105,7 @@ public class SettingsFragment extends Fragment {
             }
         }
         if (user.getRole().matches("Charity")) {
+            layout_charity_details.setVisibility(View.VISIBLE);
             text_username.setText(user.getOrganization());
         }
         else {
