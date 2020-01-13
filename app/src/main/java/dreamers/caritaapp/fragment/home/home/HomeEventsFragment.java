@@ -65,15 +65,17 @@ public class HomeEventsFragment extends Fragment {
 
     private void load_events() {
         String request = "get_events";
+        System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println(response);
                 try {
                     JSONArray res = new JSONArray(response);
                     for (int i = 0; i<res.length(); i++) {
                         JSONObject event = res.getJSONObject(i);
                         event_ids.add(event.getInt("id"));
-                        event_points.add(event.getInt("point"));
+                        event_points.add(event.getInt("points"));
                         event_photos.add(event.getString("photo"));
                         event_titles.add(event.getString("title"));
                         if (event.getString("held_on_from").matches(event.getString("held_on_to")))
