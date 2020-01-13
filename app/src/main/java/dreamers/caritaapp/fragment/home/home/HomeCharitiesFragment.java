@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -46,11 +49,19 @@ public class HomeCharitiesFragment extends Fragment {
     private ArrayList<String> charity_addresses = new ArrayList<>();
     private ArrayList<String> charity_contacts = new ArrayList<>();
     private ArrayList<Integer> charity_points = new ArrayList<>();
+    private ArrayList<Integer> search_ids = new ArrayList<>();
+    private ArrayList<Integer> search_user_ids = new ArrayList<>();
+    private ArrayList<String> search_names = new ArrayList<>();
+    private ArrayList<String> search_photos = new ArrayList<>();
+    private ArrayList<String> search_addresses = new ArrayList<>();
+    private ArrayList<String> search_contacts = new ArrayList<>();
+    private ArrayList<Integer> search_points = new ArrayList<>();
+
+    EditText text_search;
 
     public HomeCharitiesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +69,48 @@ public class HomeCharitiesFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_home_charities, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+
+        text_search = root.findViewById(R.id.text_search);
+        text_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int x;
+                search_ids.clear();
+                search_user_ids.clear();
+                search_names.clear();
+                search_photos.clear();
+                search_addresses.clear();
+                search_contacts.clear();
+                search_points.clear();
+                for (x = 0; x < charity_ids.size(); x++) {
+                    if (
+                        charity_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        charity_addresses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                    ) {
+                        search_ids.add(charity_ids.get(x));
+                        search_user_ids.add(charity_user_ids.get(x));
+                        search_names.add(charity_names.get(x));
+                        search_photos.add(charity_photos.get(x));
+                        search_addresses.add(charity_addresses.get(x));
+                        search_contacts.add(charity_contacts.get(x));
+                        search_points.add(charity_points.get(x));
+                    }
+                }
+                System.out.println(search_ids.size());
+                initSearchView();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         if (user.getRole().matches("Administrator"))
             load_charities();
@@ -139,6 +192,13 @@ public class HomeCharitiesFragment extends Fragment {
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
         CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids, charity_points);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void initSearchView(){
+        RecyclerView recyclerView = root.findViewById(R.id.list_charities);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), search_names, search_addresses, search_contacts, search_ids, search_photos, search_user_ids, search_points);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

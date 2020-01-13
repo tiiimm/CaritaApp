@@ -7,12 +7,34 @@
     android:fillViewport="true"
     tools:context=".fragment.home.home.HomeCharitiesFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_charities"
-        android:layout_marginStart="50sp"
-        android:layout_marginEnd="50sp"
-        android:layout_marginBottom="50sp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/text_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp"
+            android:layout_marginTop="20sp"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
+            android:background="@drawable/background_textbox"
+            android:hint="Search"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_charities"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="50sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </ScrollView>
