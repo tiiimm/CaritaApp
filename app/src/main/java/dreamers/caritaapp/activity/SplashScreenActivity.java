@@ -64,7 +64,13 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
             public void onInitializationComplete(InitializationStatus initializationStatus) {
                 try {
                     System.out.println(user.getRole());
-                    if (user.getRole().matches("") || user.getRole().matches("null")) {
+
+                    if (user.getRole().split(" ")[0].matches("Temporary")) {
+                        Intent i = new Intent(SplashScreenActivity.this, SetUpActivity.class);
+                        i.putExtra("role", user.getRole());
+                        startActivity(i);
+                    }
+                    else if (user.getRole().matches("") || user.getRole().matches("null")) {
                         Intent i = new Intent(SplashScreenActivity.this, SetUpActivity.class);
                         startActivity(i);
                     }

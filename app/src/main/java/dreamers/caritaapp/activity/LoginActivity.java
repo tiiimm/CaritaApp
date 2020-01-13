@@ -122,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println(response);
                 try {
                     JSONObject res = new JSONObject(response);
                     if (res.has("error")){
@@ -134,11 +135,21 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject charity = new JSONObject(res.getString("charity"));
                             organization = charity.getString("organization");
                             photo = charity.getString("photo");
+                            if (!charity.getString("status").matches("Active")) {
+                                Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                         }
                         session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization);
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();
-                        if (res.getString("role").matches("null") || res.getString("role").matches("")) {
+
+                        if (res.getString("role").split(" ")[0].matches("Temporary")) {
+                            Intent i = new Intent(LoginActivity.this, SetUpActivity.class);
+                            i.putExtra("role", res.getString("role"));
+                            startActivity(i);
+                        }
+                        else if (res.getString("role").matches("null") || res.getString("role").matches("")) {
                             Intent i = new Intent(LoginActivity.this, SetUpActivity.class);
                             startActivity(i);
                         }

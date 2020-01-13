@@ -101,7 +101,9 @@ public class OwnAchievementsFragment extends Fragment {
                             achievement_dates.add(achievement.getString("held_on_from")+" to "+achievement.getString("held_on_to"));
                         achievement_venues.add(achievement.getString("venue"));
                     }
-                    initRecyclerView();
+                    if (achievement_ids.size()>0){
+                        initRecyclerView();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

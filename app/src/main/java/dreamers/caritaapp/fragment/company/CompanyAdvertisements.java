@@ -88,7 +88,9 @@ public class CompanyAdvertisements extends Fragment {
                         advertisement_statuses.add(advertisement.getString("status"));
                         advertisement_billing_dates.add(advertisement.getString("billing_date"));
                     }
-                    initRecyclerView();
+                    if (advertisement_ids.size()>0){
+                        initRecyclerView();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

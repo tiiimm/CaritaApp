@@ -48,7 +48,9 @@ public class HomeFragment extends Fragment {
             text_username.setText("Welcome, @"+user.getUsername()+"!");
         }
 
-        text_points.setText("Points: "+user.getPoints());
+        if (user.getRole().matches("Philanthropist"))
+            text_points.setText("Points: "+user.getPoints());
+        else text_points.setVisibility(View.GONE);
 
         getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeCharitiesFragment()).commit();
 

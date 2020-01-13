@@ -29,6 +29,7 @@ import java.util.Map;
 
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.HomeActivity;
+import dreamers.caritaapp.activity.LoginActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
@@ -261,11 +262,11 @@ public class CharitySetUp3Fragment extends Fragment {
                         }
                     }
                     else {
-                        sessionHandler.set_up("Charity", bundle.getString("organization"), image_charity);
+                        sessionHandler.logoutUser();
                         Toast.makeText(getActivity(),
-                                "Successful!", Toast.LENGTH_LONG).show();
+                                "Successful! Wait for admin to accept your application", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
-                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
                         startActivity(i);
                     }
                 } catch (JSONException e) {

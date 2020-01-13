@@ -75,6 +75,15 @@
                 android:text="FATIMA MERCY A ONRUBIA"/>
 
             <TextView
+                android:id="@+id/text_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:text="username"/>
+
+            <TextView
                 android:id="@+id/text_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

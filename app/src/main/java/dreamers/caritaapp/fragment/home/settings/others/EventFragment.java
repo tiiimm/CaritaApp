@@ -61,6 +61,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     TextView text_date;
     TextView text_venue;
     TextView text_open_until;
+    TextView text_points;
 
     RelativeLayout layout_advertisement;
     LinearLayout layout_event;
@@ -93,6 +94,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
         text_date = root.findViewById(R.id.text_date);
         text_venue = root.findViewById(R.id.text_venue);
         text_open_until = root.findViewById(R.id.text_open_until);
+        text_points = root.findViewById(R.id.text_points);
         video_advertisement = root.findViewById(R.id.video_advertisement);
         image_advertisement = root.findViewById(R.id.image_advertisement);
         layout_advertisement = root.findViewById(R.id.layout_advertisement);
@@ -208,6 +210,9 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
                     JSONObject res = new JSONObject(response);
                     sessionHandler.donate(res.getInt("points"));
                     get_watch_count();
+                    Integer points = Integer.parseInt(text_points.getText().toString().split(" ")[2]);
+                    points++;
+                    text_points.setText("Supports Received: "+points);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -228,6 +233,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(bundle.getString("photo"))).into(image_event);
             text_title.setText(bundle.getString("title"));
             text_description.setText(bundle.getString("description"));
+            text_points.setText(bundle.getString("points"));
             text_date.setText(bundle.getString("date"));
             text_venue.setText(bundle.getString("venue"));
             text_open_until.setText(bundle.getString("open_until"));

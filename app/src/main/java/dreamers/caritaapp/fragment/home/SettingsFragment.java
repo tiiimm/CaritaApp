@@ -56,6 +56,7 @@ public class SettingsFragment extends Fragment {
         TextView text_level = root.findViewById(R.id.text_level);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         LinearLayout layout_admin = root.findViewById(R.id.layout_admin);
+        LinearLayout layout_philanthropist = root.findViewById(R.id.layout_philanthropist);
         TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
         TextView nav_companies = root.findViewById(R.id.nav_companies);
 
@@ -65,6 +66,7 @@ public class SettingsFragment extends Fragment {
             layout_admin.setVisibility(View.VISIBLE);
         }
         if (user.getRole().matches("Philanthropist")) {
+            layout_philanthropist.setVisibility(View.VISIBLE);
             text_points.setText("Points: "+user.getPoints().toString());
             text_rank.setText("");
             if (user.getPoints().equals(0)) {

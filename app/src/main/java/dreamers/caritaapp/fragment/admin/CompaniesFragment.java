@@ -59,13 +59,17 @@ public class CompaniesFragment extends Fragment {
 
         FloatingActionButton btn_add = root.findViewById(R.id.btn_add);
 
-//        btn_add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().beginTransaction().remove(new CompaniesFragment()).commit();
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_company, new UploadCompanieFragment()).commit();
-//            }
-//        });
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddUserFragment addUserFragment = new AddUserFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("role", "Temporary Company");
+                addUserFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().remove(new CompaniesFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, addUserFragment).commit();
+            }
+        });
 
         return root;
     }

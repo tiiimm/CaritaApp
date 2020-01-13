@@ -44,6 +44,7 @@ public class OwnEventsFragment extends Fragment {
     User user;
 
     private ArrayList<Integer> event_ids = new ArrayList<>();
+    private ArrayList<Integer> event_points = new ArrayList<>();
     private ArrayList<String> event_titles = new ArrayList<>();
     private ArrayList<String> event_photos = new ArrayList<>();
     private ArrayList<String> event_venues = new ArrayList<>();
@@ -94,6 +95,7 @@ public class OwnEventsFragment extends Fragment {
                     for (int i = 0; i<res.length(); i++) {
                         JSONObject event = res.getJSONObject(i);
                         event_ids.add(event.getInt("id"));
+                        event_points.add(event.getInt("points"));
                         event_photos.add(event.getString("photo"));
                         event_titles.add(event.getString("title"));
                         if (event.getString("held_on_from").matches(event.getString("held_on_to")))
@@ -102,7 +104,9 @@ public class OwnEventsFragment extends Fragment {
                             event_dates.add(event.getString("held_on_from")+" to "+event.getString("held_on_to"));
                         event_venues.add(event.getString("venue"));
                     }
-                    initRecyclerView();
+                    if (event_ids.size()>0){
+                        initRecyclerView();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -119,7 +123,7 @@ public class OwnEventsFragment extends Fragment {
     }
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

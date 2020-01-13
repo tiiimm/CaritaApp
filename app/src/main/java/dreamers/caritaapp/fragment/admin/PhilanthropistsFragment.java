@@ -62,13 +62,17 @@ public class PhilanthropistsFragment extends Fragment {
 
         FloatingActionButton btn_add = root.findViewById(R.id.btn_add);
 
-//        btn_add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().beginTransaction().remove(new PhilanthropistsFragment()).commit();
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_company, new UploadPhilanthropistFragment()).commit();
-//            }
-//        });
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddUserFragment addUserFragment = new AddUserFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("role", "Temporary Philanthropist");
+                addUserFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().remove(new PhilanthropistsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment2, addUserFragment).commit();
+            }
+        });
 
         return root;
     }

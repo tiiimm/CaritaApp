@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     RelativeLayout layout_advertisement;
     LinearLayout layout_profile;
     Button btn_donate;
+    TextView text_username;
 
     List<Integer> ads = new ArrayList<>();
     ArrayList<String> ads_content = new ArrayList<>();
@@ -92,7 +93,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
 
         ImageView btn_back = root.findViewById(R.id.arrow_back);
         TextView text_name = root.findViewById(R.id.text_name);
-        TextView text_username = root.findViewById(R.id.text_username);
+        text_username = root.findViewById(R.id.text_username);
         final TextView nav_profile_about = root.findViewById(R.id.nav_profile_about);
         final TextView nav_profile_achievements = root.findViewById(R.id.nav_profile_achievements);
         final TextView nav_profile_events = root.findViewById(R.id.nav_profile_events);
@@ -122,6 +123,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         text_username.setText(bundle.getString("username"));
 
         if (bundle.getString("role").matches("Charity")) {
+            text_username.setText("Supports Received: "+bundle.getString("points"));
             profileAboutFragment.setArguments(bundle);
 
             getFragmentManager().beginTransaction().replace(R.id.fragment4, profileAboutFragment).commit();
@@ -349,6 +351,9 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
                     sessionHandler.donate(res.getInt("points"));
 
                     get_watch_count();
+                    Integer points = Integer.parseInt(text_username.getText().toString().split(" ")[2]);
+                    points++;
+                    text_username.setText("Supports Received: "+points);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

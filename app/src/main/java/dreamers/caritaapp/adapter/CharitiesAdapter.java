@@ -1,6 +1,8 @@
 package dreamers.caritaapp.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +10,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.LoginActivity;
+import dreamers.caritaapp.activity.SplashScreenActivity;
+import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
+import dreamers.caritaapp.fragment.set_up.CharitySetUp3Fragment;
 
 public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.ViewHolder> {
 
@@ -29,12 +45,14 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
     private ArrayList<String> charity_photos;
     private ArrayList<String> charity_addresss;
     private ArrayList<String> charity_contacts;
+    private ArrayList<Integer> charity_points;
 
     private Context mContext;
 
-    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids) {
+    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids, ArrayList<Integer> points) {
         charity_ids = ids;
         charity_user_ids = user_ids;
+        charity_points = points;
         charity_names = names;
         charity_photos = photos;
         charity_addresss = addresss;
@@ -72,6 +90,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
                 bundle.putString("username", "");
                 bundle.putString("photo", charity_photos.get(position));
                 bundle.putString("role", "Charity");
+                bundle.putString("points", charity_points.get(position).toString());
                 profileFragment.setArguments(bundle);
 
                 AppCompatActivity appCompatActivity = (AppCompatActivity) mContext;
@@ -79,40 +98,60 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
             }
         });
 
-//        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                final CharSequence[] items = {"Edit", "Delete"};
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//
-//                builder.setTitle("Select The Action");
-//                builder.setItems(items, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int item) {
-//                        switch (item) {
-//                            case 0:
-//                                Intent intent = new Intent(mContext, CharityAchievementDetailsActivity.class);
-//                                intent.putExtra("charity_id", charity_ids.get(position));
-//                                intent.putExtra("charity_name", charity_names.get(position));
-//                                intent.putExtra("charity_description", charity_descriptions.get(position));
-//                                intent.putExtra("charity_held_on", charity_addresss.get(position));
-//                                mContext.startActivity(intent);
-//                                break;
-//                            case 1:
-//                                delete_charity(charity_ids.get(position));
-//                                break;
-//                            default:
-//                                break;
-//                        }
-//                    }
-//                });
-//                builder.show();
-//                return true;
-//            }
-//        });
+        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final CharSequence[] items = {"Approve Charity", "Delete"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setTitle("Select an Action");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                approve_charity(charity_ids.get(position));
+                                break;
+                            case 1:
+                                delete_charity(charity_ids.get(position));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
+    private void approve_charity(Integer id) {
+        String request = "approve_charity?id="+ id;
+
+        System.out.println(request);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(mContext,
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
+    }
+
+    private void delete_charity(Integer id) {
+
+    }
 
     @Override
     public int getItemCount() {
