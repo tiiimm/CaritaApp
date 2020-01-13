@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -46,6 +49,10 @@ public class CompanyAdvertisements extends Fragment {
     private ArrayList<String> advertisement_names = new ArrayList<>();
     private ArrayList<String> advertisement_billing_dates = new ArrayList<>();
     private ArrayList<String> advertisement_statuses = new ArrayList<>();
+    private ArrayList<Integer> search_ids = new ArrayList<>();
+    private ArrayList<String> search_names = new ArrayList<>();
+    private ArrayList<String> search_billing_dates = new ArrayList<>();
+    private ArrayList<String> search_statuses = new ArrayList<>();
 
     public CompanyAdvertisements() {
         // Required empty public constructor
@@ -62,12 +69,46 @@ public class CompanyAdvertisements extends Fragment {
         load_advertisements();
 
         FloatingActionButton btn_add = root.findViewById(R.id.btn_add);
+        final EditText text_search = root.findViewById(R.id.text_search);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(new CompanyAdvertisements()).commit();
                 getFragmentManager().beginTransaction().replace(R.id.fragment_company, new UploadAdvertisementFragment()).commit();
+            }
+        });
+        text_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search_ids.clear();
+                search_names.clear();
+                search_billing_dates.clear();
+                search_statuses.clear();
+                int x;
+                for (x = 0; x < advertisement_ids.size(); x++) {
+                    if (
+                        search_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_billing_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_statuses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                    ) {
+                        search_ids.add(advertisement_ids.get(x));
+                        search_names.add(advertisement_names.get(x));
+                        search_billing_dates.add(advertisement_billing_dates.get(x));
+                        search_statuses.add(advertisement_statuses.get(x));
+                    }
+                }
+                initSearchView();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -109,6 +150,13 @@ public class CompanyAdvertisements extends Fragment {
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
         AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), advertisement_names, advertisement_statuses, advertisement_billing_dates, advertisement_ids);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+    }
+
+    private void initSearchView(){
+        RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
+        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), search_names, search_statuses, search_billing_dates, search_ids);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

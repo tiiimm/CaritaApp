@@ -57,8 +57,6 @@ public class HomeCharitiesFragment extends Fragment {
     private ArrayList<String> search_contacts = new ArrayList<>();
     private ArrayList<Integer> search_points = new ArrayList<>();
 
-    EditText text_search;
-
     public HomeCharitiesFragment() {
         // Required empty public constructor
     }
@@ -70,7 +68,11 @@ public class HomeCharitiesFragment extends Fragment {
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
 
-        text_search = root.findViewById(R.id.text_search);
+        if (user.getRole().matches("Administrator"))
+            load_charities();
+        else load_active_charities();
+
+        final EditText text_search = root.findViewById(R.id.text_search);
         text_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -91,7 +93,8 @@ public class HomeCharitiesFragment extends Fragment {
                     if (
                         charity_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         charity_addresses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                        charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        charity_points.get(x).equals(Integer.parseInt(text_search.getText().toString()))
                     ) {
                         search_ids.add(charity_ids.get(x));
                         search_user_ids.add(charity_user_ids.get(x));
@@ -102,7 +105,6 @@ public class HomeCharitiesFragment extends Fragment {
                         search_points.add(charity_points.get(x));
                     }
                 }
-                System.out.println(search_ids.size());
                 initSearchView();
             }
 
@@ -111,10 +113,6 @@ public class HomeCharitiesFragment extends Fragment {
 
             }
         });
-
-        if (user.getRole().matches("Administrator"))
-            load_charities();
-        else load_active_charities();
 
         return root;
     }

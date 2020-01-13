@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +45,12 @@ public class ProfileEventsFragment extends Fragment {
     private ArrayList<String> event_photos = new ArrayList<>();
     private ArrayList<String> event_venues = new ArrayList<>();
     private ArrayList<String> event_dates = new ArrayList<>();
+    private ArrayList<Integer> search_ids = new ArrayList<>();
+    private ArrayList<Integer> search_points = new ArrayList<>();
+    private ArrayList<String> search_titles = new ArrayList<>();
+    private ArrayList<String> search_photos = new ArrayList<>();
+    private ArrayList<String> search_venues = new ArrayList<>();
+    private ArrayList<String> search_dates = new ArrayList<>();
 
     public ProfileEventsFragment() {
         // Required empty public constructor
@@ -53,11 +62,50 @@ public class ProfileEventsFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_profile_events, container, false);
 
         bundle = getArguments();
-        System.out.println(bundle);
 
         if (bundle.getString("role").matches("Charity")) {
             load_events();
         }
+
+        final EditText text_search = root.findViewById(R.id.text_search);
+        text_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search_ids.clear();
+                search_points.clear();
+                search_titles.clear();
+                search_photos.clear();
+                search_venues.clear();
+                search_dates.clear();
+                int x;
+                for (x = 0; x < event_ids.size(); x++) {
+                    if (
+                        search_points.get(x).equals(Integer.parseInt(text_search.getText().toString())) ||
+                        search_titles.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_venues.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                    ) {
+                        search_ids.add(event_ids.get(x));
+                        search_points.add(event_points.get(x));
+                        search_titles.add(event_titles.get(x));
+                        search_photos.add(event_photos.get(x));
+                        search_venues.add(event_venues.get(x));
+                        search_dates.add(event_dates.get(x));
+                    }
+                }
+                initSearchView();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         return root;
     }
@@ -98,9 +146,17 @@ public class ProfileEventsFragment extends Fragment {
         });
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
         EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+    }
+
+    private void initSearchView(){
+        RecyclerView recyclerView = root.findViewById(R.id.list_events);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

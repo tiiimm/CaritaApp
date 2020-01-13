@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -43,6 +46,9 @@ public class CompaniesFragment extends Fragment {
     private ArrayList<Integer> company_ids = new ArrayList<>();
     private ArrayList<String> company_names = new ArrayList<>();
     private ArrayList<String> company_photos = new ArrayList<>();
+    private ArrayList<Integer> search_ids = new ArrayList<>();
+    private ArrayList<String> search_names = new ArrayList<>();
+    private ArrayList<String> search_photos = new ArrayList<>();
 
     public CompaniesFragment() {
         // Required empty public constructor
@@ -58,6 +64,7 @@ public class CompaniesFragment extends Fragment {
         load_companies();
 
         FloatingActionButton btn_add = root.findViewById(R.id.btn_add);
+        final EditText text_search = root.findViewById(R.id.text_search);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +75,33 @@ public class CompaniesFragment extends Fragment {
                 addUserFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().remove(new CompaniesFragment()).commit();
                 getFragmentManager().beginTransaction().replace(R.id.fragment2, addUserFragment).commit();
+            }
+        });
+        text_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search_ids.clear();
+                search_names.clear();
+                search_photos.clear();
+                int x;
+                for (x = 0; x < company_ids.size(); x++) {
+                    if (company_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())) {
+                        search_ids.add(company_ids.get(x));
+                        search_names.add(company_names.get(x));
+                        search_photos.add(company_photos.get(x));
+                    }
+                }
+                initSearchView();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -109,6 +143,13 @@ public class CompaniesFragment extends Fragment {
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_companies);
         CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), company_names, company_ids, company_photos);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void initSearchView(){
+        RecyclerView recyclerView = root.findViewById(R.id.list_companies);
+        CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), search_names, search_ids, search_photos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

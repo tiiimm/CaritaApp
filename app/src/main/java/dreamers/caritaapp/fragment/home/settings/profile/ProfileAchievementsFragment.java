@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -43,6 +46,11 @@ public class ProfileAchievementsFragment extends Fragment {
     private ArrayList<String> achievement_photos = new ArrayList<>();
     private ArrayList<String> achievement_venues = new ArrayList<>();
     private ArrayList<String> achievement_dates = new ArrayList<>();
+    private ArrayList<Integer> search_ids = new ArrayList<>();
+    private ArrayList<String> search_titles = new ArrayList<>();
+    private ArrayList<String> search_photos = new ArrayList<>();
+    private ArrayList<String> search_venues = new ArrayList<>();
+    private ArrayList<String> search_dates = new ArrayList<>();
 
     public ProfileAchievementsFragment() {
         // Required empty public constructor
@@ -54,11 +62,47 @@ public class ProfileAchievementsFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_profile_achievements, container, false);
 
         bundle = getArguments();
-        System.out.println(bundle);
 
         if (bundle.getString("role").matches("Charity")) {
             load_achievements();
         }
+
+        final EditText text_search = root.findViewById(R.id.text_search);
+        text_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search_ids.clear();
+                search_titles.clear();
+                search_photos.clear();
+                search_venues.clear();
+                search_dates.clear();
+                int x;
+                for (x = 0; x < achievement_ids.size(); x++) {
+                    if (
+                        search_titles.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_venues.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        search_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                    ) {
+                        search_ids.add(achievement_ids.get(x));
+                        search_titles.add(achievement_titles.get(x));
+                        search_photos.add(achievement_photos.get(x));
+                        search_venues.add(achievement_venues.get(x));
+                        search_dates.add(achievement_dates.get(x));
+                    }
+                }
+                initSearchView();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         return root;
     }
@@ -98,9 +142,17 @@ public class ProfileAchievementsFragment extends Fragment {
         });
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_achievements);
         AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), achievement_titles, achievement_dates, achievement_venues, achievement_ids, achievement_photos);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+    }
+
+    private void initSearchView(){
+        RecyclerView recyclerView = root.findViewById(R.id.list_achievements);
+        AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

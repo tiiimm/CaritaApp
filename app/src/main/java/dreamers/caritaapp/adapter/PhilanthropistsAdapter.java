@@ -51,7 +51,7 @@ public class PhilanthropistsAdapter extends RecyclerView.Adapter<Philanthropists
                 .into(holder.image_philanthropist);
         holder.text_philanthropist_name.setText(philanthropist_names.get(position));
         holder.text_philanthropist_username.setText(philanthropist_usernames.get(position));
-        holder.text_philanthropist_point.setText(philanthropist_points.get(position));
+        holder.text_philanthropist_point.setText("Kindess Points "+philanthropist_points.get(position));
     }
 
 
