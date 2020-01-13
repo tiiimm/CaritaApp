@@ -84,9 +84,9 @@ public class ProfileAchievementsFragment extends Fragment {
                 int x;
                 for (x = 0; x < achievement_ids.size(); x++) {
                     if (
-                        search_titles.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        search_venues.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        search_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                        achievement_titles.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        achievement_venues.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        achievement_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(achievement_ids.get(x));
                         search_titles.add(achievement_titles.get(x));

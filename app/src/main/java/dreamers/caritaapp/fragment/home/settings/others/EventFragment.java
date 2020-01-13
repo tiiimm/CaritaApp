@@ -1,6 +1,7 @@
 package dreamers.caritaapp.fragment.home.settings.others;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -39,10 +40,12 @@ import java.util.List;
 import java.util.Random;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.AdvertisementActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
 
 public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
@@ -54,8 +57,6 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
     Button btn_donate;
     ImageView image_event;
-    ImageView image_advertisement;
-    VideoView video_advertisement;
     TextView text_title;
     TextView text_description;
     TextView text_date;
@@ -63,7 +64,6 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     TextView text_open_until;
     TextView text_points;
 
-    RelativeLayout layout_advertisement;
     LinearLayout layout_event;
 
     List<Integer> ads = new ArrayList<>();
@@ -72,6 +72,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     Integer ad;
     Integer position;
     Integer watch_count;
+    Integer user_points;
 
     public EventFragment() {
         // Required empty public constructor
@@ -84,9 +85,12 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
         root = inflater.inflate(R.layout.fragment_event, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+        user_points = user.getPoints();
 
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+
+        loadRewardedVideoAd();
 
         image_event = root.findViewById(R.id.image_event);
         text_title = root.findViewById(R.id.text_title);
@@ -95,9 +99,6 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
         text_venue = root.findViewById(R.id.text_venue);
         text_open_until = root.findViewById(R.id.text_open_until);
         text_points = root.findViewById(R.id.text_points);
-        video_advertisement = root.findViewById(R.id.video_advertisement);
-        image_advertisement = root.findViewById(R.id.image_advertisement);
-        layout_advertisement = root.findViewById(R.id.layout_advertisement);
         layout_event = root.findViewById(R.id.layout_event);
 
         ads.add(0);
@@ -113,30 +114,85 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
         btn_donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (watch_count>=10) {
-                Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (ad == 0) {
-                if (mRewardedVideoAd.isLoaded()) {
-                    mRewardedVideoAd.show();
+//                if (watch_count>=10) {
+//                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+                if (ads.get(position).equals(0)) {
+                    if (mRewardedVideoAd.isLoaded()) {
+                        mRewardedVideoAd.show();
+                    }
                 }
-            }
-            else {
-                layout_event.setVisibility(View.GONE);
-                layout_advertisement.setVisibility(View.VISIBLE);
+                else {
+                    Intent i = new Intent(getActivity(), AdvertisementActivity.class);
+                    i.putExtra("ad_id", ads.get(position).toString());
+                    i.putExtra("ad_content", ads_content.get(position));
+                    i.putExtra("ad_type", ads_type.get(position));
+                    i.putExtra("watch_id", bundle.getString("event_id"));
+                    i.putExtra("watch_type", "CharityEvent");
+                    i.putExtra("bundle", bundle);
 
-                donate("App\\CharityEvent", "Company", ads.get(position));
-                if (ads_type.get(position).matches("video")) {
-                    video_advertisement.start();
+                    getFragmentManager().beginTransaction().remove(new EventFragment()).commit();
+                    startActivity(i);
                 }
-            }
             }
         });
 
         configure();
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pick_ads();
+        user = sessionHandler.getUserDetails();
+        System.out.println(user_points);
+        System.out.println(user.getPoints());
+        Integer blah = user.getPoints() - user_points;
+        if (!blah.equals(0)) {
+            Integer pts = Integer.parseInt(bundle.getString("points"));
+            pts+=blah;
+            text_points.setText("Supports Received: "+pts);
+        }
+    }
+
+    private void configure() {
+        if (!bundle.getString("event_id").matches("")) {
+            Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(bundle.getString("photo"))).into(image_event);
+            text_title.setText(bundle.getString("title"));
+            text_description.setText(bundle.getString("description"));
+            text_points.setText("Supports Received: "+bundle.getString("points"));
+            text_date.setText(bundle.getString("date"));
+            text_venue.setText(bundle.getString("venue"));
+            text_open_until.setText(bundle.getString("open_until"));
+            get_watch_count();
+        }
+    }
+
+    private void get_watch_count() {
+        String request = "watch_count?user_id="+ user.getID();
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    watch_count = res.getInt("watch_count");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
     private void load_ads() {
@@ -171,36 +227,11 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     private void pick_ads() {
         Random rand = new Random();
         position = rand.nextInt(ads.size());
-        System.out.println("position" + position);
-        ad = ads.get(position);
-        System.out.println("ad" + ad);
-        if (ad == 0) {
-            loadRewardedVideoAd();
-        }
-        else {
-            load_selected_add(position);
-        }
+        System.out.println("HALULUUKHS "+position);
     }
 
-    private void load_selected_add(Integer position) {
-        System.out.println(ads_type.get(position));
-        if (ads_type.get(position).matches("video")) {
-            video_advertisement.setVisibility(View.VISIBLE);
-            image_advertisement.setVisibility(View.GONE);
-            video_advertisement.setVideoURI(Uri.parse(MediaManager.get().url().resourceType("video").generate(ads_content.get(position))));
-        }
-        else if (ads_type.get(position).matches("image")) {
-            image_advertisement.setVisibility(View.VISIBLE);
-            video_advertisement.setVisibility(View.GONE);
-            Glide.with(getActivity())
-                    .asBitmap()
-                    .load(MediaManager.get().url().generate(ads_content.get(position)))
-                    .into(image_advertisement);
-        }
-    }
-
-    private void donate(String type, String ad_type, Integer ad_id) {
-        String request = "donate?user_id="+ user.getID() +"&type="+ type +"&watch_id="+ bundle.getString("event_id") +"&ad_id="+ ad_id +"&ad_type="+ ad_type;
+    private void donate() {
+        String request = "donate?user_id="+ user.getID() +"&type=App\\CharityEvent&watch_id="+ bundle.getString("event_id") +"&ad_id=0&ad_type=Google";
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
@@ -209,47 +240,9 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
                 try {
                     JSONObject res = new JSONObject(response);
                     sessionHandler.donate(res.getInt("points"));
-                    get_watch_count();
                     Integer points = Integer.parseInt(text_points.getText().toString().split(" ")[2]);
                     points++;
                     text_points.setText("Supports Received: "+points);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error);
-                Toast.makeText(getActivity(),
-                        "Something went wrong", Toast.LENGTH_LONG).show();
-            }
-        });
-        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
-    }
-
-    private void configure() {
-        if (!bundle.getString("event_id").matches("")) {
-            Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(bundle.getString("photo"))).into(image_event);
-            text_title.setText(bundle.getString("title"));
-            text_description.setText(bundle.getString("description"));
-            text_points.setText(bundle.getString("points"));
-            text_date.setText(bundle.getString("date"));
-            text_venue.setText(bundle.getString("venue"));
-            text_open_until.setText(bundle.getString("open_until"));
-            get_watch_count();
-        }
-    }
-
-    private void get_watch_count() {
-        String request = "watch_count?user_id="+ user.getID();
-        System.out.println(request);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject res = new JSONObject(response);
-                    watch_count = res.getInt("watch_count");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -287,12 +280,13 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdClosed() {
-        pick_ads();
+        loadRewardedVideoAd();
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        donate("App\\CharityEvent", "Google", 0);
+        loadRewardedVideoAd();
+        donate();
     }
 
     @Override

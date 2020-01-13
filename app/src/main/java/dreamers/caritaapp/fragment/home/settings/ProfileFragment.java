@@ -41,11 +41,13 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.AdvertisementActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
 import dreamers.caritaapp.fragment.home.SettingsFragment;
+import dreamers.caritaapp.fragment.home.settings.others.EventFragment;
 import dreamers.caritaapp.fragment.home.settings.profile.ProfileAboutFragment;
 import dreamers.caritaapp.fragment.home.settings.profile.ProfileAchievementsFragment;
 import dreamers.caritaapp.fragment.home.settings.profile.ProfileEventsFragment;
@@ -62,10 +64,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     Bundle bundle;
     ImageView image_bio;
     VideoView video_bio;
-    ImageView image_advertisement;
-    VideoView video_advertisement;
     CircleImageView image_profile;
-    RelativeLayout layout_advertisement;
     LinearLayout layout_profile;
     Button btn_donate;
     TextView text_username;
@@ -76,6 +75,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     Integer ad;
     Integer position;
     Integer watch_count = 0;
+    Integer user_points;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -88,8 +88,12 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
 
+        user_points = user.getPoints();
+
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+
+        loadRewardedVideoAd();
 
         ImageView btn_back = root.findViewById(R.id.arrow_back);
         TextView text_name = root.findViewById(R.id.text_name);
@@ -100,17 +104,14 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         image_bio = root.findViewById(R.id.image_charity_bio);
         image_profile = root.findViewById(R.id.image_profile_picture);
         video_bio = root.findViewById(R.id.video_charity_bio);
-        video_advertisement = root.findViewById(R.id.video_advertisement);
-        image_advertisement = root.findViewById(R.id.image_advertisement);
         btn_donate = root.findViewById(R.id.btn_donate);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
-        layout_advertisement = root.findViewById(R.id.layout_advertisement);
         layout_profile = root.findViewById(R.id.layout_profile);
         final ProfileAboutFragment profileAboutFragment = new ProfileAboutFragment();
 
-        ads.add(0);
-        ads_content.add("");
-        ads_type.add("");
+//        ads.add(0);
+//        ads_content.add("");
+//        ads_type.add("");
 
         load_ads();
 
@@ -192,28 +193,46 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         btn_donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (watch_count>=10) {
-                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (ad == 0) {
+//                if (watch_count>=10) {
+//                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+                if (ads.get(position).equals(0)) {
                     if (mRewardedVideoAd.isLoaded()) {
                         mRewardedVideoAd.show();
                     }
                 }
                 else {
-                    layout_profile.setVisibility(View.GONE);
-                    layout_advertisement.setVisibility(View.VISIBLE);
+                    Intent i = new Intent(getActivity(), AdvertisementActivity.class);
+                    i.putExtra("ad_id", ads.get(position).toString());
+                    i.putExtra("ad_content", ads_content.get(position));
+                    i.putExtra("ad_type", ads_type.get(position));
+                    i.putExtra("watch_id", String.valueOf(bundle.getInt("user_id")));
+                    i.putExtra("watch_type", "Charity");
+                    i.putExtra("bundle", bundle);
 
-                    donate("App\\Charity", "Company", ads.get(position));
-                    if (ads_type.get(position).matches("video")) {
-                        video_advertisement.start();
-                    }
+                    getFragmentManager().beginTransaction().remove(new ProfileFragment()).commit();
+                    startActivity(i);
                 }
             }
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        user = sessionHandler.getUserDetails();
+        System.out.println(user_points);
+        System.out.println(user.getPoints());
+        Integer blah = user.getPoints() - user_points;
+        if (!blah.equals(0)) {
+            Integer pts = Integer.parseInt(bundle.getString("points"));
+            pts+=blah;
+            text_username.setText("Supports Received: "+pts);
+            pick_ads();
+        }
     }
 
     private void load_ads() {
@@ -248,32 +267,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     private void pick_ads() {
         Random rand = new Random();
         position = rand.nextInt(ads.size());
-        System.out.println("position" + position);
-        ad = ads.get(position);
-        System.out.println("ad" + ad);
-        if (ad == 0) {
-            loadRewardedVideoAd();
-        }
-        else {
-            load_selected_add(position);
-        }
-    }
-
-    private void load_selected_add(Integer position) {
-        System.out.println(ads_type.get(position));
-        if (ads_type.get(position).matches("video")) {
-            video_advertisement.setVisibility(View.VISIBLE);
-            image_advertisement.setVisibility(View.GONE);
-            video_advertisement.setVideoURI(Uri.parse(MediaManager.get().url().resourceType("video").generate(ads_content.get(position))));
-        }
-        else if (ads_type.get(position).matches("image")) {
-            image_advertisement.setVisibility(View.VISIBLE);
-            video_advertisement.setVisibility(View.GONE);
-            Glide.with(getActivity())
-                .asBitmap()
-                .load(MediaManager.get().url().generate(ads_content.get(position)))
-                .into(image_advertisement);
-        }
+        System.out.println("HALULUUKHS "+position);
     }
 
     private void configure() {
@@ -339,8 +333,8 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
-    private void donate(String type, String ad_type, Integer ad_id) {
-        String request = "donate?user_id="+ user.getID() +"&type="+ type +"&watch_id="+ bundle.getInt("user_id") +"&ad_id="+ ad_id +"&ad_type="+ ad_type;
+    private void donate() {
+        String request = "donate?user_id="+ user.getID() +"&type=App\\Charity&watch_id="+ bundle.getInt("user_id") +"&ad_id=0&ad_type=Google";
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
@@ -349,8 +343,6 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
                 try {
                     JSONObject res = new JSONObject(response);
                     sessionHandler.donate(res.getInt("points"));
-
-                    get_watch_count();
                     Integer points = Integer.parseInt(text_username.getText().toString().split(" ")[2]);
                     points++;
                     text_username.setText("Supports Received: "+points);
@@ -391,12 +383,13 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
 
     @Override
     public void onRewardedVideoAdClosed() {
-        pick_ads();
+        loadRewardedVideoAd();
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        donate("App\\Charity", "Google", 0);
+        loadRewardedVideoAd();
+        donate();
     }
 
     @Override

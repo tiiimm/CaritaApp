@@ -93,9 +93,9 @@ public class CompanyAdvertisements extends Fragment {
                 int x;
                 for (x = 0; x < advertisement_ids.size(); x++) {
                     if (
-                        search_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        search_billing_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        search_statuses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                        advertisement_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        advertisement_billing_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        advertisement_statuses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(advertisement_ids.get(x));
                         search_names.add(advertisement_names.get(x));
