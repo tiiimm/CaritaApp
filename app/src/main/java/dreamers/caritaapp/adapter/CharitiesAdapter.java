@@ -105,7 +105,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
             public boolean onLongClick(View v) {
                 CharSequence[] items = {};
                 if (charity_statuses.get(position).matches("Pending")) {
-                    items = new CharSequence[]{"Approve Charity", "Reject Charity"};
+                    items = new CharSequence[]{"Reject Charity", "Approve Charity"};
                 }
                 else {
                     items = new CharSequence[]{"Reject Charity"};
@@ -119,10 +119,10 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                approve_charity(charity_ids.get(position));
+                                delete_charity(charity_ids.get(position));
                                 break;
                             case 1:
-                                delete_charity(charity_ids.get(position));
+                                approve_charity(charity_ids.get(position));
                                 break;
                             default:
                                 break;

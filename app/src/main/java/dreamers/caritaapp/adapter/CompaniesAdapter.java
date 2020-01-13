@@ -65,7 +65,7 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
             public boolean onLongClick(View v) {
                 CharSequence[] items = {};
                 if (company_statuses.get(position).matches("Pending")) {
-                    items = new CharSequence[]{"Approve Company", "Delete"};
+                    items = new CharSequence[]{"Delete", "Approve Company"};
                 }
                 else {
                     items = new CharSequence[]{"Delete"};
@@ -79,10 +79,10 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                approve_company(company_ids.get(position));
+                                delete_company(company_ids.get(position));
                                 break;
                             case 1:
-                                delete_company(company_ids.get(position));
+                                approve_company(company_ids.get(position));
                                 break;
                             default:
                                 break;
