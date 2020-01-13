@@ -1,26 +1,43 @@
 package dreamers.caritaapp.fragment.home;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.SplashScreenActivity;
+import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
 import dreamers.caritaapp.database.User;
+import dreamers.caritaapp.fragment.admin.AddUserFragment;
 import dreamers.caritaapp.fragment.admin.CompaniesFragment;
 import dreamers.caritaapp.fragment.admin.PhilanthropistsFragment;
+import dreamers.caritaapp.fragment.home.home.HomeCharitiesFragment;
 import dreamers.caritaapp.fragment.home.settings.OwnAchievementsFragment;
 import dreamers.caritaapp.fragment.home.settings.ProfileFragment;
 import dreamers.caritaapp.fragment.home.settings.OwnEventsFragment;
@@ -59,6 +76,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout layout_philanthropist = root.findViewById(R.id.layout_philanthropist);
         TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
         TextView nav_companies = root.findViewById(R.id.nav_companies);
+        TextView nav_change_password = root.findViewById(R.id.nav_change_password);
 
         Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(user.getPhoto())).into(image_profile_picture);
 
@@ -144,8 +162,100 @@ public class SettingsFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fragment2, new OwnEventsFragment()).commit();
             }
         });
+        nav_change_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Title");
+
+                LinearLayout layout = new LinearLayout(getActivity());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                params.setMargins(50, 0, 50, 0);
+
+                final EditText new_password = new EditText(getActivity());
+                new_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                new_password.setHint("Enter new password");
+                new_password.setLayoutParams(params);
+                layout.addView(new_password);
+
+                final EditText old_password = new EditText(getActivity());
+                old_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                old_password.setHint("Enter old password");
+                old_password.setLayoutParams(params);
+                layout.addView(old_password);
+
+                builder.setView(layout);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Boolean valid = true;
+                        if (new_password.getText().toString().matches("")) {
+                            Toast.makeText(getActivity(), "No changes have been made. New password is empty", Toast.LENGTH_LONG).show();
+                            valid = false;
+                        }
+                        if (new_password.getText().toString().length()<8) {
+                            Toast.makeText(getActivity(), "No changes have been made. New password should be at least 8 characters", Toast.LENGTH_LONG).show();
+                            valid = false;
+                        }
+                        if (old_password.getText().toString().matches("")) {
+                            Toast.makeText(getActivity(), "No changes have been made. Old password is empty", Toast.LENGTH_LONG).show();
+                            valid = false;
+                        }
+                        if (new_password.getText().toString().matches(old_password.getText().toString())) {
+                            Toast.makeText(getActivity(), "No changes have been made. Passwords are same", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (valid) {
+                            change_password(new_password.getText().toString(), old_password.getText().toString());
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         return root;
     }
 
+    private void change_password(String new_password, String old_password) {
+        String request = "change_password?user_id="+ user.getID() +"&old_password="+ old_password +"&new_password="+ new_password;
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                new SplashScreenActivity().url+ request,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(response);
+                        try {
+                            JSONObject res = new JSONObject(response);
+                            if (res.has("error")) {
+                                Toast.makeText(getActivity(), res.getString("error"), Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
 }

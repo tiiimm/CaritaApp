@@ -113,7 +113,7 @@ public class UploadAdvertisementFragment extends Fragment {
                     valid = false;
                 }
                 if (advertisement_path.matches("")) {
-                    Toast.makeText(getActivity(), "Set advertisement!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Set advertisement!", Toast.LENGTH_LONG).show();
                     valid = false;
                 }
 
@@ -196,7 +196,7 @@ public class UploadAdvertisementFragment extends Fragment {
                 try {
                     JSONObject res = new JSONObject(response);
                     if (res.has("success")){
-                        Toast.makeText(getActivity(), "Successfull!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Successfull!", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().remove(new UploadAdvertisementFragment()).commit();
                         getFragmentManager().beginTransaction().replace(R.id.fragment_company, new CompanyAdvertisements()).commit();
                     }

@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     JSONObject res = new JSONObject(response);
                     if (res.has("error")){
-                        Toast.makeText(LoginActivity.this, res.getString("error"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, res.getString("error"), Toast.LENGTH_LONG).show();
                     }
                     else {
                         String organization = "";
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                             organization = charity.getString("organization");
                             photo = charity.getString("photo");
                             if (!charity.getString("status").matches("Active")) {
-                                Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_LONG).show();
                                 return;
                             }
                         }

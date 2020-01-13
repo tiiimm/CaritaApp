@@ -116,7 +116,7 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
                         for (int i = 0; i < errors.length(); i++) {
                             switch (errors.get(i).toString().split(" ")[1]) {
                                 case "user":
-                                    Toast.makeText(getActivity(), "You already have an account. Try to login", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "You already have an account. Try to login", Toast.LENGTH_LONG).show();
                                     sessionHandler.logoutUser();
                                     Intent j = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(j);

@@ -114,7 +114,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             @Override
             public void onClick(View v) {
             if (watch_count>=10) {
-                Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
                 return;
             }
             if (ad == 0) {
