@@ -42,7 +42,7 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
     public void onBindViewHolder(AdvertisementsAdapter.ViewHolder holder, final int position) {
         holder.text_advertisement_name.setText(advertisement_names.get(position));
         holder.text_advertisement_status.setText(advertisement_statuses.get(position));
-        holder.text_advertisement_billing_date.setText(advertisement_billing_dates.get(position));
+        holder.text_advertisement_billing_date.setText("");
     }
 
 
