@@ -52,6 +52,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     Bundle bundle;
     RewardedVideoAd mRewardedVideoAd;
 
+    Button btn_donate;
     ImageView image_event;
     ImageView image_advertisement;
     VideoView video_advertisement;
@@ -69,6 +70,7 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     ArrayList<String> ads_type = new ArrayList<>();
     Integer ad;
     Integer position;
+    Integer watch_count;
 
     public EventFragment() {
         // Required empty public constructor
@@ -104,11 +106,15 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
         bundle = getArguments();
 
-        Button btn_donate = root.findViewById(R.id.btn_donate);
+        btn_donate = root.findViewById(R.id.btn_donate);
 
         btn_donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if (watch_count>=10) {
+                Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (ad == 0) {
                 if (mRewardedVideoAd.isLoaded()) {
                     mRewardedVideoAd.show();
@@ -198,6 +204,13 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             @Override
             public void onResponse(String response) {
                 System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    sessionHandler.donate(res.getInt("points"));
+                    get_watch_count();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -218,7 +231,32 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             text_date.setText(bundle.getString("date"));
             text_venue.setText(bundle.getString("venue"));
             text_open_until.setText(bundle.getString("open_until"));
+            get_watch_count();
         }
+    }
+
+    private void get_watch_count() {
+        String request = "watch_count?user_id="+ user.getID();
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    watch_count = res.getInt("watch_count");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
     private void loadRewardedVideoAd() {

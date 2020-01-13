@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.database.SessionHandler;
+import dreamers.caritaapp.database.User;
 import dreamers.caritaapp.fragment.home.home.HomeAchievementsFragment;
 import dreamers.caritaapp.fragment.home.home.HomeCharitiesFragment;
 import dreamers.caritaapp.fragment.home.home.HomeEventsFragment;
@@ -19,6 +21,8 @@ import dreamers.caritaapp.fragment.home.home.HomeEventsFragment;
 public class HomeFragment extends Fragment {
 
     View root;
+    SessionHandler sessionHandler;
+    User user;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -28,10 +32,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
+        sessionHandler = new SessionHandler(getActivity());
+        user = sessionHandler.getUserDetails();
 
         final TextView nav_charities = root.findViewById(R.id.nav_home_charities);
         final TextView nav_events = root.findViewById(R.id.nav_home_events);
         final TextView nav_achievements = root.findViewById(R.id.nav_home_achievements);
+        TextView text_username = root.findViewById(R.id.text_username);
+        TextView text_points = root.findViewById(R.id.text_points);
+
+        if (user.getRole().matches("Charity")) {
+            text_username.setText("Welcome, "+user.getOrganization()+"!");
+        }
+        else {
+            text_username.setText("Welcome, @"+user.getUsername()+"!");
+        }
+
+        text_points.setText("Points: "+user.getPoints());
 
         getFragmentManager().beginTransaction().add(R.id.fragment3,new HomeCharitiesFragment()).commit();
 

@@ -71,6 +71,11 @@ public class SessionHandler {
         return currentDate.before(expiryDate);
     }
 
+    public void donate(Integer points) {
+        mEditor.putInt("points", points);
+        mEditor.commit();
+    }
+
     public void logoutUser(){
         mEditor.clear();
         mEditor.commit();

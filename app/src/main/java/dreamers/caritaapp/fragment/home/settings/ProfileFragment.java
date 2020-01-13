@@ -67,12 +67,14 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     CircleImageView image_profile;
     RelativeLayout layout_advertisement;
     LinearLayout layout_profile;
+    Button btn_donate;
 
     List<Integer> ads = new ArrayList<>();
     ArrayList<String> ads_content = new ArrayList<>();
     ArrayList<String> ads_type = new ArrayList<>();
     Integer ad;
     Integer position;
+    Integer watch_count = 0;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -99,7 +101,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         video_bio = root.findViewById(R.id.video_charity_bio);
         video_advertisement = root.findViewById(R.id.video_advertisement);
         image_advertisement = root.findViewById(R.id.image_advertisement);
-        Button btn_donate = root.findViewById(R.id.btn_donate);
+        btn_donate = root.findViewById(R.id.btn_donate);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         layout_advertisement = root.findViewById(R.id.layout_advertisement);
         layout_profile = root.findViewById(R.id.layout_profile);
@@ -188,6 +190,10 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         btn_donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (watch_count>=10) {
+                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (ad == 0) {
                     if (mRewardedVideoAd.isLoaded()) {
                         mRewardedVideoAd.show();
@@ -290,6 +296,32 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
                         image_bio.setVisibility(View.GONE);
                         video_bio.start();
                     }
+                    get_watch_count();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(getActivity(),
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
+
+    private void get_watch_count() {
+        String request = "watch_count?user_id="+ user.getID();
+        System.out.println(request);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    watch_count = res.getInt("watch_count");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -312,6 +344,14 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
             @Override
             public void onResponse(String response) {
                 System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    sessionHandler.donate(res.getInt("points"));
+
+                    get_watch_count();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

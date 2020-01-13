@@ -51,6 +51,9 @@ public class SettingsFragment extends Fragment {
         TextView btn_to_profile = root.findViewById(R.id.btn_to_profile);
         ImageView btn_achievements = root.findViewById(R.id.btn_achievements);
         ImageView btn_events = root.findViewById(R.id.btn_events);
+        TextView text_points = root.findViewById(R.id.text_points);
+        TextView text_rank = root.findViewById(R.id.text_rank);
+        TextView text_level = root.findViewById(R.id.text_level);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         LinearLayout layout_admin = root.findViewById(R.id.layout_admin);
         TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
@@ -60,6 +63,25 @@ public class SettingsFragment extends Fragment {
 
         if (user.getRole().matches("Administrator")) {
             layout_admin.setVisibility(View.VISIBLE);
+        }
+        if (user.getRole().matches("Philanthropist")) {
+            text_points.setText("Points: "+user.getPoints().toString());
+            text_rank.setText("");
+            if (user.getPoints().equals(0)) {
+                text_level.setText("Level: None");
+            }
+            if (user.getPoints()>0 && user.getPoints()<10) {
+                text_level.setText("Level 1: Kindhearted");
+            }
+            if (user.getPoints()>10 && user.getPoints()<30) {
+                text_level.setText("Level 2: Hardworker");
+            }
+            if (user.getPoints()>30 && user.getPoints()<50) {
+                text_level.setText("Level 3: Good Samaritan");
+            }
+            if (user.getPoints()>50 && user.getPoints()<100) {
+                text_level.setText("Level 4: Angelic");
+            }
         }
         if (user.getRole().matches("Charity")) {
             text_username.setText(user.getOrganization());
