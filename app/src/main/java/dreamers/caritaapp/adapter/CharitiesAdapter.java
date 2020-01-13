@@ -42,6 +42,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
     private ArrayList<Integer> charity_ids;
     private ArrayList<Integer> charity_user_ids;
     private ArrayList<String> charity_names;
+    private ArrayList<String> charity_statuses;
     private ArrayList<String> charity_photos;
     private ArrayList<String> charity_addresss;
     private ArrayList<String> charity_contacts;
@@ -49,11 +50,12 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
 
     private Context mContext;
 
-    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids, ArrayList<Integer> points) {
+    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids, ArrayList<Integer> points, ArrayList<String> statuses) {
         charity_ids = ids;
         charity_user_ids = user_ids;
         charity_points = points;
         charity_names = names;
+        charity_statuses = statuses;
         charity_photos = photos;
         charity_addresss = addresss;
         charity_contacts = contacts;
@@ -101,7 +103,13 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final CharSequence[] items = {"Approve Charity", "Delete"};
+                CharSequence[] items = {};
+                if (charity_statuses.get(position).matches("Pending")) {
+                    items = new CharSequence[]{"Approve Charity", "Reject Charity"};
+                }
+                else {
+                    items = new CharSequence[]{"Reject Charity"};
+                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
@@ -150,7 +158,25 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
     }
 
     private void delete_charity(Integer id) {
+        String request = "delete_charity?id="+ id;
 
+        System.out.println(request);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(mContext,
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
     }
 
     @Override

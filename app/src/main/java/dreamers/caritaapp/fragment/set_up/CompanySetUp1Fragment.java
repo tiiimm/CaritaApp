@@ -38,6 +38,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.CompanyActivity;
+import dreamers.caritaapp.activity.LoginActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
 import dreamers.caritaapp.database.MySingleton;
 import dreamers.caritaapp.database.SessionHandler;
@@ -50,7 +51,7 @@ public class CompanySetUp1Fragment extends Fragment {
     View root;
     SessionHandler sessionHandler;
     User user;
-    String image_path;
+    String image_path="";
     CircleImageView circleImageView;
     EditText text_name;
 
@@ -185,11 +186,11 @@ public class CompanySetUp1Fragment extends Fragment {
                         }
                     }
                     else {
-                        sessionHandler.set_up("Company", res.getString("name"), res.getString("photo"));
+                        sessionHandler.logoutUser();
                         Toast.makeText(getActivity(),
-                                "Successful!", Toast.LENGTH_LONG).show();
-                        getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();
-                        Intent i = new Intent(getActivity(), CompanyActivity.class);
+                                "Successful! Wait for admin to accept your application", Toast.LENGTH_LONG).show();
+                        getFragmentManager().beginTransaction().remove(new CompanySetUp1Fragment()).commit();
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
                         startActivity(i);
                     }
                 } catch (JSONException e) {

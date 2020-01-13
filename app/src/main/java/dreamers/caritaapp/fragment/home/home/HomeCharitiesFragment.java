@@ -45,6 +45,7 @@ public class HomeCharitiesFragment extends Fragment {
     private ArrayList<Integer> charity_ids = new ArrayList<>();
     private ArrayList<Integer> charity_user_ids = new ArrayList<>();
     private ArrayList<String> charity_names = new ArrayList<>();
+    private ArrayList<String> charity_statuses = new ArrayList<>();
     private ArrayList<String> charity_photos = new ArrayList<>();
     private ArrayList<String> charity_addresses = new ArrayList<>();
     private ArrayList<String> charity_contacts = new ArrayList<>();
@@ -52,6 +53,7 @@ public class HomeCharitiesFragment extends Fragment {
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<Integer> search_user_ids = new ArrayList<>();
     private ArrayList<String> search_names = new ArrayList<>();
+    private ArrayList<String> search_statuses = new ArrayList<>();
     private ArrayList<String> search_photos = new ArrayList<>();
     private ArrayList<String> search_addresses = new ArrayList<>();
     private ArrayList<String> search_contacts = new ArrayList<>();
@@ -85,6 +87,7 @@ public class HomeCharitiesFragment extends Fragment {
                 search_ids.clear();
                 search_user_ids.clear();
                 search_names.clear();
+                search_statuses.clear();
                 search_photos.clear();
                 search_addresses.clear();
                 search_contacts.clear();
@@ -93,11 +96,13 @@ public class HomeCharitiesFragment extends Fragment {
                     if (
                         charity_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         charity_addresses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        charity_statuses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(charity_ids.get(x));
                         search_user_ids.add(charity_user_ids.get(x));
                         search_names.add(charity_names.get(x));
+                        search_statuses.add(charity_statuses.get(x));
                         search_photos.add(charity_photos.get(x));
                         search_addresses.add(charity_addresses.get(x));
                         search_contacts.add(charity_contacts.get(x));
@@ -108,6 +113,7 @@ public class HomeCharitiesFragment extends Fragment {
                             search_ids.add(charity_ids.get(x));
                             search_user_ids.add(charity_user_ids.get(x));
                             search_names.add(charity_names.get(x));
+                            search_statuses.add(charity_statuses.get(x));
                             search_photos.add(charity_photos.get(x));
                             search_addresses.add(charity_addresses.get(x));
                             search_contacts.add(charity_contacts.get(x));
@@ -143,6 +149,7 @@ public class HomeCharitiesFragment extends Fragment {
                         charity_user_ids.add(charity.getInt("user_id"));
                         charity_photos.add(charity.getString("photo"));
                         charity_names.add(charity.getString("organization"));
+                        charity_statuses.add(charity.getString("status"));
                         charity_addresses.add(charity.getString("address"));
                         charity_contacts.add(charity.getString("contact_number"));
                         charity_points.add(charity.getInt("points"));
@@ -178,6 +185,7 @@ public class HomeCharitiesFragment extends Fragment {
                         charity_user_ids.add(charity.getInt("user_id"));
                         charity_photos.add(charity.getString("photo"));
                         charity_names.add(charity.getString("organization"));
+                        charity_statuses.add(charity.getString("status"));
                         charity_addresses.add(charity.getString("address"));
                         charity_contacts.add(charity.getString("contact_number"));
                         charity_points.add(charity.getInt("points"));
@@ -202,14 +210,14 @@ public class HomeCharitiesFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
-        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids, charity_points);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids, charity_points, charity_statuses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
-        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), search_names, search_addresses, search_contacts, search_ids, search_photos, search_user_ids, search_points);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), search_names, search_addresses, search_contacts, search_ids, search_photos, search_user_ids, search_points, search_statuses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

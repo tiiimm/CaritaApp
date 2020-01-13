@@ -140,6 +140,13 @@ public class LoginActivity extends AppCompatActivity {
                                 return;
                             }
                         }
+                        if (res.has("company")) {
+                            JSONObject company = new JSONObject(res.getString("company"));
+                            if (!company.getString("status").matches("Active")) {
+                                Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
                         session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization);
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();

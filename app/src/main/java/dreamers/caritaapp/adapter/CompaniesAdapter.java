@@ -1,14 +1,21 @@
 package dreamers.caritaapp.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 
@@ -16,18 +23,22 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.SplashScreenActivity;
+import dreamers.caritaapp.database.MySingleton;
 
 public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.ViewHolder> {
 
     private ArrayList<Integer> company_ids;
     private ArrayList<String> company_names;
+    private ArrayList<String> company_statuses;
     private ArrayList<String> company_photos;
 
     private Context mContext;
 
-    public CompaniesAdapter(Context context, ArrayList<String> names, ArrayList<Integer> ids, ArrayList<String> photos) {
+    public CompaniesAdapter(Context context, ArrayList<String> names, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<String> statuses) {
         company_ids = ids;
         company_names = names;
+        company_statuses = statuses;
         company_photos = photos;
         mContext = context;
     }
@@ -46,8 +57,87 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
                 .load(MediaManager.get().url().generate(company_photos.get(position)))
                 .into(holder.image_company);
         holder.text_company_name.setText(company_names.get(position));
+        holder.text_company_status.setText(company_statuses.get(position));
+
+
+        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                CharSequence[] items = {};
+                if (company_statuses.get(position).matches("Pending")) {
+                    items = new CharSequence[]{"Approve Company", "Delete"};
+                }
+                else {
+                    items = new CharSequence[]{"Delete"};
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setTitle("Select an Action");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                approve_company(company_ids.get(position));
+                                break;
+                            case 1:
+                                delete_company(company_ids.get(position));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
+    private void approve_company(Integer id) {
+        String request = "approve_company?id="+ id;
+
+        System.out.println(request);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(mContext,
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
+    }
+
+    private void delete_company(Integer id) {
+        String request = "delete_company?id="+ id;
+
+        System.out.println(request);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(mContext,
+                        "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
+    }
 
     @Override
     public int getItemCount() {
@@ -59,13 +149,14 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
 
         CircleImageView image_company;
         TextView text_company_name;
-        TextView text_company_address;
+        TextView text_company_status;
         LinearLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             image_company = itemView.findViewById(R.id.image_company);
             text_company_name = itemView.findViewById(R.id.text_company_name);
+            text_company_status = itemView.findViewById(R.id.text_company_status);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }

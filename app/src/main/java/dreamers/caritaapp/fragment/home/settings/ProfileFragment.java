@@ -109,9 +109,9 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         layout_profile = root.findViewById(R.id.layout_profile);
         final ProfileAboutFragment profileAboutFragment = new ProfileAboutFragment();
 
-//        ads.add(0);
-//        ads_content.add("");
-//        ads_type.add("");
+        ads.add(0);
+        ads_content.add("");
+        ads_type.add("");
 
         load_ads();
 
@@ -193,10 +193,10 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
         btn_donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (watch_count>=10) {
-//                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
+                if (watch_count>=10) {
+                    Toast.makeText(getActivity(), "You're reached your watch limit for the day", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (ads.get(position).equals(0)) {
                     if (mRewardedVideoAd.isLoaded()) {
                         mRewardedVideoAd.show();
@@ -236,7 +236,7 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     }
 
     private void load_ads() {
-        String request = "get_advertisements";
+        String request = "get_active_advertisements";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

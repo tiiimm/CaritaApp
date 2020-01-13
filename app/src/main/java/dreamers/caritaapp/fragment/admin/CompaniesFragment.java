@@ -45,9 +45,11 @@ public class CompaniesFragment extends Fragment {
 
     private ArrayList<Integer> company_ids = new ArrayList<>();
     private ArrayList<String> company_names = new ArrayList<>();
+    private ArrayList<String> company_statuses = new ArrayList<>();
     private ArrayList<String> company_photos = new ArrayList<>();
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<String> search_names = new ArrayList<>();
+    private ArrayList<String> search_statuses = new ArrayList<>();
     private ArrayList<String> search_photos = new ArrayList<>();
 
     public CompaniesFragment() {
@@ -87,12 +89,17 @@ public class CompaniesFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 search_ids.clear();
                 search_names.clear();
+                search_statuses.clear();
                 search_photos.clear();
                 int x;
                 for (x = 0; x < company_ids.size(); x++) {
-                    if (company_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())) {
+                    if (
+                        company_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
+                        company_statuses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
+                    ) {
                         search_ids.add(company_ids.get(x));
                         search_names.add(company_names.get(x));
+                        search_statuses.add(company_statuses.get(x));
                         search_photos.add(company_photos.get(x));
                     }
                 }
@@ -120,6 +127,7 @@ public class CompaniesFragment extends Fragment {
                         JSONObject company = res.getJSONObject(i);
                         company_ids.add(company.getInt("id"));
                         company_names.add(company.getString("name"));
+                        company_statuses.add(company.getString("status"));
                         company_photos.add(company.getString("photo"));
                     }
                     if (company_ids.size()>0){
@@ -142,14 +150,14 @@ public class CompaniesFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_companies);
-        CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), company_names, company_ids, company_photos);
+        CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), company_names, company_ids, company_photos, company_statuses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_companies);
-        CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), search_names, search_ids, search_photos);
+        CompaniesAdapter adapter = new CompaniesAdapter(getActivity(), search_names, search_ids, search_photos, search_statuses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
