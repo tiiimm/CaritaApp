@@ -99,7 +99,6 @@ public class PhilanthropistsFragment extends Fragment {
                 for (x = 0; x < philanthropist_ids.size(); x++) {
                     if (
                         search_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        search_points.get(x).equals(Integer.parseInt(text_search.getText().toString())) ||
                         search_usernames.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(philanthropist_ids.get(x));
@@ -107,6 +106,18 @@ public class PhilanthropistsFragment extends Fragment {
                         search_points.add(philanthropist_points.get(x));
                         search_usernames.add(philanthropist_usernames.get(x));
                         search_photos.add(philanthropist_photos.get(x));
+                    }
+                    try {
+                        if (search_points.get(x).equals(Integer.parseInt(text_search.getText().toString()))) {
+                            search_ids.add(philanthropist_ids.get(x));
+                            search_names.add(philanthropist_names.get(x));
+                            search_points.add(philanthropist_points.get(x));
+                            search_usernames.add(philanthropist_usernames.get(x));
+                            search_photos.add(philanthropist_photos.get(x));
+                        }
+                    }
+                    catch (Exception e) {
+
                     }
                 }
                 initSearchView();

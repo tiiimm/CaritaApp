@@ -93,8 +93,7 @@ public class HomeCharitiesFragment extends Fragment {
                     if (
                         charity_names.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         charity_addresses.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
-                        charity_points.get(x).equals(Integer.parseInt(text_search.getText().toString()))
+                        charity_contacts.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(charity_ids.get(x));
                         search_user_ids.add(charity_user_ids.get(x));
@@ -103,6 +102,20 @@ public class HomeCharitiesFragment extends Fragment {
                         search_addresses.add(charity_addresses.get(x));
                         search_contacts.add(charity_contacts.get(x));
                         search_points.add(charity_points.get(x));
+                    }
+                    try {
+                        if (charity_points.get(x).equals(Integer.parseInt(text_search.getText().toString()))) {
+                            search_ids.add(charity_ids.get(x));
+                            search_user_ids.add(charity_user_ids.get(x));
+                            search_names.add(charity_names.get(x));
+                            search_photos.add(charity_photos.get(x));
+                            search_addresses.add(charity_addresses.get(x));
+                            search_contacts.add(charity_contacts.get(x));
+                            search_points.add(charity_points.get(x));
+                        }
+                    }
+                    catch (Exception e){
+
                     }
                 }
                 initSearchView();

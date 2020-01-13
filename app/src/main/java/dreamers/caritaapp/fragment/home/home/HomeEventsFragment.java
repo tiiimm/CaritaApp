@@ -87,7 +87,6 @@ public class HomeEventsFragment extends Fragment {
                 int x;
                 for (x = 0; x < event_ids.size(); x++) {
                     if (
-                        event_points.get(x).equals(Integer.parseInt(text_search.getText().toString())) ||
                         event_titles.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         event_venues.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase()) ||
                         event_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
@@ -98,6 +97,21 @@ public class HomeEventsFragment extends Fragment {
                         search_photos.add(event_photos.get(x));
                         search_venues.add(event_venues.get(x));
                         search_dates.add(event_dates.get(x));
+                    }
+                    try {
+                        if (
+                            event_points.get(x).equals(Integer.parseInt(text_search.getText().toString()))
+                        ) {
+                            search_ids.add(event_ids.get(x));
+                            search_points.add(event_points.get(x));
+                            search_titles.add(event_titles.get(x));
+                            search_photos.add(event_photos.get(x));
+                            search_venues.add(event_venues.get(x));
+                            search_dates.add(event_dates.get(x));
+                        }
+                    }
+                    catch (Exception e) {
+
                     }
                 }
                 initSearchView();
