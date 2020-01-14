@@ -70,7 +70,6 @@ public class SettingsFragment extends Fragment {
         ImageView btn_achievements = root.findViewById(R.id.btn_achievements);
         ImageView btn_events = root.findViewById(R.id.btn_events);
         TextView text_points = root.findViewById(R.id.text_points);
-        TextView text_rank = root.findViewById(R.id.text_rank);
         TextView text_level = root.findViewById(R.id.text_level);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
         LinearLayout view_admin = root.findViewById(R.id.view_admin);
@@ -85,11 +84,15 @@ public class SettingsFragment extends Fragment {
 
         if (user.getRole().matches("Administrator")) {
             view_admin.setVisibility(View.VISIBLE);
+            btn_to_profile.setVisibility(View.GONE);
+        }
+        if (user.getRole().matches("Company")) {
+            btn_to_profile.setVisibility(View.GONE);
         }
         if (user.getRole().matches("Philanthropist")) {
             layout_philanthropist.setVisibility(View.VISIBLE);
+            btn_to_profile.setVisibility(View.GONE);
             text_points.setText("Points: "+user.getPoints().toString());
-            text_rank.setText("");
             if (user.getPoints().equals(0)) {
                 text_level.setText("Level: None");
             }

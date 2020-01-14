@@ -89,7 +89,9 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!charity_statuses.get(position).matches("Active")) {
+                    return;
+                }
                 Bundle bundle = new Bundle();
                 ProfileFragment profileFragment = new ProfileFragment();
 
