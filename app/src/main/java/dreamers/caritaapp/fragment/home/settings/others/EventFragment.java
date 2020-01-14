@@ -1,6 +1,7 @@
 package dreamers.caritaapp.fragment.home.settings.others;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,6 +75,8 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     Integer watch_count;
     Integer user_points;
 
+    ProgressDialog progressDialog;
+
     public EventFragment() {
         // Required empty public constructor
     }
@@ -89,6 +92,8 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
 
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         loadRewardedVideoAd();
 
@@ -167,6 +172,10 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             text_date.setText(bundle.getString("date"));
             text_venue.setText(bundle.getString("venue"));
             text_open_until.setText(bundle.getString("open_until"));
+
+            if (bundle.getString("user_id").matches(String.valueOf(user.getID()))) {
+                btn_donate.setVisibility(View.GONE);
+            }
             get_watch_count();
         }
     }
@@ -259,13 +268,14 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
     }
 
     private void loadRewardedVideoAd() {
+        progressDialog.show();
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
-
+        progressDialog.dismiss();
     }
 
     @Override

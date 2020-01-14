@@ -27,17 +27,19 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private ArrayList<String> event_photos;
     private ArrayList<String> event_dates;
     private ArrayList<String> event_venues;
+    private ArrayList<String> event_user_ids;
     private ArrayList<Integer> event_points;
 
     private Context mContext;
 
-    public EventsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> points) {
+    public EventsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> points, ArrayList<String> user_ids) {
         event_ids = ids;
         event_points = points;
         event_titles = titles;
         event_photos = photos;
         event_dates = dates;
         event_venues = venues;
+        event_user_ids = user_ids;
         mContext = context;
     }
 
@@ -73,6 +75,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                 bundle.putString("date", event_dates.get(position));
                 bundle.putString("open_until", event_dates.get(position));
                 bundle.putString("points", event_points.get(position).toString());
+                bundle.putString("user_id", event_user_ids.get(position).toString());
                 eventFragment.setArguments(bundle);
 
                 System.out.println(bundle);

@@ -3,6 +3,7 @@ package dreamers.caritaapp.fragment.company;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -60,6 +61,7 @@ public class UploadAdvertisementFragment extends Fragment {
     VideoView video_advertisement;
     String advertisement_path = "";
     String advertisement_type = "";
+    ProgressDialog progressDialog;
 
     public UploadAdvertisementFragment() {
         // Required empty public constructor
@@ -78,6 +80,8 @@ public class UploadAdvertisementFragment extends Fragment {
         final TextView text_advertisement_name = root.findViewById(R.id.text_advertisement_name);
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         image_advertisement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +122,7 @@ public class UploadAdvertisementFragment extends Fragment {
                 }
 
                 if (valid) {
+                    progressDialog.show();
                     MediaManager.get().upload(advertisement_path)
                     .option("resource_type", advertisement_type)
                     .option("folder", "carita/")
@@ -141,10 +146,16 @@ public class UploadAdvertisementFragment extends Fragment {
                         }
                         @Override
                         public void onError(String requestId, ErrorInfo error) {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         @Override
                         public void onReschedule(String requestId, ErrorInfo error) {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }})
                     .dispatch();
@@ -194,6 +205,7 @@ public class UploadAdvertisementFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
+                    progressDialog.dismiss();
                     JSONObject res = new JSONObject(response);
                     if (res.has("success")){
                         Toast.makeText(getActivity(), "Successfull!", Toast.LENGTH_LONG).show();
@@ -201,6 +213,7 @@ public class UploadAdvertisementFragment extends Fragment {
                         getFragmentManager().beginTransaction().replace(R.id.fragment_company, new CompanyAdvertisements()).commit();
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     Toast.makeText(getActivity(),
                             "Something went wrong", Toast.LENGTH_LONG).show();
                 }
@@ -208,6 +221,7 @@ public class UploadAdvertisementFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 System.out.println(error);
                 Toast.makeText(getActivity(),
                         "Something went wrong", Toast.LENGTH_LONG).show();

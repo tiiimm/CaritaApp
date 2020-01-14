@@ -1,6 +1,7 @@
 package dreamers.caritaapp.fragment.home.settings;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -77,6 +78,8 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     Integer watch_count = 0;
     Integer user_points;
 
+    ProgressDialog progressDialog;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -92,6 +95,8 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
 
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         loadRewardedVideoAd();
 
@@ -364,13 +369,14 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
     }
 
     private void loadRewardedVideoAd() {
+        progressDialog.show();
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
-
+        progressDialog.dismiss();
     }
 
     @Override

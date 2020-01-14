@@ -45,12 +45,15 @@ public class ProfileEventsFragment extends Fragment {
     private ArrayList<String> event_photos = new ArrayList<>();
     private ArrayList<String> event_venues = new ArrayList<>();
     private ArrayList<String> event_dates = new ArrayList<>();
+    private ArrayList<String> event_user_ids = new ArrayList<>();
+
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<Integer> search_points = new ArrayList<>();
     private ArrayList<String> search_titles = new ArrayList<>();
     private ArrayList<String> search_photos = new ArrayList<>();
     private ArrayList<String> search_venues = new ArrayList<>();
     private ArrayList<String> search_dates = new ArrayList<>();
+    private ArrayList<String> search_user_ids = new ArrayList<>();
 
     public ProfileEventsFragment() {
         // Required empty public constructor
@@ -82,6 +85,7 @@ public class ProfileEventsFragment extends Fragment {
                 search_photos.clear();
                 search_venues.clear();
                 search_dates.clear();
+                search_user_ids.clear();
                 int x;
                 for (x = 0; x < event_ids.size(); x++) {
                     if (
@@ -93,6 +97,7 @@ public class ProfileEventsFragment extends Fragment {
                         search_points.add(event_points.get(x));
                         search_titles.add(event_titles.get(x));
                         search_photos.add(event_photos.get(x));
+                        search_user_ids.add(event_user_ids.get(x));
                         search_venues.add(event_venues.get(x));
                         search_dates.add(event_dates.get(x));
                     }
@@ -102,6 +107,7 @@ public class ProfileEventsFragment extends Fragment {
                             search_points.add(event_points.get(x));
                             search_titles.add(event_titles.get(x));
                             search_photos.add(event_photos.get(x));
+                            search_user_ids.add(event_user_ids.get(x));
                             search_venues.add(event_venues.get(x));
                             search_dates.add(event_dates.get(x));
                         }
@@ -131,6 +137,14 @@ public class ProfileEventsFragment extends Fragment {
                     JSONArray res = new JSONArray(response);
                     for (int i = 0; i<res.length(); i++) {
                         JSONObject event = res.getJSONObject(i);
+
+                        String user_id = "";
+                        if (event.has("charity")) {
+                            JSONObject charity = new JSONObject(event.getString("charity"));
+                            user_id = charity.getString("user_id");
+                        }
+
+                        event_user_ids.add(user_id);
                         event_ids.add(event.getInt("id"));
                         event_points.add(event.getInt("points"));
                         event_photos.add(event.getString("photo"));
@@ -161,14 +175,14 @@ public class ProfileEventsFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points, event_user_ids);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_user_ids);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
