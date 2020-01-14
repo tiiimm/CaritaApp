@@ -79,10 +79,10 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                delete_company(company_ids.get(position));
+                                delete_company(company_ids.get(position), position);
                                 break;
                             case 1:
-                                approve_company(company_ids.get(position));
+                                approve_company(company_ids.get(position), position);
                                 break;
                             default:
                                 break;
@@ -95,7 +95,7 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
         });
     }
 
-    private void approve_company(Integer id) {
+    private void approve_company(Integer id, final Integer position) {
         String request = "approve_company?id="+ id;
 
         System.out.println(request);
@@ -103,7 +103,10 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                company_statuses.set(position, "Active");
 
+                notifyItemChanged(position);
+                notifyItemRangeChanged(position,company_ids.size());
             }
         }, new Response.ErrorListener() {
 
@@ -117,7 +120,7 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
         MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
     }
 
-    private void delete_company(Integer id) {
+    private void delete_company(Integer id, final Integer position) {
         String request = "delete_company?id="+ id;
 
         System.out.println(request);
@@ -125,7 +128,13 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.View
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                company_ids.remove(position);
+                company_names.remove(position);
+                company_statuses.remove(position);
+                company_photos.remove(position);
 
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,company_ids.size());
             }
         }, new Response.ErrorListener() {
 

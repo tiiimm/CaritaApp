@@ -166,7 +166,7 @@
                 android:layout_width="130sp"
                 android:layout_height="130sp"
                 android:layout_marginTop="10sp"
-                android:src="@drawable/drawable_logo"/>
+                android:src="@drawable/background_card_display"/>
 
             <VideoView
                 android:id="@+id/video_charity_bio"

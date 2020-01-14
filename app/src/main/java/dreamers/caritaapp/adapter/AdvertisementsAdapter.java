@@ -78,10 +78,10 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                delete_advertisement(advertisement_ids.get(position));
+                                delete_advertisement(advertisement_ids.get(position), position);
                                 break;
                             case 1:
-                                approve_advertisement(advertisement_ids.get(position));
+                                approve_advertisement(advertisement_ids.get(position), position);
                                 break;
                             default:
                                 break;
@@ -94,7 +94,7 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         });
     }
 
-    private void approve_advertisement(Integer id) {
+    private void approve_advertisement(Integer id, final Integer position) {
         String request = "approve_advertisement?id="+ id;
 
         System.out.println(request);
@@ -102,7 +102,10 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                advertisement_statuses.set(position, "Active");
 
+                notifyItemChanged(position);
+                notifyItemRangeChanged(position,advertisement_ids.size());
             }
         }, new Response.ErrorListener() {
 
@@ -116,7 +119,7 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
     }
 
-    private void delete_advertisement(Integer id) {
+    private void delete_advertisement(Integer id, final Integer position) {
         String request = "delete_advertisement?id="+ id;
 
         System.out.println(request);
@@ -124,7 +127,13 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                advertisement_ids.remove(position);
+                advertisement_names.remove(position);
+                advertisement_statuses.remove(position);
+                advertisement_billing_dates.remove(position);
 
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,advertisement_ids.size());
             }
         }, new Response.ErrorListener() {
 

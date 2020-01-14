@@ -75,7 +75,7 @@
                 android:id="@+id/image_company"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/image_philanthropist"/>
+                android:src="@drawable/image_company"/>
 
             <TextView
                 android:layout_width="match_parent"

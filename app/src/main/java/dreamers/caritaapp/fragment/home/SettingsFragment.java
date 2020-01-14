@@ -73,18 +73,18 @@ public class SettingsFragment extends Fragment {
         TextView text_rank = root.findViewById(R.id.text_rank);
         TextView text_level = root.findViewById(R.id.text_level);
         LinearLayout view_charity = root.findViewById(R.id.view_charity);
-        LinearLayout layout_admin = root.findViewById(R.id.layout_admin);
+        LinearLayout view_admin = root.findViewById(R.id.view_admin);
         LinearLayout layout_philanthropist = root.findViewById(R.id.layout_philanthropist);
         LinearLayout layout_charity_details = root.findViewById(R.id.layout_charity_details);
-        TextView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
-        TextView nav_companies = root.findViewById(R.id.nav_companies);
-        TextView nav_advertisements = root.findViewById(R.id.nav_advertisements);
+        ImageView nav_philanthropists = root.findViewById(R.id.nav_philanthropists);
+        ImageView nav_companies = root.findViewById(R.id.nav_companies);
+        ImageView nav_advertisements = root.findViewById(R.id.nav_advertisements);
         TextView nav_change_password = root.findViewById(R.id.nav_change_password);
 
         Glide.with(getActivity()).asBitmap().load(MediaManager.get().url().generate(user.getPhoto())).into(image_profile_picture);
 
         if (user.getRole().matches("Administrator")) {
-            layout_admin.setVisibility(View.VISIBLE);
+            view_admin.setVisibility(View.VISIBLE);
         }
         if (user.getRole().matches("Philanthropist")) {
             layout_philanthropist.setVisibility(View.VISIBLE);

@@ -48,6 +48,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
     private ArrayList<String> charity_contacts;
     private ArrayList<Integer> charity_points;
     String user_role;
+    ViewHolder viewHolder;
 
     private Context mContext;
 
@@ -73,14 +74,17 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
 
 
     @Override
-    public void onBindViewHolder(CharitiesAdapter.ViewHolder holder, final int position) {
-
+    public void onBindViewHolder(final CharitiesAdapter.ViewHolder holder, final int position) {
+        viewHolder = holder;
         Glide.with(mContext)
                 .load(MediaManager.get().url().generate(charity_photos.get(position)))
                 .into(holder.image_charity);
         holder.text_charity_name.setText(charity_names.get(position));
         holder.text_charity_address.setText(charity_addresss.get(position));
         holder.text_charity_contact.setText(charity_contacts.get(position));
+        if (user_role.matches("Administrator")){
+            holder.text_charity_status.setText("Status: "+charity_statuses.get(position));
+        }
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,10 +128,10 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
                     public void onClick(DialogInterface dialog, int item) {
                         switch (item) {
                             case 0:
-                                delete_charity(charity_ids.get(position));
+                                delete_charity(charity_ids.get(position), position);
                                 break;
                             case 1:
-                                approve_charity(charity_ids.get(position));
+                                approve_charity(charity_ids.get(position), position);
                                 break;
                             default:
                                 break;
@@ -140,7 +144,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         });
     }
 
-    private void approve_charity(Integer id) {
+    private void approve_charity(Integer id, final Integer position) {
         String request = "approve_charity?id="+ id;
 
         System.out.println(request);
@@ -148,7 +152,10 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                charity_statuses.set(position, "Active");
 
+                notifyItemChanged(position);
+                notifyItemRangeChanged(position,charity_ids.size());
             }
         }, new Response.ErrorListener() {
 
@@ -162,7 +169,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         MySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
     }
 
-    private void delete_charity(Integer id) {
+    private void delete_charity(Integer id, final Integer position) {
         String request = "delete_charity?id="+ id;
 
         System.out.println(request);
@@ -170,7 +177,17 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                charity_ids.remove(position);
+                charity_user_ids.remove(position);
+                charity_names.remove(position);
+                charity_statuses.remove(position);
+                charity_photos.remove(position);
+                charity_addresss.remove(position);
+                charity_contacts.remove(position);
+                charity_points.remove(position);
 
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,charity_ids.size());
             }
         }, new Response.ErrorListener() {
 
@@ -196,6 +213,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         TextView text_charity_name;
         TextView text_charity_address;
         TextView text_charity_contact;
+        TextView text_charity_status;
         LinearLayout parentLayout;
 
         public ViewHolder(View itemView) {
@@ -204,6 +222,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
             text_charity_name = itemView.findViewById(R.id.text_charity_name);
             text_charity_address = itemView.findViewById(R.id.text_charity_address);
             text_charity_contact = itemView.findViewById(R.id.text_charity_contact);
+            text_charity_status = itemView.findViewById(R.id.text_charity_status);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
