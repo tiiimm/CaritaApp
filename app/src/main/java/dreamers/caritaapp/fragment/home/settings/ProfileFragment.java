@@ -237,9 +237,11 @@ public class ProfileFragment extends Fragment implements RewardedVideoAdListener
 
     private void load_ads() {
         String request = "get_active_advertisements";
+        System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println(response);
                 try {
                     JSONArray res = new JSONArray(response);
                     for (int i = 0; i<res.length(); i++) {

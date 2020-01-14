@@ -140,14 +140,14 @@ public class AdvertisementsFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
-        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), advertisement_names, advertisement_statuses, advertisement_billing_dates, advertisement_ids);
+        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), advertisement_names, advertisement_statuses, advertisement_billing_dates, advertisement_ids, user.getRole());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
-        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), search_names, search_statuses, search_billing_dates, search_ids);
+        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), search_names, search_statuses, search_billing_dates, search_ids, user.getRole());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

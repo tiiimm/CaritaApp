@@ -29,14 +29,16 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
     private ArrayList<String> advertisement_names;
     private ArrayList<String> advertisement_statuses;
     private ArrayList<String> advertisement_billing_dates;
+    String user_role;
 
     private Context mContext;
 
-    public AdvertisementsAdapter(Context context, ArrayList<String> names, ArrayList<String> statuses, ArrayList<String> billing_dates, ArrayList<Integer> ids) {
+    public AdvertisementsAdapter(Context context, ArrayList<String> names, ArrayList<String> statuses, ArrayList<String> billing_dates, ArrayList<Integer> ids, String role) {
         advertisement_ids = ids;
         advertisement_names = names;
         advertisement_statuses = statuses;
         advertisement_billing_dates = billing_dates;
+        user_role = role;
         mContext = context;
     }
 
@@ -57,6 +59,9 @@ public class AdvertisementsAdapter extends RecyclerView.Adapter<AdvertisementsAd
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if (!user_role.matches("Administrator")){
+                    return false;
+                }
                 CharSequence[] items = {};
                 if (advertisement_statuses.get(position).matches("Pending")) {
                     items = new CharSequence[]{"Delete", "Approve Company"};

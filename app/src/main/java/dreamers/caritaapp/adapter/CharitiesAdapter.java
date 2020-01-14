@@ -47,10 +47,11 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
     private ArrayList<String> charity_addresss;
     private ArrayList<String> charity_contacts;
     private ArrayList<Integer> charity_points;
+    String user_role;
 
     private Context mContext;
 
-    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids, ArrayList<Integer> points, ArrayList<String> statuses) {
+    public CharitiesAdapter(Context context, ArrayList<String> names, ArrayList<String> addresss, ArrayList<String> contacts, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> user_ids, ArrayList<Integer> points, ArrayList<String> statuses, String role) {
         charity_ids = ids;
         charity_user_ids = user_ids;
         charity_points = points;
@@ -59,6 +60,7 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         charity_photos = photos;
         charity_addresss = addresss;
         charity_contacts = contacts;
+        user_role = role;
         mContext = context;
     }
 
@@ -103,6 +105,9 @@ public class CharitiesAdapter extends RecyclerView.Adapter<CharitiesAdapter.View
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if (!user_role.matches("Administrator")){
+                    return false;
+                }
                 CharSequence[] items = {};
                 if (charity_statuses.get(position).matches("Pending")) {
                     items = new CharSequence[]{"Reject Charity", "Approve Charity"};

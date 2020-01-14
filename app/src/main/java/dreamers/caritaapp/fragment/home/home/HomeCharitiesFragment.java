@@ -210,14 +210,14 @@ public class HomeCharitiesFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
-        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids, charity_points, charity_statuses);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), charity_names, charity_addresses, charity_contacts, charity_ids, charity_photos, charity_user_ids, charity_points, charity_statuses, user.getRole());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_charities);
-        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), search_names, search_addresses, search_contacts, search_ids, search_photos, search_user_ids, search_points, search_statuses);
+        CharitiesAdapter adapter = new CharitiesAdapter(getActivity(), search_names, search_addresses, search_contacts, search_ids, search_photos, search_user_ids, search_points, search_statuses, user.getRole());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

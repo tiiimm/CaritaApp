@@ -99,6 +99,9 @@ public class PointsFragment extends Fragment {
         else if (user.getRole().matches("Admin")) {
             points_label.setText("Total Donations");
         }
+        else if (user.getRole().matches("Company")) {
+            points_label.setText("Total Views");
+        }
 
         january = root.findViewById(R.id.january);
         february = root.findViewById(R.id.february);
@@ -138,6 +141,9 @@ public class PointsFragment extends Fragment {
 
         if (user.getRole().matches("Philanthropist")) {
             load_user_donations();
+        }
+        else if (user.getRole().matches("Administrator")) {
+            load_admin_donations();
         }
         else if (user.getRole().matches("Charity")) {
             load_charity_donations();
@@ -194,6 +200,43 @@ public class PointsFragment extends Fragment {
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_year.setAdapter(adp1);
+    }
+
+    private void load_admin_donations() {
+        String request = "get_donations?user_id="+ user.getID() +"&year="+ year;
+        System.out.println(request);
+        StringRequest jsArrayRequest = new StringRequest(
+                Request.Method.GET, new SplashScreenActivity().url + request, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                try {
+                    JSONObject res = new JSONObject(response);
+                    january.setText(res.getString("january"));
+                    february.setText(res.getString("february"));
+                    march.setText(res.getString("march"));
+                    april.setText(res.getString("april"));
+                    may.setText(res.getString("may"));
+                    june.setText(res.getString("june"));
+                    july.setText(res.getString("july"));
+                    august.setText(res.getString("august"));
+                    september.setText(res.getString("september"));
+                    october.setText(res.getString("october"));
+                    november.setText(res.getString("november"));
+                    december.setText(res.getString("december"));
+
+                    total_points.setText("Total Donations: "+res.getString("total_donations"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    System.out.println(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(jsArrayRequest);
     }
 
     private void load_user_donations() {

@@ -1,6 +1,7 @@
 package dreamers.caritaapp.fragment.set_up;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -41,6 +42,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
     Bundle bundle;
 
     String image_philanthropist;
+    ProgressDialog progressDialog;
 
     public PhilanthropistSetUp3Fragment() {
         // Required empty public constructor
@@ -55,12 +57,15 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
 
         Button btn_finish = root.findViewById(R.id.btn_finish);
         Button btn_back = root.findViewById(R.id.btn_back);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         bundle = getArguments();
 
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 image_philanthropist = "carita/profile_picture.png";
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 if (!bundle.getString("image_philanthropist").matches("")) {
@@ -86,10 +91,16 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
                         }
                         @Override
                         public void onError(String requestId, ErrorInfo error) {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         @Override
                         public void onReschedule(String requestId, ErrorInfo error) {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }})
                     .dispatch();
@@ -120,6 +131,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
             public void onResponse(String response) {
                 System.out.println(response);
                 try {
+                    progressDialog.dismiss();
                     JSONObject res = new JSONObject(response);
                     if (res.has("errors")){
                     }
@@ -132,6 +144,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
                         startActivity(i);
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     Toast.makeText(getActivity(),
                             "Something went wrong", Toast.LENGTH_LONG).show();
                 }
@@ -140,6 +153,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 System.out.println(error);
                 Toast.makeText(getActivity(),
                         "Something went wrong", Toast.LENGTH_LONG).show();

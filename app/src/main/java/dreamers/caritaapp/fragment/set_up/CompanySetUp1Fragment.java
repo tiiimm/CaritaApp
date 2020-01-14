@@ -2,6 +2,7 @@ package dreamers.caritaapp.fragment.set_up;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -54,6 +55,7 @@ public class CompanySetUp1Fragment extends Fragment {
     String image_path="";
     CircleImageView circleImageView;
     EditText text_name;
+    ProgressDialog progressDialog;
 
     public CompanySetUp1Fragment() {
         // Required empty public constructor
@@ -70,6 +72,8 @@ public class CompanySetUp1Fragment extends Fragment {
         text_name = root.findViewById(R.id.text_company);
         Button btn_finish = root.findViewById(R.id.btn_finish);
         Button btn_back = root.findViewById(R.id.btn_back);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +101,7 @@ public class CompanySetUp1Fragment extends Fragment {
                     return;
                 }
 
+                progressDialog.show();
                 if (!image_path.matches(""))
                     upload_profile(name);
                 else {
@@ -172,6 +177,7 @@ public class CompanySetUp1Fragment extends Fragment {
             public void onResponse(String response) {
                 System.out.println(response);
                 try {
+                    progressDialog.dismiss();
                     JSONObject res = new JSONObject(response);
                     if (res.has("errors")){
                         JSONArray errors = new JSONArray(res.getString("errors"));
@@ -194,6 +200,7 @@ public class CompanySetUp1Fragment extends Fragment {
                         startActivity(i);
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     Toast.makeText(getActivity(),
                             "Something went wrong", Toast.LENGTH_LONG).show();
                 }
@@ -202,6 +209,7 @@ public class CompanySetUp1Fragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 System.out.println(error);
                 Toast.makeText(getActivity(),
                         "Something went wrong", Toast.LENGTH_LONG).show();
