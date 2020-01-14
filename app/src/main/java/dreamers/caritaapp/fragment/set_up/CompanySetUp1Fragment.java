@@ -29,6 +29,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +70,11 @@ public class CompanySetUp1Fragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_company_set_up1, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         circleImageView = root.findViewById(R.id.image_company);
         text_name = root.findViewById(R.id.text_company);

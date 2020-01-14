@@ -4,6 +4,7 @@ package dreamers.caritaapp.fragment.set_up;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,6 +18,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +45,8 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
     EditText text_contact_number;
     Boolean valid = true;
 
+    GoogleSignInClient mGoogleSignInClient;
+
     public PhilanthropistSetUp1Fragment() {
         // Required empty public constructor
     }
@@ -49,6 +57,11 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_philanthropist_set_up1, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         Button btn_next = root.findViewById(R.id.btn_next);
         Button btn_back = root.findViewById(R.id.btn_back);
@@ -118,6 +131,12 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
                                 case "user":
                                     Toast.makeText(getActivity(), "You already have an account. Try to login", Toast.LENGTH_LONG).show();
                                     sessionHandler.logoutUser();
+                                    mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            System.out.println("Signed out");
+                                        }
+                                    });
                                     Intent j = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(j);
                                     break;

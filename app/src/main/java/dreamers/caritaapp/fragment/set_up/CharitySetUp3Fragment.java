@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,6 +22,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +57,8 @@ public class CharitySetUp3Fragment extends Fragment {
     String type;
     ProgressDialog progressDialog;
 
+    GoogleSignInClient mGoogleSignInClient;
+
     public CharitySetUp3Fragment() {
         // Required empty public constructor
     }
@@ -61,6 +69,11 @@ public class CharitySetUp3Fragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_charity_set_up3, container, false);
         sessionHandler = new SessionHandler(getActivity());
         user = sessionHandler.getUserDetails();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
         Button btn_finish = root.findViewById(R.id.btn_finish);
         Button btn_back = root.findViewById(R.id.btn_back);
@@ -279,6 +292,12 @@ public class CharitySetUp3Fragment extends Fragment {
                     }
                     else {
                         sessionHandler.logoutUser();
+                        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                System.out.println("Signed out");
+                            }
+                        });
                         Toast.makeText(getActivity(),
                                 "Successful! Wait for admin to accept your application", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().remove(new CharitySetUp3Fragment()).commit();

@@ -18,7 +18,7 @@ public class SessionHandler {
         this.mEditor = mPreferences.edit();
     }
 
-    public void set_current_user(Integer id, String name, String email, String username, Integer points, String photo, String role, String organization) {
+    public void set_current_user(Integer id, String name, String email, String username, Integer points, String photo, String role, String organization, String google_id) {
         mEditor.putInt("id", id);
         mEditor.putString("name", name);
         mEditor.putString("email", email);
@@ -27,6 +27,7 @@ public class SessionHandler {
         mEditor.putString("photo", photo);
         mEditor.putString("role", role);
         mEditor.putString("organization", organization);
+        mEditor.putString("google_id", google_id);
 
         Date date = new Date();
         long millis = date.getTime() + (7 * 24 * 60 * 60 * 1000);
@@ -47,6 +48,7 @@ public class SessionHandler {
         user.setPhoto(mPreferences.getString("photo", ""));
         user.setRole(mPreferences.getString("role", ""));
         user.setOrganization(mPreferences.getString("organization", ""));
+        user.setGoogleID(mPreferences.getString("google_id", ""));
         user.setSessionExpiryDate(new Date(mPreferences.getLong("expires", 0)));
 
         return user;

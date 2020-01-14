@@ -13,6 +13,7 @@ public class User {
     String photo;
     String role;
     String organization;
+    String google_id;
     Date sessionExpiryDate;
 
     public void setSessionExpiryDate(Date sessionExpiryDate) {
@@ -85,5 +86,13 @@ public class User {
 
     public String getOrganization() {
         return organization;
+    }
+
+    public void setGoogleID(String GoogleID) {
+        this.google_id = GoogleID;
+    }
+
+    public String getGoogleID() {
+        return google_id;
     }
 }
