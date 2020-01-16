@@ -21,6 +21,14 @@
         android:text="Status"/>
 
     <TextView
+        android:id="@+id/text_advertisement_views"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="Status"/>
+
+    <TextView
+        android:visibility="gone"
         android:id="@+id/text_advertisement_billing_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +39,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
         android:src="@drawable/drawable_long_line"/>
 
 </LinearLayout>

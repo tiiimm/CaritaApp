@@ -49,6 +49,7 @@ public class HomeEventsFragment extends Fragment {
     private ArrayList<String> event_venues = new ArrayList<>();
     private ArrayList<String> event_dates = new ArrayList<>();
     private ArrayList<String> event_user_ids = new ArrayList<>();
+    private ArrayList<String> event_open_untils = new ArrayList<>();
 
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<Integer> search_points = new ArrayList<>();
@@ -57,6 +58,7 @@ public class HomeEventsFragment extends Fragment {
     private ArrayList<String> search_venues = new ArrayList<>();
     private ArrayList<String> search_dates = new ArrayList<>();
     private ArrayList<String> search_user_ids = new ArrayList<>();
+    private ArrayList<String> search_open_untils = new ArrayList<>();
 
     public HomeEventsFragment() {
         // Required empty public constructor
@@ -87,6 +89,7 @@ public class HomeEventsFragment extends Fragment {
                 search_photos.clear();
                 search_venues.clear();
                 search_dates.clear();
+                search_open_untils.clear();
                 search_user_ids.clear();
                 int x;
                 for (x = 0; x < event_ids.size(); x++) {
@@ -102,6 +105,7 @@ public class HomeEventsFragment extends Fragment {
                         search_venues.add(event_venues.get(x));
                         search_dates.add(event_dates.get(x));
                         search_user_ids.add(event_user_ids.get(x));
+                        search_open_untils.add(event_open_untils.get(x));
                     }
                     try {
                         if (
@@ -112,6 +116,7 @@ public class HomeEventsFragment extends Fragment {
                             search_titles.add(event_titles.get(x));
                             search_photos.add(event_photos.get(x));
                             search_venues.add(event_venues.get(x));
+                            search_open_untils.add(event_open_untils.get(x));
                             search_dates.add(event_dates.get(x));
                             search_user_ids.add(event_user_ids.get(x));
                         }
@@ -161,6 +166,7 @@ public class HomeEventsFragment extends Fragment {
                         else
                             event_dates.add(event.getString("held_on_from")+" to "+event.getString("held_on_to"));
                         event_venues.add(event.getString("venue"));
+                        event_open_untils.add(event.getString("open_to"));
                     }
                     if (event_ids.size()>0){
                         initRecyclerView();
@@ -183,7 +189,7 @@ public class HomeEventsFragment extends Fragment {
     private void initRecyclerView(){
         System.out.println("hoy");
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points, event_user_ids);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points, event_user_ids, event_open_untils);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -191,7 +197,7 @@ public class HomeEventsFragment extends Fragment {
     private void initSearchView(){
         System.out.println("hoy");
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_user_ids);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_user_ids, search_open_untils);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

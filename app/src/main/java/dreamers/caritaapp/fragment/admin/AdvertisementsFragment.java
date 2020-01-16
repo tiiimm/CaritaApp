@@ -47,10 +47,13 @@ public class AdvertisementsFragment extends Fragment {
     private ArrayList<String> advertisement_names = new ArrayList<>();
     private ArrayList<String> advertisement_billing_dates = new ArrayList<>();
     private ArrayList<String> advertisement_statuses = new ArrayList<>();
+    private ArrayList<Integer> advertisement_views = new ArrayList<>();
+
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<String> search_names = new ArrayList<>();
     private ArrayList<String> search_billing_dates = new ArrayList<>();
     private ArrayList<String> search_statuses = new ArrayList<>();
+    private ArrayList<Integer> search_views = new ArrayList<>();
 
     public AdvertisementsFragment() {
         // Required empty public constructor
@@ -79,6 +82,7 @@ public class AdvertisementsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 search_ids.clear();
                 search_names.clear();
+                search_views.clear();
                 search_billing_dates.clear();
                 search_statuses.clear();
                 int x;
@@ -90,6 +94,7 @@ public class AdvertisementsFragment extends Fragment {
                     ) {
                         search_ids.add(advertisement_ids.get(x));
                         search_names.add(advertisement_names.get(x));
+                        search_views.add(advertisement_views.get(x));
                         search_billing_dates.add(advertisement_billing_dates.get(x));
                         search_statuses.add(advertisement_statuses.get(x));
                     }
@@ -117,6 +122,7 @@ public class AdvertisementsFragment extends Fragment {
                         JSONObject advertisement = res.getJSONObject(i);
                         advertisement_ids.add(advertisement.getInt("id"));
                         advertisement_names.add(advertisement.getString("name"));
+                        advertisement_views.add(advertisement.getInt("views"));
                         advertisement_statuses.add(advertisement.getString("status"));
                         advertisement_billing_dates.add(advertisement.getString("billing_date"));
                     }
@@ -140,14 +146,14 @@ public class AdvertisementsFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
-        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), advertisement_names, advertisement_statuses, advertisement_billing_dates, advertisement_ids, user.getRole());
+        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), advertisement_names, advertisement_statuses, advertisement_billing_dates, advertisement_ids, user.getRole(), advertisement_views);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_advertisements);
-        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), search_names, search_statuses, search_billing_dates, search_ids, user.getRole());
+        AdvertisementsAdapter adapter = new AdvertisementsAdapter(getActivity(), search_names, search_statuses, search_billing_dates, search_ids, user.getRole(), search_views);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

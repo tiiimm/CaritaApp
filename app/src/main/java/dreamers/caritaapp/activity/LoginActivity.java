@@ -218,15 +218,23 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject charity = new JSONObject(res.getString("charity"));
                             organization = charity.getString("organization");
                             photo = charity.getString("photo");
-                            if (!charity.getString("status").matches("Active")) {
+                            if (charity.getString("status").matches("Pending")) {
                                 Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            if (charity.getString("status").matches("Inactive")) {
+                                Toast.makeText(LoginActivity.this, "Sorry. Admin has rejected your registration!! Try registering a new account", Toast.LENGTH_LONG).show();
                                 return;
                             }
                         }
                         if (res.has("company")) {
                             JSONObject company = new JSONObject(res.getString("company"));
-                            if (!company.getString("status").matches("Active")) {
+                            if (company.getString("status").matches("Pending")) {
                                 Toast.makeText(LoginActivity.this, "Wait for admin to approve your account!!", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            if (company.getString("status").matches("Inactive")) {
+                                Toast.makeText(LoginActivity.this, "Sorry. Admin has rejected your registration!! Try registering a new account", Toast.LENGTH_LONG).show();
                                 return;
                             }
                         }

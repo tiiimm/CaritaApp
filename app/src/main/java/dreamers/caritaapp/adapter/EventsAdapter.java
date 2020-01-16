@@ -25,6 +25,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private ArrayList<Integer> event_ids;
     private ArrayList<String> event_titles;
     private ArrayList<String> event_photos;
+    private ArrayList<String> event_open_untils;
     private ArrayList<String> event_dates;
     private ArrayList<String> event_venues;
     private ArrayList<String> event_user_ids;
@@ -32,9 +33,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     private Context mContext;
 
-    public EventsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> points, ArrayList<String> user_ids) {
+    public EventsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> points, ArrayList<String> user_ids, ArrayList<String> open_untils) {
         event_ids = ids;
         event_points = points;
+        event_open_untils = open_untils;
         event_titles = titles;
         event_photos = photos;
         event_dates = dates;
@@ -60,6 +62,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         holder.text_event_title.setText(event_titles.get(position));
         holder.text_event_date.setText(event_dates.get(position));
         holder.text_event_venue.setText(event_venues.get(position));
+        holder.text_event_open_until.setText("Accepting Donations Until: "+event_open_untils.get(position));
+        holder.text_event_points.setText("Supports Received: "+event_points.get(position));
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                 bundle.putString("photo", event_photos.get(position));
                 bundle.putString("venue", event_venues.get(position));
                 bundle.putString("date", event_dates.get(position));
-                bundle.putString("open_until", event_dates.get(position));
+                bundle.putString("open_until", event_open_untils.get(position));
                 bundle.putString("points", event_points.get(position).toString());
                 bundle.putString("user_id", event_user_ids.get(position).toString());
                 eventFragment.setArguments(bundle);
@@ -131,6 +135,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         ImageView image_event;
         TextView text_event_title;
         TextView text_event_date;
+        TextView text_event_points;
+        TextView text_event_open_until;
         TextView text_event_venue;
         LinearLayout parentLayout;
 
@@ -138,6 +144,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             super(itemView);
             image_event = itemView.findViewById(R.id.image_event);
             text_event_title = itemView.findViewById(R.id.text_event_title);
+            text_event_points = itemView.findViewById(R.id.text_event_points);
+            text_event_open_until = itemView.findViewById(R.id.text_event_open_until);
             text_event_date = itemView.findViewById(R.id.text_event_date);
             text_event_venue = itemView.findViewById(R.id.text_event_venue);
             parentLayout = itemView.findViewById(R.id.parent_layout);

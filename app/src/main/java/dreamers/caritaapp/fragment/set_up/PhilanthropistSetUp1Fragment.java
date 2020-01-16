@@ -1,6 +1,7 @@
 package dreamers.caritaapp.fragment.set_up;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import dreamers.caritaapp.R;
 import dreamers.caritaapp.activity.LoginActivity;
 import dreamers.caritaapp.activity.SplashScreenActivity;
@@ -41,9 +46,10 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
     SessionHandler sessionHandler;
     User user;
     Bundle bundle;
-    EditText text_address;
+    EditText text_birthdate;
     EditText text_contact_number;
     Boolean valid = true;
+    String sex = "";
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -65,7 +71,8 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
 
         Button btn_next = root.findViewById(R.id.btn_next);
         Button btn_back = root.findViewById(R.id.btn_back);
-        text_address = root.findViewById(R.id.text_address);
+        RadioGroup radioGroup = root.findViewById(R.id.radio_sex);
+        text_birthdate = root.findViewById(R.id.text_birthdate);
         text_contact_number = root.findViewById(R.id.text_contact_number);
 
         bundle = getArguments();
@@ -76,24 +83,56 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
         else
             bundle = new Bundle();
 
+        DatePickerDialog.OnDateSetListener birthdate_listener = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month++;
+                text_birthdate.setText(year+"-"+month+"-"+dayOfMonth);
+            }
+        };
+        final DatePickerDialog birthdate_dialog = new DatePickerDialog(getActivity(), birthdate_listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        text_birthdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) birthdate_dialog.show();
+            }
+        });
+        text_birthdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                birthdate_dialog.show();
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rd_female:
+                        sex = "Female";
+                        break;
+                    case R.id.rd_male:
+                        sex = "Male";
+                        break;
+                    default:
+                        sex = "";
+                        break;
+                }
+            }
+        });
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String address = text_address.getText().toString();
+                String birthdate = text_birthdate.getText().toString();
                 String contact_number = text_contact_number.getText().toString();
                 valid = true;
 
-                if (address.matches("")) {
-                    text_address.setError("Required");
-                    valid = false;
-                }
                 if (contact_number.matches("")) {
-                    text_contact_number.setError("Required");
+                    text_contact_number.setError("Required!");
                     valid = false;
                 }
 
                 if(valid) {
-                    validate(contact_number, address);
+                    validate(contact_number, birthdate);
                 }
             }
         });
@@ -110,14 +149,14 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
     }
 
     private void configure() {
-        if(bundle.getString("address") != null && bundle.getString("contact_number") != null){
-            text_address.setText(bundle.getString("address"));
+        if(bundle.getString("birthdate") != null && bundle.getString("contact_number") != null){
+            text_birthdate.setText(bundle.getString("birthdate"));
             text_contact_number.setText(bundle.getString("contact_number"));
         }
     }
 
-    private void validate(final String contact_number, final String address) {
-        String request = "validate_philanthropist?user_id="+ user.getID() +"&contact_number="+ contact_number;
+    private void validate(final String contact_number, final String birthdate) {
+        String request = "validate_philanthropist?user_id="+ user.getID() +"&contact_number="+ contact_number +"&birthday="+ birthdate +"&sex="+ sex;
         System.out.println(request);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, new SplashScreenActivity().url+ request, new Response.Listener<String>() {
             @Override
@@ -151,7 +190,7 @@ public class PhilanthropistSetUp1Fragment extends Fragment {
                     }
                     else if (res.has("success")) {
                         PhilanthropistSetUp2Fragment philanthropistSetUp2Fragment = new PhilanthropistSetUp2Fragment();
-                        bundle.putString("address", address);
+                        bundle.putString("birthdate", birthdate);
                         bundle.putString("contact_number", contact_number);
                         philanthropistSetUp2Fragment.setArguments(bundle);
 

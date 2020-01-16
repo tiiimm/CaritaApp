@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,10 @@ import com.cloudinary.android.callback.UploadCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import dreamers.caritaapp.R;
@@ -71,11 +75,11 @@ public class UploadAchievementFragment extends Fragment {
         user = sessionHandler.getUserDetails();
 
         image_achievement = root.findViewById(R.id.image_achievement);
-        final TextView text_achievement_title = root.findViewById(R.id.text_achievement_title);
-        final TextView text_achievement_description = root.findViewById(R.id.text_achievement_description);
-        final TextView text_achievement_venue = root.findViewById(R.id.text_achievement_venue);
-        final TextView text_achievement_date_from = root.findViewById(R.id.text_achievement_date_from);
-        final TextView text_achievement_date_to = root.findViewById(R.id.text_achievement_date_to);
+        final EditText text_achievement_title = root.findViewById(R.id.text_achievement_title);
+        final EditText text_achievement_description = root.findViewById(R.id.text_achievement_description);
+        final EditText text_achievement_venue = root.findViewById(R.id.text_achievement_venue);
+        final EditText text_achievement_date_from = root.findViewById(R.id.text_achievement_date_from);
+        final EditText text_achievement_date_to = root.findViewById(R.id.text_achievement_date_to);
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
 

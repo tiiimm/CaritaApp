@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200sp"
+        android:layout_height="230sp"
         android:layout_margin="10sp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
@@ -42,6 +42,24 @@
 
         <TextView
             android:id="@+id/text_event_venue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:gravity="center"
+            android:text="January 05, 2020"/>
+
+        <TextView
+            android:id="@+id/text_event_open_until"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:gravity="center"
+            android:text="January 05, 2020"/>
+
+        <TextView
+            android:id="@+id/text_event_points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10sp"

@@ -51,6 +51,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     String watch_id;
     String watch_type;
     CountDownTimer countDownTimer;
+    Integer count = 10;
 
     long milli;
 
@@ -74,7 +75,7 @@ public class AdvertisementActivity extends AppCompatActivity {
             }
         });
 
-        start_timer(15000);
+        start_timer(10000);
 
         configure();
     }
@@ -85,6 +86,8 @@ public class AdvertisementActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 System.out.println(millisUntilFinished);
                 milli = millisUntilFinished;
+                count--;
+                Toast.makeText(AdvertisementActivity.this, ""+count, Toast.LENGTH_SHORT).show();
             }
 
             @Override

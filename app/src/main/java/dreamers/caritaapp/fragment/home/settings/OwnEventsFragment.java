@@ -53,6 +53,7 @@ public class OwnEventsFragment extends Fragment {
     private ArrayList<String> event_venues = new ArrayList<>();
     private ArrayList<String> event_dates = new ArrayList<>();
     private ArrayList<String> event_user_ids = new ArrayList<>();
+    private ArrayList<String> event_open_untils = new ArrayList<>();
 
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<Integer> search_points = new ArrayList<>();
@@ -61,6 +62,7 @@ public class OwnEventsFragment extends Fragment {
     private ArrayList<String> search_venues = new ArrayList<>();
     private ArrayList<String> search_dates = new ArrayList<>();
     private ArrayList<String> search_user_ids = new ArrayList<>();
+    private ArrayList<String> search_open_untils = new ArrayList<>();
 
     public OwnEventsFragment() {
         // Required empty public constructor
@@ -109,6 +111,7 @@ public class OwnEventsFragment extends Fragment {
                 search_venues.clear();
                 search_dates.clear();
                 search_user_ids.clear();
+                search_open_untils.clear();
                 int x;
                 for (x = 0; x < event_ids.size(); x++) {
                     if (
@@ -118,6 +121,7 @@ public class OwnEventsFragment extends Fragment {
                     ) {
                         search_ids.add(event_ids.get(x));
                         search_points.add(event_points.get(x));
+                        search_open_untils.add(event_open_untils.get(x));
                         search_titles.add(event_titles.get(x));
                         search_photos.add(event_photos.get(x));
                         search_venues.add(event_venues.get(x));
@@ -130,6 +134,7 @@ public class OwnEventsFragment extends Fragment {
                             search_points.add(event_points.get(x));
                             search_titles.add(event_titles.get(x));
                             search_photos.add(event_photos.get(x));
+                            search_open_untils.add(event_open_untils.get(x));
                             search_venues.add(event_venues.get(x));
                             search_user_ids.add(event_user_ids.get(x));
                             search_dates.add(event_dates.get(x));
@@ -177,6 +182,7 @@ public class OwnEventsFragment extends Fragment {
                         else
                             event_dates.add(event.getString("held_on_from")+" to "+event.getString("held_on_to"));
                         event_venues.add(event.getString("venue"));
+                        event_open_untils.add(event.getString("open_to"));
                     }
                     if (event_ids.size()>0){
                         initRecyclerView();
@@ -198,14 +204,14 @@ public class OwnEventsFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points, event_user_ids);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), event_titles, event_dates, event_venues, event_ids, event_photos, event_points, event_user_ids, event_open_untils);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_events);
-        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_user_ids);
+        EventsAdapter adapter = new EventsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_user_ids, search_open_untils);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

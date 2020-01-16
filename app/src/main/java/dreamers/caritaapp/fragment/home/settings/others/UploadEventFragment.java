@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,7 +36,10 @@ import com.cloudinary.android.callback.UploadCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import dreamers.caritaapp.R;
@@ -58,7 +61,7 @@ public class UploadEventFragment extends Fragment {
     User user;
 
     ImageView image_event;
-    String image_path;
+    String image_path = "";
     ProgressDialog progressDialog;
 
     public UploadEventFragment() {
@@ -74,12 +77,12 @@ public class UploadEventFragment extends Fragment {
         user = sessionHandler.getUserDetails();
 
         image_event = root.findViewById(R.id.image_event);
-        final TextView text_event_title = root.findViewById(R.id.text_event_title);
-        final TextView text_event_description = root.findViewById(R.id.text_event_description);
-        final TextView text_event_venue = root.findViewById(R.id.text_event_venue);
-        final TextView text_event_date_from = root.findViewById(R.id.text_event_date_from);
-        final TextView text_event_date_to = root.findViewById(R.id.text_event_date_to);
-        final TextView text_event_open_until = root.findViewById(R.id.text_event_open_until);
+        final EditText text_event_title = root.findViewById(R.id.text_event_title);
+        final EditText text_event_description = root.findViewById(R.id.text_event_description);
+        final EditText text_event_venue = root.findViewById(R.id.text_event_venue);
+        final EditText text_event_date_from = root.findViewById(R.id.text_event_date_from);
+        final EditText text_event_date_to = root.findViewById(R.id.text_event_date_to);
+        final EditText text_event_open_until = root.findViewById(R.id.text_event_open_until);
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
         progressDialog = new ProgressDialog(getActivity());

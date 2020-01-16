@@ -36,7 +36,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -171,7 +175,20 @@ public class EventFragment extends Fragment implements RewardedVideoAdListener {
             text_points.setText("Supports Received: "+bundle.getString("points"));
             text_date.setText(bundle.getString("date"));
             text_venue.setText(bundle.getString("venue"));
-            text_open_until.setText(bundle.getString("open_until"));
+            text_open_until.setText("Accepting Donations Until: "+bundle.getString("open_until"));
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date strDate = null;
+            try {
+                System.out.println(bundle.getString("open_until"));
+                strDate = simpleDateFormat.parse(bundle.getString("open_until"));
+                System.out.println(strDate);
+                if (System.currentTimeMillis() > strDate.getTime()) {
+                    btn_donate.setVisibility(View.GONE);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             if (bundle.getString("user_id").matches(String.valueOf(user.getID()))) {
                 btn_donate.setVisibility(View.GONE);

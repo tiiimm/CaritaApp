@@ -46,6 +46,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10sp"
             android:layout_marginEnd="10sp"
+            android:gravity="center"
+            android:text="January 05, 2020"/>
+
+        <TextView
+            android:id="@+id/text_achievement_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
             android:layout_marginBottom="10sp"
             android:gravity="center"
             android:text="Blah blah Center, Town Area, Zambo"/>

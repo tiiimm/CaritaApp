@@ -88,10 +88,6 @@ public class CharitySetUp2Fragment extends Fragment {
                     text_description.setError("Required");
                     valid = false;
                 }
-                if (preference.matches("")) {
-                    text_preference.setError("Required");
-                    valid = false;
-                }
 
                 if (valid) {
                     bundle.putString("description", description);

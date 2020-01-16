@@ -24,15 +24,19 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
     private ArrayList<String> achievement_photos;
     private ArrayList<String> achievement_dates;
     private ArrayList<String> achievement_venues;
+    private ArrayList<Integer> achievement_points;
+    private ArrayList<String> achievement_types;
 
     private Context mContext;
 
-    public AchievementsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos) {
+    public AchievementsAdapter(Context context, ArrayList<String> titles, ArrayList<String> dates, ArrayList<String> venues, ArrayList<Integer> ids, ArrayList<String> photos, ArrayList<Integer> points, ArrayList<String> types) {
         achievement_ids = ids;
         achievement_titles = titles;
         achievement_photos = photos;
         achievement_dates = dates;
         achievement_venues = venues;
+        achievement_types = types;
+        achievement_points = points;
         mContext = context;
     }
 
@@ -53,6 +57,10 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
         holder.text_achievement_title.setText(achievement_titles.get(position));
         holder.text_achievement_date.setText(achievement_dates.get(position));
         holder.text_achievement_venue.setText(achievement_venues.get(position));
+        if (achievement_types.get(position).matches("Event")) {
+            holder.text_achievement_points.setText("Supports Received: " + achievement_points.get(position));
+        }
+        else holder.text_achievement_points.setText("");
 
 //        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
@@ -101,6 +109,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
         TextView text_achievement_title;
         TextView text_achievement_date;
         TextView text_achievement_venue;
+        TextView text_achievement_points;
         LinearLayout parentLayout;
 
         public ViewHolder(View itemView) {
@@ -109,6 +118,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
             text_achievement_title = itemView.findViewById(R.id.text_achievement_title);
             text_achievement_date = itemView.findViewById(R.id.text_achievement_date);
             text_achievement_venue = itemView.findViewById(R.id.text_achievement_venue);
+            text_achievement_points = itemView.findViewById(R.id.text_achievement_points);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }

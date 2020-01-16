@@ -155,6 +155,7 @@ public class SettingsFragment extends Fragment {
                     bundle.putString("username", "@"+user.getUsername());
                 }
                 bundle.putString("photo", user.getPhoto());
+                bundle.putString("points", "0");
                 bundle.putString("role", user.getRole());
                 profileFragment.setArguments(bundle);
 

@@ -50,11 +50,16 @@ public class OwnAchievementsFragment extends Fragment {
     private ArrayList<String> achievement_photos = new ArrayList<>();
     private ArrayList<String> achievement_venues = new ArrayList<>();
     private ArrayList<String> achievement_dates = new ArrayList<>();
+    private ArrayList<Integer> achievement_points = new ArrayList<>();
+    private ArrayList<String> achievement_types = new ArrayList<>();
+
     private ArrayList<Integer> search_ids = new ArrayList<>();
     private ArrayList<String> search_titles = new ArrayList<>();
     private ArrayList<String> search_photos = new ArrayList<>();
     private ArrayList<String> search_venues = new ArrayList<>();
     private ArrayList<String> search_dates = new ArrayList<>();
+    private ArrayList<Integer> search_points = new ArrayList<>();
+    private ArrayList<String> search_types = new ArrayList<>();
 
     public OwnAchievementsFragment() {
         // Required empty public constructor
@@ -101,6 +106,8 @@ public class OwnAchievementsFragment extends Fragment {
                 search_photos.clear();
                 search_venues.clear();
                 search_dates.clear();
+                search_points.clear();
+                search_types.clear();
                 int x;
                 for (x = 0; x < achievement_ids.size(); x++) {
                     if (
@@ -109,6 +116,8 @@ public class OwnAchievementsFragment extends Fragment {
                         search_dates.get(x).toLowerCase().contains(text_search.getText().toString().toLowerCase())
                     ) {
                         search_ids.add(achievement_ids.get(x));
+                        search_points.add(achievement_points.get(x));
+                        search_types.add(achievement_types.get(x));
                         search_titles.add(achievement_titles.get(x));
                         search_photos.add(achievement_photos.get(x));
                         search_venues.add(achievement_venues.get(x));
@@ -139,6 +148,14 @@ public class OwnAchievementsFragment extends Fragment {
                         achievement_ids.add(achievement.getInt("id"));
                         achievement_photos.add(achievement.getString("photo"));
                         achievement_titles.add(achievement.getString("title"));
+                        if (achievement.has("points")) {
+                            achievement_points.add(achievement.getInt("points"));
+                            achievement_types.add("Event");
+                        }
+                        else {
+                            achievement_points.add(0);
+                            achievement_types.add("Achievement");
+                        }
                         if (achievement.getString("held_on_from").matches(achievement.getString("held_on_to")))
                             achievement_dates.add(achievement.getString("held_on_from"));
                         else
@@ -165,14 +182,14 @@ public class OwnAchievementsFragment extends Fragment {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_achievements);
-        AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), achievement_titles, achievement_dates, achievement_venues, achievement_ids, achievement_photos);
+        AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), achievement_titles, achievement_dates, achievement_venues, achievement_ids, achievement_photos, achievement_points, achievement_types);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
     private void initSearchView(){
         RecyclerView recyclerView = root.findViewById(R.id.list_achievements);
-        AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos);
+        AchievementsAdapter adapter = new AchievementsAdapter(getActivity(), search_titles, search_dates, search_venues, search_ids, search_photos, search_points, search_types);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }

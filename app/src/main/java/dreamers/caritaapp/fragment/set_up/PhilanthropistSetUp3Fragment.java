@@ -105,6 +105,7 @@ public class PhilanthropistSetUp3Fragment extends Fragment {
                         }})
                     .dispatch();
                 }
+                else set_up(image_philanthropist);
             }
         });
 

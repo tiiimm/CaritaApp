@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -77,7 +77,7 @@ public class UploadAdvertisementFragment extends Fragment {
 
         image_advertisement = root.findViewById(R.id.image_advertisement);
         video_advertisement = root.findViewById(R.id.video_advertisement);
-        final TextView text_advertisement_name = root.findViewById(R.id.text_advertisement_name);
+        final EditText text_advertisement_name = root.findViewById(R.id.text_advertisement_name);
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
         progressDialog = new ProgressDialog(getActivity());
