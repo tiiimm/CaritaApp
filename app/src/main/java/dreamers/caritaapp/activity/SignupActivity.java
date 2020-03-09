@@ -33,7 +33,7 @@ import dreamers.caritaapp.database.SessionHandler;
 
 public class SignupActivity extends AppCompatActivity {
 
-    SessionHandler session;
+    SessionHandler sessionHandler;
     EditText text_fullname;
     EditText text_email;
     EditText text_username;
@@ -45,7 +45,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        session = new SessionHandler(this);
+        sessionHandler = new SessionHandler(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -170,7 +170,7 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             }
 
-                            session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
+                            sessionHandler.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
                             Toast.makeText(SignupActivity.this,
                                     "Successful!", Toast.LENGTH_LONG).show();
 
@@ -243,7 +243,7 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             }
                             else {
-                                session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), "", "", "");
+                                sessionHandler.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), res.getString("photo"), "", "", "");
                                 Toast.makeText(SignupActivity.this,
                                         "Successful!", Toast.LENGTH_LONG).show();
                                 Intent i = new Intent(SignupActivity.this, SetUpActivity.class);
@@ -264,5 +264,9 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         MySingleton.getInstance(SignupActivity.this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

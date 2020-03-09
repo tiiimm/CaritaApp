@@ -22,7 +22,7 @@ import dreamers.caritaapp.database.User;
 
 public class SplashScreenActivity extends AppCompatActivity implements Animation.AnimationListener {
 
-    SessionHandler session;
+    SessionHandler sessionHandler;
     User user;
 
     Animation animBlink;
@@ -35,8 +35,8 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        session = new SessionHandler(this);
-        user = session.getUserDetails();
+        sessionHandler = new SessionHandler(this);
+        user = sessionHandler.getUserDetails();
 
         logo = findViewById(R.id.image_logo);
 
@@ -109,5 +109,9 @@ public class SplashScreenActivity extends AppCompatActivity implements Animation
     @Override
     public void onAnimationStart(Animation animation) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

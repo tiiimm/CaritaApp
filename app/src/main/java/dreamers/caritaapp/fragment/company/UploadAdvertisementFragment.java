@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -146,14 +148,12 @@ public class UploadAdvertisementFragment extends Fragment {
                         }
                         @Override
                         public void onError(String requestId, ErrorInfo error) {
-
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         @Override
                         public void onReschedule(String requestId, ErrorInfo error) {
-
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
@@ -172,11 +172,18 @@ public class UploadAdvertisementFragment extends Fragment {
             Uri selected = imageReturnedIntent.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selected, filePathColumn, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            System.out.println("nameIndex "+nameIndex);
+            System.out.println("sizeIndex "+sizeIndex);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             if (selected.toString().contains("image")) {
                 advertisement_type = "image";
                 advertisement_path = cursor.getString(columnIndex);
+                File f = new File(advertisement_path);
+                long size = f.length();
+                System.out.println(size);
                 cursor.close();
                 video_advertisement.setVisibility(View.GONE);
                 image_advertisement.setVisibility(View.VISIBLE);
@@ -185,6 +192,9 @@ public class UploadAdvertisementFragment extends Fragment {
             else if (selected.toString().contains("video")) {
                 advertisement_type = "video";
                 advertisement_path = cursor.getString(columnIndex);
+                File f = new File(advertisement_path);
+                long size = f.length();
+                System.out.println(size);
                 cursor.close();
                 image_advertisement.setVisibility(View.GONE);
                 video_advertisement.setVisibility(View.VISIBLE);

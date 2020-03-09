@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dreamers.caritaapp.R;
@@ -167,9 +170,16 @@ public class CharitySetUp1Fragment extends Fragment {
             Uri selected = imageReturnedIntent.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selected, filePathColumn, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            System.out.println("nameIndex "+nameIndex);
+            System.out.println("sizeIndex "+sizeIndex);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             image_path = cursor.getString(columnIndex);
+            File f = new File(image_path);
+            long size = f.length();
+            System.out.println(size);
             cursor.close();
             image_charity.setImageBitmap(BitmapFactory.decodeFile(image_path));
         }

@@ -236,14 +236,12 @@ public class CharitySetUp3Fragment extends Fragment {
                     }
                     @Override
                     public void onError(String requestId, ErrorInfo error) {
-
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     @Override
                     public void onReschedule(String requestId, ErrorInfo error) {
-
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                         return;

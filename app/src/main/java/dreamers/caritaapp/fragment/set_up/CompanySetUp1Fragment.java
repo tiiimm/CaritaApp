@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -135,9 +137,16 @@ public class CompanySetUp1Fragment extends Fragment {
             Uri selected = imageReturnedIntent.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selected, filePathColumn, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            System.out.println("nameIndex "+nameIndex);
+            System.out.println("sizeIndex "+sizeIndex);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             image_path = cursor.getString(columnIndex);
+            File f = new File(image_path);
+            long size = f.length();
+            System.out.println(size);
             cursor.close();
             circleImageView.setImageBitmap(BitmapFactory.decodeFile(image_path));
         }
@@ -168,10 +177,14 @@ public class CompanySetUp1Fragment extends Fragment {
             }
             @Override
             public void onError(String requestId, ErrorInfo error) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                 return;
             }
             @Override
             public void onReschedule(String requestId, ErrorInfo error) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                 return;
             }})
         .dispatch();

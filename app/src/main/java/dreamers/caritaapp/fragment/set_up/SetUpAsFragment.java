@@ -1,10 +1,12 @@
 package dreamers.caritaapp.fragment.set_up;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import dreamers.caritaapp.R;
+import dreamers.caritaapp.activity.HomeActivity;
 import dreamers.caritaapp.activity.LoginActivity;
 import dreamers.caritaapp.database.SessionHandler;
 
@@ -29,7 +32,7 @@ import dreamers.caritaapp.database.SessionHandler;
 public class SetUpAsFragment extends Fragment {
 
     View root;
-    SessionHandler session;
+    SessionHandler sessionHandler;
 
     public SetUpAsFragment() {
         // Required empty public constructor
@@ -39,7 +42,7 @@ public class SetUpAsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_set_up_as, container, false);
-        session = new SessionHandler(getActivity());
+        sessionHandler = new SessionHandler(getActivity());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -75,10 +78,14 @@ public class SetUpAsFragment extends Fragment {
             }
         });
 
-        btn_switch_account.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you Sure?");
+        builder.setIcon(R.mipmap.ic_carita);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                session.logoutUser();
+            public void onClick(DialogInterface dialog, int which) {
+                sessionHandler.logoutUser();
                 mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -87,6 +94,20 @@ public class SetUpAsFragment extends Fragment {
                 });
                 Intent i = new Intent(getActivity(), LoginActivity.class);
                 startActivity(i);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+
+        btn_switch_account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.show();
             }
         });
 

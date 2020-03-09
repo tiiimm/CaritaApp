@@ -1,8 +1,10 @@
 package dreamers.caritaapp.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -64,6 +66,32 @@ public class CompanyActivity extends AppCompatActivity {
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_company,new PointsFragment()).commit();
 //            }
 //        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you Sure?");
+        builder.setIcon(R.mipmap.ic_carita);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                sessionHandler.logoutUser();
+                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        System.out.println("Signed out");
+                    }
+                });
+                Intent i = new Intent(CompanyActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
         nav_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,16 +105,12 @@ public class CompanyActivity extends AppCompatActivity {
         nav_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sessionHandler.logoutUser();
-                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        System.out.println("Signed out");
-                    }
-                });
-                Intent i = new Intent(CompanyActivity.this, LoginActivity.class);
-                startActivity(i);
+                alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

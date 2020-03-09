@@ -34,7 +34,7 @@ import dreamers.caritaapp.database.User;
 
 public class LoginActivity extends AppCompatActivity {
 
-    SessionHandler session;
+    SessionHandler sessionHandler;
     User user;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        session = new SessionHandler(this);
-        user = session.getUserDetails();
+        sessionHandler = new SessionHandler(this);
+        user = sessionHandler.getUserDetails();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
+                                    sessionHandler.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
                                     Toast.makeText(LoginActivity.this,
                                             "Successful!", Toast.LENGTH_LONG).show();
 
@@ -238,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
                                 return;
                             }
                         }
-                        session.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
+                        sessionHandler.set_current_user(res.getInt("id"), res.getString("name"), res.getString("email"), res.getString("username"), res.getInt("points"), photo, res.getString("role"), organization, res.getString("google_id"));
                         Toast.makeText(LoginActivity.this,
                                 "Successful!", Toast.LENGTH_LONG).show();
 
@@ -274,5 +274,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         MySingleton.getInstance(LoginActivity.this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

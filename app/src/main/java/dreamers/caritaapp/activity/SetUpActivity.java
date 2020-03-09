@@ -35,4 +35,8 @@ public class SetUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new SetUpAsFragment()).commit();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.VideoView;
+
+import java.io.File;
 
 import dreamers.caritaapp.R;
 
@@ -169,11 +172,18 @@ public class CharitySetUp2Fragment extends Fragment {
             Uri selected = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selected, filePathColumn, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            System.out.println("nameIndex "+nameIndex);
+            System.out.println("sizeIndex "+sizeIndex);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             if (selected.toString().contains("image")) {
                 bio_type = "image";
                 bio_path = cursor.getString(columnIndex);
+                File f = new File(bio_path);
+                long size = f.length();
+                System.out.println(size);
                 cursor.close();
                 video_charity_bio.setVisibility(View.GONE);
                 image_charity_bio.setVisibility(View.VISIBLE);
@@ -182,6 +192,9 @@ public class CharitySetUp2Fragment extends Fragment {
             else if (selected.toString().contains("video")) {
                 bio_type = "video";
                 bio_path = cursor.getString(columnIndex);
+                File f = new File(bio_path);
+                long size = f.length();
+                System.out.println(size);
                 cursor.close();
                 image_charity_bio.setVisibility(View.GONE);
                 video_charity_bio.setVisibility(View.VISIBLE);

@@ -3,6 +3,7 @@ package dreamers.caritaapp.fragment.home.settings.others;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,6 +65,7 @@ public class UploadAchievementFragment extends Fragment {
 
     ImageView image_achievement;
     String image_path = "";
+    ProgressDialog progressDialog;
 
     public UploadAchievementFragment() {
         // Required empty public constructor
@@ -82,6 +86,8 @@ public class UploadAchievementFragment extends Fragment {
         final EditText text_achievement_date_to = root.findViewById(R.id.text_achievement_date_to);
         Button btn_upload = root.findViewById(R.id.btn_upload);
         Button btn_back = root.findViewById(R.id.btn_back);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
 
         DatePickerDialog.OnDateSetListener achievement_from_listener = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -188,6 +194,7 @@ public class UploadAchievementFragment extends Fragment {
                 }
 
                 if (valid) {
+                    progressDialog.show();
                     MediaManager.get().upload(image_path)
                     .option("resource_type", "image")
                     .option("folder", "carita/")
@@ -210,10 +217,14 @@ public class UploadAchievementFragment extends Fragment {
                         }
                         @Override
                         public void onError(String requestId, ErrorInfo error) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         @Override
                         public void onReschedule(String requestId, ErrorInfo error) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Error uploading. Try again", Toast.LENGTH_SHORT).show();
                             return;
                         }})
                     .dispatch();
@@ -230,9 +241,16 @@ public class UploadAchievementFragment extends Fragment {
             Uri selected = imageReturnedIntent.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selected, filePathColumn, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            System.out.println("nameIndex "+nameIndex);
+            System.out.println("sizeIndex "+sizeIndex);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             image_path = cursor.getString(columnIndex);
+            File f = new File(image_path);
+            long size = f.length();
+            System.out.println(size);
             cursor.close();
             image_achievement.setImageBitmap(BitmapFactory.decodeFile(image_path));
         }

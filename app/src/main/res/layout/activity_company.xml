@@ -51,15 +51,15 @@
             android:layout_height="50sp"
             android:src="@drawable/drawable_points"/>
 
-        <View
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+<!--        <View-->
+<!--            android:layout_width="0px"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"/>-->
 
-        <ImageView
-            android:layout_width="80sp"
-            android:layout_height="80sp"
-            android:src="@drawable/drawable_home"/>
+<!--        <ImageView-->
+<!--            android:layout_width="80sp"-->
+<!--            android:layout_height="80sp"-->
+<!--            android:src="@drawable/drawable_home"/>-->
 
         <View
             android:layout_width="0px"
